@@ -23,6 +23,13 @@ class ApiClient {
         BasicAuthenticationClient(client, user: user, apiToken: apiToken));
   }
 
+  factory ApiClient.oauthAuthentication(Uri baseUri,
+      {required String accessToken, Client? client}) {
+    client ??= Client();
+    return ApiClient(
+        baseUri, OauthAuthenticationClient(client, accessToken: accessToken));
+  }
+
   Future<T> send<T>(
     String method,
     String pathTemplate, {

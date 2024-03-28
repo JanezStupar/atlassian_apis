@@ -1,5 +1,6 @@
 import 'dart:collection';
 import 'dart:convert';
+
 import 'package:http/http.dart';
 import 'package:path/path.dart' as p;
 
@@ -159,6 +160,25 @@ class BasicAuthenticationClient extends BaseClient {
   Future<StreamedResponse> send(BaseRequest request) {
     request.headers['Authorization'] =
         'Basic ${base64Encode(ascii.encode('$user:$apiToken'))}';
+    return innerClient.send(request);
+  }
+
+  @override
+  void close() {
+    innerClient.close();
+    super.close();
+  }
+}
+
+class OauthAuthenticationClient extends BaseClient {
+  final Client innerClient;
+  final String accessToken;
+
+  OauthAuthenticationClient(this.innerClient, {required this.accessToken});
+
+  @override
+  Future<StreamedResponse> send(BaseRequest request) {
+    request.headers['Authorization'] = 'Bearer $accessToken';
     return innerClient.send(request);
   }
 

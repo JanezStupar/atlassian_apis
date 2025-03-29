@@ -1991,7 +1991,7 @@ class EventModelAttributes {
     var location = this.location;
 
     final json = <String, Object?>{};
-    json[r'time'] = time.toIso8601String();
+    json[r'time'] = time.toIsoWithNumericOffset();
     json[r'action'] = action;
     json[r'actor'] = actor.toJson();
     json[r'context'] = context.map((i) => i.toJson()).toList();
@@ -4001,7 +4001,7 @@ class Product {
       json[r'url'] = url;
     }
     if (lastActive != null) {
-      json[r'last_active'] = lastActive.toIso8601String();
+      json[r'last_active'] = lastActive.toIsoWithNumericOffset();
     }
     return json;
   }
@@ -4585,7 +4585,7 @@ class User {
     }
     json[r'access_billable'] = accessBillable;
     if (lastActive != null) {
-      json[r'last_active'] = lastActive.toIso8601String();
+      json[r'last_active'] = lastActive.toIsoWithNumericOffset();
     }
     json[r'product_access'] = productAccess.map((i) => i.toJson()).toList();
     if (links != null) {

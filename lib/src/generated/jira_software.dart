@@ -3443,7 +3443,7 @@ class Changelog {
       json[r'author'] = author;
     }
     if (created != null) {
-      json[r'created'] = created.toIso8601String();
+      json[r'created'] = created.toIsoWithNumericOffset();
     }
     json[r'items'] = items.map((i) => i.toJson()).toList();
     if (historyMetadata != null) {
@@ -7231,7 +7231,7 @@ class PageOfChangelogsHistoriesItem {
       json[r'author'] = author;
     }
     if (created != null) {
-      json[r'created'] = created.toIso8601String();
+      json[r'created'] = created.toIsoWithNumericOffset();
     }
     json[r'items'] = items.map((i) => i.toJson()).toList();
     if (historyMetadata != null) {

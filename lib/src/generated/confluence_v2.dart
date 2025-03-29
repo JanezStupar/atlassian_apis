@@ -3739,7 +3739,7 @@ class Attachment {
       json[r'title'] = title;
     }
     if (createdAt != null) {
-      json[r'createdAt'] = createdAt.toIso8601String();
+      json[r'createdAt'] = createdAt.toIsoWithNumericOffset();
     }
     if (pageId != null) {
       json[r'pageId'] = pageId;
@@ -3908,7 +3908,7 @@ class AttachmentVersion {
 
     final json = <String, Object?>{};
     if (createdAt != null) {
-      json[r'createdAt'] = createdAt.toIso8601String();
+      json[r'createdAt'] = createdAt.toIsoWithNumericOffset();
     }
     if (message != null) {
       json[r'message'] = message;
@@ -4092,7 +4092,7 @@ class BlogPostBulk {
       json[r'authorId'] = authorId;
     }
     if (createdAt != null) {
-      json[r'createdAt'] = createdAt.toIso8601String();
+      json[r'createdAt'] = createdAt.toIsoWithNumericOffset();
     }
     if (version != null) {
       json[r'version'] = version.toJson();
@@ -4560,7 +4560,7 @@ class BlogPostSingle {
       json[r'authorId'] = authorId;
     }
     if (createdAt != null) {
-      json[r'createdAt'] = createdAt.toIso8601String();
+      json[r'createdAt'] = createdAt.toIsoWithNumericOffset();
     }
     if (version != null) {
       json[r'version'] = version.toJson();
@@ -4789,7 +4789,7 @@ class BlogPostVersion {
 
     final json = <String, Object?>{};
     if (createdAt != null) {
-      json[r'createdAt'] = createdAt.toIso8601String();
+      json[r'createdAt'] = createdAt.toIsoWithNumericOffset();
     }
     if (message != null) {
       json[r'message'] = message;
@@ -5422,7 +5422,7 @@ class CommentVersion {
 
     final json = <String, Object?>{};
     if (createdAt != null) {
-      json[r'createdAt'] = createdAt.toIso8601String();
+      json[r'createdAt'] = createdAt.toIsoWithNumericOffset();
     }
     if (message != null) {
       json[r'message'] = message;
@@ -6234,7 +6234,7 @@ class CustomContentBulk {
       json[r'authorId'] = authorId;
     }
     if (createdAt != null) {
-      json[r'createdAt'] = createdAt.toIso8601String();
+      json[r'createdAt'] = createdAt.toIsoWithNumericOffset();
     }
     if (version != null) {
       json[r'version'] = version.toJson();
@@ -6620,7 +6620,7 @@ class CustomContentSingle {
       json[r'authorId'] = authorId;
     }
     if (createdAt != null) {
-      json[r'createdAt'] = createdAt.toIso8601String();
+      json[r'createdAt'] = createdAt.toIsoWithNumericOffset();
     }
     if (version != null) {
       json[r'version'] = version.toJson();
@@ -6893,7 +6893,7 @@ class CustomContentVersion {
 
     final json = <String, Object?>{};
     if (createdAt != null) {
-      json[r'createdAt'] = createdAt.toIso8601String();
+      json[r'createdAt'] = createdAt.toIsoWithNumericOffset();
     }
     if (message != null) {
       json[r'message'] = message;
@@ -7013,7 +7013,7 @@ class DetailedVersion {
       json[r'message'] = message;
     }
     if (createdAt != null) {
-      json[r'createdAt'] = createdAt.toIso8601String();
+      json[r'createdAt'] = createdAt.toIsoWithNumericOffset();
     }
     json[r'minorEdit'] = minorEdit;
     json[r'contentTypeModified'] = contentTypeModified;
@@ -7404,7 +7404,7 @@ class InlineCommentModel {
     }
     if (resolutionLastModifiedAt != null) {
       json[r'resolutionLastModifiedAt'] =
-          resolutionLastModifiedAt.toIso8601String();
+          resolutionLastModifiedAt.toIsoWithNumericOffset();
     }
     if (resolutionStatus != null) {
       json[r'resolutionStatus'] = resolutionStatus;
@@ -7741,7 +7741,7 @@ class PageBulk {
       json[r'authorId'] = authorId;
     }
     if (createdAt != null) {
-      json[r'createdAt'] = createdAt.toIso8601String();
+      json[r'createdAt'] = createdAt.toIsoWithNumericOffset();
     }
     if (version != null) {
       json[r'version'] = version.toJson();
@@ -8251,7 +8251,7 @@ class PageSingle {
       json[r'authorId'] = authorId;
     }
     if (createdAt != null) {
-      json[r'createdAt'] = createdAt.toIso8601String();
+      json[r'createdAt'] = createdAt.toIsoWithNumericOffset();
     }
     if (version != null) {
       json[r'version'] = version.toJson();
@@ -8501,7 +8501,7 @@ class PageVersion {
 
     final json = <String, Object?>{};
     if (createdAt != null) {
-      json[r'createdAt'] = createdAt.toIso8601String();
+      json[r'createdAt'] = createdAt.toIsoWithNumericOffset();
     }
     if (message != null) {
       json[r'message'] = message;
@@ -8699,7 +8699,7 @@ class Space {
       json[r'authorId'] = authorId;
     }
     if (createdAt != null) {
-      json[r'createdAt'] = createdAt.toIso8601String();
+      json[r'createdAt'] = createdAt.toIsoWithNumericOffset();
     }
     if (homepageId != null) {
       json[r'homepageId'] = homepageId;
@@ -9124,7 +9124,7 @@ class SpaceProperty {
       json[r'value'] = value;
     }
     if (createdAt != null) {
-      json[r'createdAt'] = createdAt.toIso8601String();
+      json[r'createdAt'] = createdAt.toIsoWithNumericOffset();
     }
     if (createdBy != null) {
       json[r'createdBy'] = createdBy;
@@ -9320,7 +9320,7 @@ class SpacePropertyVersion {
 
     final json = <String, Object?>{};
     if (createdAt != null) {
-      json[r'createdAt'] = createdAt.toIso8601String();
+      json[r'createdAt'] = createdAt.toIsoWithNumericOffset();
     }
     if (createdBy != null) {
       json[r'createdBy'] = createdBy;
@@ -9477,16 +9477,16 @@ class Task {
       json[r'completedBy'] = completedBy;
     }
     if (createdAt != null) {
-      json[r'createdAt'] = createdAt.toIso8601String();
+      json[r'createdAt'] = createdAt.toIsoWithNumericOffset();
     }
     if (updatedAt != null) {
-      json[r'updatedAt'] = updatedAt.toIso8601String();
+      json[r'updatedAt'] = updatedAt.toIsoWithNumericOffset();
     }
     if (dueAt != null) {
-      json[r'dueAt'] = dueAt.toIso8601String();
+      json[r'dueAt'] = dueAt.toIsoWithNumericOffset();
     }
     if (completedAt != null) {
-      json[r'completedAt'] = completedAt.toIso8601String();
+      json[r'completedAt'] = completedAt.toIsoWithNumericOffset();
     }
     return json;
   }
@@ -9667,16 +9667,16 @@ class TaskUpdateRequest {
       json[r'completedBy'] = completedBy;
     }
     if (createdAt != null) {
-      json[r'createdAt'] = createdAt.toIso8601String();
+      json[r'createdAt'] = createdAt.toIsoWithNumericOffset();
     }
     if (updatedAt != null) {
-      json[r'updatedAt'] = updatedAt.toIso8601String();
+      json[r'updatedAt'] = updatedAt.toIsoWithNumericOffset();
     }
     if (dueAt != null) {
-      json[r'dueAt'] = dueAt.toIso8601String();
+      json[r'dueAt'] = dueAt.toIsoWithNumericOffset();
     }
     if (completedAt != null) {
-      json[r'completedAt'] = completedAt.toIso8601String();
+      json[r'completedAt'] = completedAt.toIsoWithNumericOffset();
     }
     return json;
   }
@@ -9951,7 +9951,7 @@ class Version {
 
     final json = <String, Object?>{};
     if (createdAt != null) {
-      json[r'createdAt'] = createdAt.toIso8601String();
+      json[r'createdAt'] = createdAt.toIsoWithNumericOffset();
     }
     if (message != null) {
       json[r'message'] = message;

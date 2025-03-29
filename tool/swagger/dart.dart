@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+
 import '../utils/string.dart';
 import 'comment.dart';
 import 'dart_keywords.dart';
@@ -1145,7 +1146,7 @@ class DateTimeType extends DartType {
   @override
   String toJsonCode(
       PropertyName propertyName, Map<DartType, String> genericTypes) {
-    return '${propertyName.camelCased}.toIso8601String()';
+    return '${propertyName.camelCased}.toIsoWithNumericOffset()';
   }
 
   @override

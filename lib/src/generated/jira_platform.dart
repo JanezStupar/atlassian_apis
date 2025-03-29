@@ -16769,7 +16769,7 @@ class Attachment {
       json[r'content'] = content;
     }
     if (created != null) {
-      json[r'created'] = created.toIso8601String();
+      json[r'created'] = created.toIsoWithNumericOffset();
     }
     if (filename != null) {
       json[r'filename'] = filename;
@@ -17219,7 +17219,7 @@ class AttachmentMetadata {
       json[r'content'] = content;
     }
     if (created != null) {
-      json[r'created'] = created.toIso8601String();
+      json[r'created'] = created.toIsoWithNumericOffset();
     }
     if (filename != null) {
       json[r'filename'] = filename;
@@ -17411,7 +17411,7 @@ class AuditRecordBean {
     }
     json[r'changedValues'] = changedValues.map((i) => i.toJson()).toList();
     if (created != null) {
-      json[r'created'] = created.toIso8601String();
+      json[r'created'] = created.toIsoWithNumericOffset();
     }
     if (description != null) {
       json[r'description'] = description;
@@ -19392,7 +19392,7 @@ class Changelog {
       json[r'author'] = author.toJson();
     }
     if (created != null) {
-      json[r'created'] = created.toIso8601String();
+      json[r'created'] = created.toIsoWithNumericOffset();
     }
     if (historyMetadata != null) {
       json[r'historyMetadata'] = historyMetadata.toJson();
@@ -19575,7 +19575,7 @@ class Comment {
       json[r'body'] = body;
     }
     if (created != null) {
-      json[r'created'] = created.toIso8601String();
+      json[r'created'] = created.toIsoWithNumericOffset();
     }
     if (id != null) {
       json[r'id'] = id;
@@ -19593,7 +19593,7 @@ class Comment {
       json[r'updateAuthor'] = updateAuthor.toJson();
     }
     if (updated != null) {
-      json[r'updated'] = updated.toIso8601String();
+      json[r'updated'] = updated.toIsoWithNumericOffset();
     }
     if (visibility != null) {
       json[r'visibility'] = visibility.toJson();
@@ -26138,7 +26138,7 @@ class ExportArchivedIssuesTaskProgressResponse {
       json[r'status'] = status;
     }
     if (submittedTime != null) {
-      json[r'submittedTime'] = submittedTime.toIso8601String();
+      json[r'submittedTime'] = submittedTime.toIsoWithNumericOffset();
     }
     if (taskId != null) {
       json[r'taskId'] = taskId;
@@ -27091,7 +27091,7 @@ class FieldLastUsed {
       json[r'type'] = type.value;
     }
     if (value != null) {
-      json[r'value'] = value.toIso8601String();
+      json[r'value'] = value.toIsoWithNumericOffset();
     }
     return json;
   }
@@ -34371,7 +34371,7 @@ class JqlFunctionPrecomputationBean {
     final json = <String, Object?>{};
     json[r'arguments'] = arguments;
     if (created != null) {
-      json[r'created'] = created.toIso8601String();
+      json[r'created'] = created.toIsoWithNumericOffset();
     }
     if (field != null) {
       json[r'field'] = field;
@@ -34389,10 +34389,10 @@ class JqlFunctionPrecomputationBean {
       json[r'operator'] = operator$;
     }
     if (updated != null) {
-      json[r'updated'] = updated.toIso8601String();
+      json[r'updated'] = updated.toIsoWithNumericOffset();
     }
     if (used != null) {
-      json[r'used'] = used.toIso8601String();
+      json[r'used'] = used.toIsoWithNumericOffset();
     }
     if (value != null) {
       json[r'value'] = value;
@@ -43923,7 +43923,7 @@ class Project {
       json[r'archivedBy'] = archivedBy.toJson();
     }
     if (archivedDate != null) {
-      json[r'archivedDate'] = archivedDate.toIso8601String();
+      json[r'archivedDate'] = archivedDate.toIsoWithNumericOffset();
     }
     if (assigneeType != null) {
       json[r'assigneeType'] = assigneeType.value;
@@ -43937,7 +43937,7 @@ class Project {
       json[r'deletedBy'] = deletedBy.toJson();
     }
     if (deletedDate != null) {
-      json[r'deletedDate'] = deletedDate.toIso8601String();
+      json[r'deletedDate'] = deletedDate.toIsoWithNumericOffset();
     }
     if (description != null) {
       json[r'description'] = description;
@@ -43985,7 +43985,7 @@ class Project {
       json[r'properties'] = properties;
     }
     if (retentionTillDate != null) {
-      json[r'retentionTillDate'] = retentionTillDate.toIso8601String();
+      json[r'retentionTillDate'] = retentionTillDate.toIsoWithNumericOffset();
     }
     if (roles != null) {
       json[r'roles'] = roles;
@@ -45120,7 +45120,8 @@ class ProjectInsight {
 
     final json = <String, Object?>{};
     if (lastIssueUpdateTime != null) {
-      json[r'lastIssueUpdateTime'] = lastIssueUpdateTime.toIso8601String();
+      json[r'lastIssueUpdateTime'] =
+          lastIssueUpdateTime.toIsoWithNumericOffset();
     }
     if (totalIssueCount != null) {
       json[r'totalIssueCount'] = totalIssueCount;
@@ -48836,7 +48837,7 @@ class ServerInformation {
       json[r'baseUrl'] = baseUrl;
     }
     if (buildDate != null) {
-      json[r'buildDate'] = buildDate.toIso8601String();
+      json[r'buildDate'] = buildDate.toIsoWithNumericOffset();
     }
     if (buildNumber != null) {
       json[r'buildNumber'] = buildNumber;
@@ -48849,7 +48850,7 @@ class ServerInformation {
       json[r'scmInfo'] = scmInfo;
     }
     if (serverTime != null) {
-      json[r'serverTime'] = serverTime.toIso8601String();
+      json[r'serverTime'] = serverTime.toIsoWithNumericOffset();
     }
     if (serverTitle != null) {
       json[r'serverTitle'] = serverTitle;
@@ -55407,7 +55408,7 @@ class Workflow {
 
     final json = <String, Object?>{};
     if (created != null) {
-      json[r'created'] = created.toIso8601String();
+      json[r'created'] = created.toIsoWithNumericOffset();
     }
     json[r'description'] = description;
     json[r'hasDraftWorkflow'] = hasDraftWorkflow;
@@ -55421,7 +55422,7 @@ class Workflow {
     json[r'statuses'] = statuses.map((i) => i.toJson()).toList();
     json[r'transitions'] = transitions.map((i) => i.toJson()).toList();
     if (updated != null) {
-      json[r'updated'] = updated.toIso8601String();
+      json[r'updated'] = updated.toIsoWithNumericOffset();
     }
     return json;
   }
@@ -58406,7 +58407,7 @@ class Worklog {
       json[r'comment'] = comment;
     }
     if (created != null) {
-      json[r'created'] = created.toIso8601String();
+      json[r'created'] = created.toIsoWithNumericOffset();
     }
     if (id != null) {
       json[r'id'] = id;
@@ -58419,7 +58420,7 @@ class Worklog {
       json[r'self'] = self;
     }
     if (started != null) {
-      json[r'started'] = started.toIso8601String();
+      json[r'started'] = started.toIsoWithNumericOffset();
     }
     if (timeSpent != null) {
       json[r'timeSpent'] = timeSpent;
@@ -58431,7 +58432,7 @@ class Worklog {
       json[r'updateAuthor'] = updateAuthor.toJson();
     }
     if (updated != null) {
-      json[r'updated'] = updated.toIso8601String();
+      json[r'updated'] = updated.toIsoWithNumericOffset();
     }
     if (visibility != null) {
       json[r'visibility'] = visibility.toJson();

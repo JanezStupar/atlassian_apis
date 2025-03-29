@@ -1477,10 +1477,10 @@ class ScimMetadata {
       json[r'location'] = location;
     }
     if (lastModified != null) {
-      json[r'lastModified'] = lastModified.toIso8601String();
+      json[r'lastModified'] = lastModified.toIsoWithNumericOffset();
     }
     if (created != null) {
-      json[r'created'] = created.toIso8601String();
+      json[r'created'] = created.toIsoWithNumericOffset();
     }
     return json;
   }

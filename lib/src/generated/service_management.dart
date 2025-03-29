@@ -2511,7 +2511,7 @@ class Changelog {
       json[r'author'] = author.toJson();
     }
     if (created != null) {
-      json[r'created'] = created.toIso8601String();
+      json[r'created'] = created.toIsoWithNumericOffset();
     }
     if (historyMetadata != null) {
       json[r'historyMetadata'] = historyMetadata.toJson();

@@ -9762,7 +9762,7 @@ class ContentCreateSpaceHistory {
     var createdBy = this.createdBy;
 
     final json = <String, Object?>{};
-    json[r'createdDate'] = createdDate.toIso8601String();
+    json[r'createdDate'] = createdDate.toIsoWithNumericOffset();
     if (createdBy != null) {
       json[r'createdBy'] = createdBy.toJson();
     }
@@ -10067,7 +10067,7 @@ class ContentHistory {
       json[r'lastOwnedBy'] = lastOwnedBy.toJson();
     }
     if (createdDate != null) {
-      json[r'createdDate'] = createdDate.toIso8601String();
+      json[r'createdDate'] = createdDate.toIsoWithNumericOffset();
     }
     if (lastUpdated != null) {
       json[r'lastUpdated'] = lastUpdated.toJson();
@@ -10527,7 +10527,7 @@ class ContentMetadataCurrentuserFavourited {
     final json = <String, Object?>{};
     json[r'isFavourite'] = isFavourite;
     if (favouritedDate != null) {
-      json[r'favouritedDate'] = favouritedDate.toIso8601String();
+      json[r'favouritedDate'] = favouritedDate.toIsoWithNumericOffset();
     }
     return json;
   }
@@ -10564,7 +10564,7 @@ class ContentMetadataCurrentuserLastcontributed {
       json[r'status'] = status;
     }
     if (when != null) {
-      json[r'when'] = when.toIso8601String();
+      json[r'when'] = when.toIsoWithNumericOffset();
     }
     return json;
   }
@@ -10637,7 +10637,7 @@ class ContentMetadataCurrentuserViewed {
 
     final json = <String, Object?>{};
     if (lastSeen != null) {
-      json[r'lastSeen'] = lastSeen.toIso8601String();
+      json[r'lastSeen'] = lastSeen.toIsoWithNumericOffset();
     }
     if (friendlyLastSeen != null) {
       json[r'friendlyLastSeen'] = friendlyLastSeen;
@@ -11112,7 +11112,7 @@ class ContentPropertyVersion {
     var contentTypeModified = this.contentTypeModified;
 
     final json = <String, Object?>{};
-    json[r'when'] = when.toIso8601String();
+    json[r'when'] = when.toIsoWithNumericOffset();
     json[r'message'] = message;
     json[r'number'] = number;
     json[r'minorEdit'] = minorEdit;
@@ -16114,7 +16114,7 @@ class RelationData {
       json[r'createdBy'] = createdBy.toJson();
     }
     if (createdDate != null) {
-      json[r'createdDate'] = createdDate.toIso8601String();
+      json[r'createdDate'] = createdDate.toIsoWithNumericOffset();
     }
     if (friendlyCreatedDate != null) {
       json[r'friendlyCreatedDate'] = friendlyCreatedDate;
@@ -16680,7 +16680,7 @@ class SearchResult {
     json[r'breadcrumbs'] = breadcrumbs.map((i) => i.toJson()).toList();
     json[r'entityType'] = entityType;
     json[r'iconCssClass'] = iconCssClass;
-    json[r'lastModified'] = lastModified.toIso8601String();
+    json[r'lastModified'] = lastModified.toIsoWithNumericOffset();
     if (friendlyLastModified != null) {
       json[r'friendlyLastModified'] = friendlyLastModified;
     }
@@ -17413,7 +17413,7 @@ class SpaceHistory {
     var createdBy = this.createdBy;
 
     final json = <String, Object?>{};
-    json[r'createdDate'] = createdDate.toIso8601String();
+    json[r'createdDate'] = createdDate.toIsoWithNumericOffset();
     if (createdBy != null) {
       json[r'createdBy'] = createdBy.toJson();
     }
@@ -20626,8 +20626,8 @@ class UserProperty {
     json[r'key'] = key;
     json[r'value'] = value;
     json[r'id'] = id;
-    json[r'lastModifiedDate'] = lastModifiedDate.toIso8601String();
-    json[r'createdDate'] = createdDate.toIso8601String();
+    json[r'lastModifiedDate'] = lastModifiedDate.toIsoWithNumericOffset();
+    json[r'createdDate'] = createdDate.toIsoWithNumericOffset();
     if (links != null) {
       json[r'_links'] = links.toJson();
     }
@@ -20974,7 +20974,7 @@ class Version {
     if (by != null) {
       json[r'by'] = by.toJson();
     }
-    json[r'when'] = when.toIso8601String();
+    json[r'when'] = when.toIsoWithNumericOffset();
     if (friendlyWhen != null) {
       json[r'friendlyWhen'] = friendlyWhen;
     }

@@ -1,5 +1,6 @@
 import 'dart:collection';
 import 'dart:convert';
+
 import 'package:http/http.dart';
 import 'package:path/path.dart' as p;
 
@@ -215,4 +216,14 @@ class MultiEntityResult<T> with IterableMixin<T> {
   Iterator<T> get iterator => results.iterator;
 
   //TODO: handle cursor and a way to loop through all the pages easily
+}
+
+/// Extension to convert DateTime to ISO 8601 format with numeric offset
+/// The reason for this is that the Atlassian API requires the UTC offset to be
+/// in the format +0000 instead of Z
+extension AtlassianDateTimeFormat on DateTime {
+  String toIsoWithNumericOffset() {
+    final isoString = toIso8601String();
+    return isoString.replaceFirst('Z', '+0000');
+  }
 }

@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:dart_style/dart_style.dart';
+
 import 'swagger/dart.dart' as dart;
 import 'swagger/swagger_spec.dart';
 import 'update_swagger_files.dart' show Api;

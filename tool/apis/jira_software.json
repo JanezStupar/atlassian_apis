@@ -88763,6 +88763,10 @@
     {
       "description": "This resource represents workflows. Use it to:\n\n *  Get workflows\n *  Create workflows\n *  Update workflows\n *  Delete inactive workflows\n *  Get workflow capabilities",
       "name": "Workflows"
+    },
+    {
+      "description": "User navigation properties operations",
+      "name": "usernavproperties"
     }
   ],
   "x-atlassian-narrative": {

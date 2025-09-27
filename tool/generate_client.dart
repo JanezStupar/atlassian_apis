@@ -3,6 +3,9 @@ import 'dart:io';
 
 // import 'package:dart_style/dart_style.dart';
 
+import 'package:dart_style/dart_style.dart';
+import 'package:pub_semver/pub_semver.dart';
+
 import 'swagger/dart.dart' as dart;
 import 'swagger/swagger_spec.dart';
 import 'update_swagger_files.dart' show Api;
@@ -21,12 +24,11 @@ void main() {
     var apiGenerator = dart.Api(api.name, spec);
     var code = apiGenerator.toCode().replaceAll('dynamic?', 'dynamic');
 
-    // Skip formatting for now due to package issues
-    // try {
-    //   code = DartFormatter().format(code);
-    // } catch (e) {
-    //   print('Code has syntax error');
-    // }
+    try {
+      code = DartFormatter(languageVersion: Version(3, 0, 0)).format(code);
+    } catch (e) {
+      print('Code has syntax error');
+    }
 
     File('lib/src/generated/${api.name}.dart').writeAsStringSync(code);
   }

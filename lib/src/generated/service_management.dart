@@ -2454,91 +2454,6 @@ class ChangeDetails {
   }
 }
 
-/// A log of changes made to issue fields. Changelogs related to workflow
-/// associations are currently being deprecated.
-class Changelog {
-  /// The user who made the change.
-  final UserDetails? author;
-
-  /// The date on which the change took place.
-  final DateTime? created;
-
-  /// The history metadata associated with the changed.
-  final HistoryMetadata? historyMetadata;
-
-  /// The ID of the changelog.
-  final String? id;
-
-  /// The list of items changed.
-  final List<ChangeDetails> items;
-
-  Changelog(
-      {this.author,
-      this.created,
-      this.historyMetadata,
-      this.id,
-      List<ChangeDetails>? items})
-      : items = items ?? [];
-
-  factory Changelog.fromJson(Map<String, Object?> json) {
-    return Changelog(
-      author: json[r'author'] != null
-          ? UserDetails.fromJson(json[r'author']! as Map<String, Object?>)
-          : null,
-      created: DateTime.tryParse(json[r'created'] as String? ?? ''),
-      historyMetadata: json[r'historyMetadata'] != null
-          ? HistoryMetadata.fromJson(
-              json[r'historyMetadata']! as Map<String, Object?>)
-          : null,
-      id: json[r'id'] as String?,
-      items: (json[r'items'] as List<Object?>?)
-              ?.map((i) => ChangeDetails.fromJson(
-                  i as Map<String, Object?>? ?? const {}))
-              .toList() ??
-          [],
-    );
-  }
-
-  Map<String, Object?> toJson() {
-    var author = this.author;
-    var created = this.created;
-    var historyMetadata = this.historyMetadata;
-    var id = this.id;
-    var items = this.items;
-
-    final json = <String, Object?>{};
-    if (author != null) {
-      json[r'author'] = author.toJson();
-    }
-    if (created != null) {
-      json[r'created'] = created.toIsoWithNumericOffset();
-    }
-    if (historyMetadata != null) {
-      json[r'historyMetadata'] = historyMetadata.toJson();
-    }
-    if (id != null) {
-      json[r'id'] = id;
-    }
-    json[r'items'] = items.map((i) => i.toJson()).toList();
-    return json;
-  }
-
-  Changelog copyWith(
-      {UserDetails? author,
-      DateTime? created,
-      HistoryMetadata? historyMetadata,
-      String? id,
-      List<ChangeDetails>? items}) {
-    return Changelog(
-      author: author ?? this.author,
-      created: created ?? this.created,
-      historyMetadata: historyMetadata ?? this.historyMetadata,
-      id: id ?? this.id,
-      items: items ?? this.items,
-    );
-  }
-}
-
 class CommentCreateDTO {
   /// Content of the comment.
   final String? body;
@@ -3694,131 +3609,6 @@ class Expandable {
   }
 }
 
-/// The metadata describing an issue field.
-class FieldMetadata {
-  /// The list of values allowed in the field.
-  final List<dynamic> allowedValues;
-
-  /// The URL that can be used to automatically complete the field.
-  final String? autoCompleteUrl;
-
-  /// The configuration properties.
-  final Map<String, dynamic>? configuration;
-
-  /// The default value of the field.
-  final dynamic defaultValue;
-
-  /// Whether the field has a default value.
-  final bool hasDefaultValue;
-
-  /// The key of the field.
-  final String key;
-
-  /// The name of the field.
-  final String name;
-
-  /// The list of operations that can be performed on the field.
-  final List<String> operations;
-
-  /// Whether the field is required.
-  final bool required;
-
-  /// The data type of the field.
-  final JsonTypeBean schema;
-
-  FieldMetadata(
-      {List<dynamic>? allowedValues,
-      this.autoCompleteUrl,
-      this.configuration,
-      this.defaultValue,
-      bool? hasDefaultValue,
-      required this.key,
-      required this.name,
-      required this.operations,
-      required this.required,
-      required this.schema})
-      : allowedValues = allowedValues ?? [],
-        hasDefaultValue = hasDefaultValue ?? false;
-
-  factory FieldMetadata.fromJson(Map<String, Object?> json) {
-    return FieldMetadata(
-      allowedValues:
-          (json[r'allowedValues'] as List<Object?>?)?.map((i) => i).toList() ??
-              [],
-      autoCompleteUrl: json[r'autoCompleteUrl'] as String?,
-      configuration: json[r'configuration'] as Map<String, Object?>?,
-      defaultValue: json[r'defaultValue'],
-      hasDefaultValue: json[r'hasDefaultValue'] as bool? ?? false,
-      key: json[r'key'] as String? ?? '',
-      name: json[r'name'] as String? ?? '',
-      operations: (json[r'operations'] as List<Object?>?)
-              ?.map((i) => i as String? ?? '')
-              .toList() ??
-          [],
-      required: json[r'required'] as bool? ?? false,
-      schema: JsonTypeBean.fromJson(
-          json[r'schema'] as Map<String, Object?>? ?? const {}),
-    );
-  }
-
-  Map<String, Object?> toJson() {
-    var allowedValues = this.allowedValues;
-    var autoCompleteUrl = this.autoCompleteUrl;
-    var configuration = this.configuration;
-    var defaultValue = this.defaultValue;
-    var hasDefaultValue = this.hasDefaultValue;
-    var key = this.key;
-    var name = this.name;
-    var operations = this.operations;
-    var required = this.required;
-    var schema = this.schema;
-
-    final json = <String, Object?>{};
-    json[r'allowedValues'] = allowedValues;
-    if (autoCompleteUrl != null) {
-      json[r'autoCompleteUrl'] = autoCompleteUrl;
-    }
-    if (configuration != null) {
-      json[r'configuration'] = configuration;
-    }
-    if (defaultValue != null) {
-      json[r'defaultValue'] = defaultValue;
-    }
-    json[r'hasDefaultValue'] = hasDefaultValue;
-    json[r'key'] = key;
-    json[r'name'] = name;
-    json[r'operations'] = operations;
-    json[r'required'] = required;
-    json[r'schema'] = schema.toJson();
-    return json;
-  }
-
-  FieldMetadata copyWith(
-      {List<dynamic>? allowedValues,
-      String? autoCompleteUrl,
-      Map<String, dynamic>? configuration,
-      dynamic defaultValue,
-      bool? hasDefaultValue,
-      String? key,
-      String? name,
-      List<String>? operations,
-      bool? required,
-      JsonTypeBean? schema}) {
-    return FieldMetadata(
-      allowedValues: allowedValues ?? this.allowedValues,
-      autoCompleteUrl: autoCompleteUrl ?? this.autoCompleteUrl,
-      configuration: configuration ?? this.configuration,
-      defaultValue: defaultValue ?? this.defaultValue,
-      hasDefaultValue: hasDefaultValue ?? this.hasDefaultValue,
-      key: key ?? this.key,
-      name: name ?? this.name,
-      operations: operations ?? this.operations,
-      required: required ?? this.required,
-      schema: schema ?? this.schema,
-    );
-  }
-}
-
 class Form {
   /// JSON mapping of form field answers containing form field IDs and
   /// corresponding values.
@@ -3851,7 +3641,7 @@ class Form {
 
 class FormAnswer {
   /// Answer in Atlassian Document Format (ADF)
-  final JsonNode? adf;
+  final ServiceManagementJsonNode? adf;
 
   /// IDs of selected choices
   final List<String> choices;
@@ -3881,7 +3671,8 @@ class FormAnswer {
   factory FormAnswer.fromJson(Map<String, Object?> json) {
     return FormAnswer(
       adf: json[r'adf'] != null
-          ? JsonNode.fromJson(json[r'adf']! as Map<String, Object?>)
+          ? ServiceManagementJsonNode.fromJson(
+              json[r'adf']! as Map<String, Object?>)
           : null,
       choices: (json[r'choices'] as List<Object?>?)
               ?.map((i) => i as String? ?? '')
@@ -3924,7 +3715,7 @@ class FormAnswer {
   }
 
   FormAnswer copyWith(
-      {JsonNode? adf,
+      {ServiceManagementJsonNode? adf,
       List<String>? choices,
       String? date,
       String? text,
@@ -3937,247 +3728,6 @@ class FormAnswer {
       text: text ?? this.text,
       time: time ?? this.time,
       users: users ?? this.users,
-    );
-  }
-}
-
-/// Details of issue history metadata.
-class HistoryMetadata {
-  /// The activity described in the history record.
-  final String? activityDescription;
-
-  /// The key of the activity described in the history record.
-  final String? activityDescriptionKey;
-
-  /// Details of the user whose action created the history record.
-  final HistoryMetadataParticipant? actor;
-
-  /// Details of the cause that triggered the creation the history record.
-  final HistoryMetadataParticipant? cause;
-
-  /// The description of the history record.
-  final String? description;
-
-  /// The description key of the history record.
-  final String? descriptionKey;
-
-  /// The description of the email address associated the history record.
-  final String? emailDescription;
-
-  /// The description key of the email address associated the history record.
-  final String? emailDescriptionKey;
-
-  /// Additional arbitrary information about the history record.
-  final Map<String, dynamic>? extraData;
-
-  /// Details of the system that generated the history record.
-  final HistoryMetadataParticipant? generator;
-
-  /// The type of the history record.
-  final String? type;
-
-  HistoryMetadata(
-      {this.activityDescription,
-      this.activityDescriptionKey,
-      this.actor,
-      this.cause,
-      this.description,
-      this.descriptionKey,
-      this.emailDescription,
-      this.emailDescriptionKey,
-      this.extraData,
-      this.generator,
-      this.type});
-
-  factory HistoryMetadata.fromJson(Map<String, Object?> json) {
-    return HistoryMetadata(
-      activityDescription: json[r'activityDescription'] as String?,
-      activityDescriptionKey: json[r'activityDescriptionKey'] as String?,
-      actor: json[r'actor'] != null
-          ? HistoryMetadataParticipant.fromJson(
-              json[r'actor']! as Map<String, Object?>)
-          : null,
-      cause: json[r'cause'] != null
-          ? HistoryMetadataParticipant.fromJson(
-              json[r'cause']! as Map<String, Object?>)
-          : null,
-      description: json[r'description'] as String?,
-      descriptionKey: json[r'descriptionKey'] as String?,
-      emailDescription: json[r'emailDescription'] as String?,
-      emailDescriptionKey: json[r'emailDescriptionKey'] as String?,
-      extraData: json[r'extraData'] as Map<String, Object?>?,
-      generator: json[r'generator'] != null
-          ? HistoryMetadataParticipant.fromJson(
-              json[r'generator']! as Map<String, Object?>)
-          : null,
-      type: json[r'type'] as String?,
-    );
-  }
-
-  Map<String, Object?> toJson() {
-    var activityDescription = this.activityDescription;
-    var activityDescriptionKey = this.activityDescriptionKey;
-    var actor = this.actor;
-    var cause = this.cause;
-    var description = this.description;
-    var descriptionKey = this.descriptionKey;
-    var emailDescription = this.emailDescription;
-    var emailDescriptionKey = this.emailDescriptionKey;
-    var extraData = this.extraData;
-    var generator = this.generator;
-    var type = this.type;
-
-    final json = <String, Object?>{};
-    if (activityDescription != null) {
-      json[r'activityDescription'] = activityDescription;
-    }
-    if (activityDescriptionKey != null) {
-      json[r'activityDescriptionKey'] = activityDescriptionKey;
-    }
-    if (actor != null) {
-      json[r'actor'] = actor.toJson();
-    }
-    if (cause != null) {
-      json[r'cause'] = cause.toJson();
-    }
-    if (description != null) {
-      json[r'description'] = description;
-    }
-    if (descriptionKey != null) {
-      json[r'descriptionKey'] = descriptionKey;
-    }
-    if (emailDescription != null) {
-      json[r'emailDescription'] = emailDescription;
-    }
-    if (emailDescriptionKey != null) {
-      json[r'emailDescriptionKey'] = emailDescriptionKey;
-    }
-    if (extraData != null) {
-      json[r'extraData'] = extraData;
-    }
-    if (generator != null) {
-      json[r'generator'] = generator.toJson();
-    }
-    if (type != null) {
-      json[r'type'] = type;
-    }
-    return json;
-  }
-
-  HistoryMetadata copyWith(
-      {String? activityDescription,
-      String? activityDescriptionKey,
-      HistoryMetadataParticipant? actor,
-      HistoryMetadataParticipant? cause,
-      String? description,
-      String? descriptionKey,
-      String? emailDescription,
-      String? emailDescriptionKey,
-      Map<String, dynamic>? extraData,
-      HistoryMetadataParticipant? generator,
-      String? type}) {
-    return HistoryMetadata(
-      activityDescription: activityDescription ?? this.activityDescription,
-      activityDescriptionKey:
-          activityDescriptionKey ?? this.activityDescriptionKey,
-      actor: actor ?? this.actor,
-      cause: cause ?? this.cause,
-      description: description ?? this.description,
-      descriptionKey: descriptionKey ?? this.descriptionKey,
-      emailDescription: emailDescription ?? this.emailDescription,
-      emailDescriptionKey: emailDescriptionKey ?? this.emailDescriptionKey,
-      extraData: extraData ?? this.extraData,
-      generator: generator ?? this.generator,
-      type: type ?? this.type,
-    );
-  }
-}
-
-/// Details of user or system associated with a issue history metadata item.
-class HistoryMetadataParticipant {
-  /// The URL to an avatar for the user or system associated with a history
-  /// record.
-  final String? avatarUrl;
-
-  /// The display name of the user or system associated with a history record.
-  final String? displayName;
-
-  /// The key of the display name of the user or system associated with a
-  /// history record.
-  final String? displayNameKey;
-
-  /// The ID of the user or system associated with a history record.
-  final String? id;
-
-  /// The type of the user or system associated with a history record.
-  final String? type;
-
-  /// The URL of the user or system associated with a history record.
-  final String? url;
-
-  HistoryMetadataParticipant(
-      {this.avatarUrl,
-      this.displayName,
-      this.displayNameKey,
-      this.id,
-      this.type,
-      this.url});
-
-  factory HistoryMetadataParticipant.fromJson(Map<String, Object?> json) {
-    return HistoryMetadataParticipant(
-      avatarUrl: json[r'avatarUrl'] as String?,
-      displayName: json[r'displayName'] as String?,
-      displayNameKey: json[r'displayNameKey'] as String?,
-      id: json[r'id'] as String?,
-      type: json[r'type'] as String?,
-      url: json[r'url'] as String?,
-    );
-  }
-
-  Map<String, Object?> toJson() {
-    var avatarUrl = this.avatarUrl;
-    var displayName = this.displayName;
-    var displayNameKey = this.displayNameKey;
-    var id = this.id;
-    var type = this.type;
-    var url = this.url;
-
-    final json = <String, Object?>{};
-    if (avatarUrl != null) {
-      json[r'avatarUrl'] = avatarUrl;
-    }
-    if (displayName != null) {
-      json[r'displayName'] = displayName;
-    }
-    if (displayNameKey != null) {
-      json[r'displayNameKey'] = displayNameKey;
-    }
-    if (id != null) {
-      json[r'id'] = id;
-    }
-    if (type != null) {
-      json[r'type'] = type;
-    }
-    if (url != null) {
-      json[r'url'] = url;
-    }
-    return json;
-  }
-
-  HistoryMetadataParticipant copyWith(
-      {String? avatarUrl,
-      String? displayName,
-      String? displayNameKey,
-      String? id,
-      String? type,
-      String? url}) {
-    return HistoryMetadataParticipant(
-      avatarUrl: avatarUrl ?? this.avatarUrl,
-      displayName: displayName ?? this.displayName,
-      displayNameKey: displayNameKey ?? this.displayNameKey,
-      id: id ?? this.id,
-      type: type ?? this.type,
-      url: url ?? this.url,
     );
   }
 }
@@ -4219,60 +3769,6 @@ class I18nErrorMessage {
   }
 }
 
-class IncludedFields {
-  final List<String> actuallyIncluded;
-  final List<String> excluded;
-  final List<String> included;
-
-  IncludedFields(
-      {List<String>? actuallyIncluded,
-      List<String>? excluded,
-      List<String>? included})
-      : actuallyIncluded = actuallyIncluded ?? [],
-        excluded = excluded ?? [],
-        included = included ?? [];
-
-  factory IncludedFields.fromJson(Map<String, Object?> json) {
-    return IncludedFields(
-      actuallyIncluded: (json[r'actuallyIncluded'] as List<Object?>?)
-              ?.map((i) => i as String? ?? '')
-              .toList() ??
-          [],
-      excluded: (json[r'excluded'] as List<Object?>?)
-              ?.map((i) => i as String? ?? '')
-              .toList() ??
-          [],
-      included: (json[r'included'] as List<Object?>?)
-              ?.map((i) => i as String? ?? '')
-              .toList() ??
-          [],
-    );
-  }
-
-  Map<String, Object?> toJson() {
-    var actuallyIncluded = this.actuallyIncluded;
-    var excluded = this.excluded;
-    var included = this.included;
-
-    final json = <String, Object?>{};
-    json[r'actuallyIncluded'] = actuallyIncluded;
-    json[r'excluded'] = excluded;
-    json[r'included'] = included;
-    return json;
-  }
-
-  IncludedFields copyWith(
-      {List<String>? actuallyIncluded,
-      List<String>? excluded,
-      List<String>? included}) {
-    return IncludedFields(
-      actuallyIncluded: actuallyIncluded ?? this.actuallyIncluded,
-      excluded: excluded ?? this.excluded,
-      included: included ?? this.included,
-    );
-  }
-}
-
 /// Details of an insight workspace ID.
 class InsightWorkspaceDTO {
   /// The workspace ID used as the identifier to access the Insight REST API.
@@ -4303,826 +3799,12 @@ class InsightWorkspaceDTO {
   }
 }
 
-/// Details about an issue.
-class IssueBean {
-  /// Details of changelogs associated with the issue.
-  final PageOfChangelogs? changelog;
-
-  /// The metadata for the fields on the issue that can be amended.
-  final IssueUpdateMetadata? editmeta;
-
-  /// Expand options that include additional issue details in the response.
-  final String? expand;
-  final Map<String, dynamic>? fields;
-  final IncludedFields? fieldsToInclude;
-
-  /// The ID of the issue.
-  final String? id;
-
-  /// The key of the issue.
-  final String? key;
-
-  /// The ID and name of each field present on the issue.
-  final Map<String, dynamic>? names;
-
-  /// The operations that can be performed on the issue.
-  final Operations? operations;
-
-  /// Details of the issue properties identified in the request.
-  final Map<String, dynamic>? properties;
-
-  /// The rendered value of each field present on the issue.
-  final Map<String, dynamic>? renderedFields;
-
-  /// The schema describing each field present on the issue.
-  final Map<String, dynamic>? schema;
-
-  /// The URL of the issue details.
-  final String? self;
-
-  /// The transitions that can be performed on the issue.
-  final List<IssueTransition> transitions;
-
-  /// The versions of each field on the issue.
-  final Map<String, dynamic>? versionedRepresentations;
-
-  IssueBean(
-      {this.changelog,
-      this.editmeta,
-      this.expand,
-      this.fields,
-      this.fieldsToInclude,
-      this.id,
-      this.key,
-      this.names,
-      this.operations,
-      this.properties,
-      this.renderedFields,
-      this.schema,
-      this.self,
-      List<IssueTransition>? transitions,
-      this.versionedRepresentations})
-      : transitions = transitions ?? [];
-
-  factory IssueBean.fromJson(Map<String, Object?> json) {
-    return IssueBean(
-      changelog: json[r'changelog'] != null
-          ? PageOfChangelogs.fromJson(
-              json[r'changelog']! as Map<String, Object?>)
-          : null,
-      editmeta: json[r'editmeta'] != null
-          ? IssueUpdateMetadata.fromJson(
-              json[r'editmeta']! as Map<String, Object?>)
-          : null,
-      expand: json[r'expand'] as String?,
-      fields: json[r'fields'] as Map<String, Object?>?,
-      fieldsToInclude: json[r'fieldsToInclude'] != null
-          ? IncludedFields.fromJson(
-              json[r'fieldsToInclude']! as Map<String, Object?>)
-          : null,
-      id: json[r'id'] as String?,
-      key: json[r'key'] as String?,
-      names: json[r'names'] as Map<String, Object?>?,
-      operations: json[r'operations'] != null
-          ? Operations.fromJson(json[r'operations']! as Map<String, Object?>)
-          : null,
-      properties: json[r'properties'] as Map<String, Object?>?,
-      renderedFields: json[r'renderedFields'] as Map<String, Object?>?,
-      schema: json[r'schema'] as Map<String, Object?>?,
-      self: json[r'self'] as String?,
-      transitions: (json[r'transitions'] as List<Object?>?)
-              ?.map((i) => IssueTransition.fromJson(
-                  i as Map<String, Object?>? ?? const {}))
-              .toList() ??
-          [],
-      versionedRepresentations:
-          json[r'versionedRepresentations'] as Map<String, Object?>?,
-    );
-  }
-
-  Map<String, Object?> toJson() {
-    var changelog = this.changelog;
-    var editmeta = this.editmeta;
-    var expand = this.expand;
-    var fields = this.fields;
-    var fieldsToInclude = this.fieldsToInclude;
-    var id = this.id;
-    var key = this.key;
-    var names = this.names;
-    var operations = this.operations;
-    var properties = this.properties;
-    var renderedFields = this.renderedFields;
-    var schema = this.schema;
-    var self = this.self;
-    var transitions = this.transitions;
-    var versionedRepresentations = this.versionedRepresentations;
-
-    final json = <String, Object?>{};
-    if (changelog != null) {
-      json[r'changelog'] = changelog.toJson();
-    }
-    if (editmeta != null) {
-      json[r'editmeta'] = editmeta.toJson();
-    }
-    if (expand != null) {
-      json[r'expand'] = expand;
-    }
-    if (fields != null) {
-      json[r'fields'] = fields;
-    }
-    if (fieldsToInclude != null) {
-      json[r'fieldsToInclude'] = fieldsToInclude.toJson();
-    }
-    if (id != null) {
-      json[r'id'] = id;
-    }
-    if (key != null) {
-      json[r'key'] = key;
-    }
-    if (names != null) {
-      json[r'names'] = names;
-    }
-    if (operations != null) {
-      json[r'operations'] = operations.toJson();
-    }
-    if (properties != null) {
-      json[r'properties'] = properties;
-    }
-    if (renderedFields != null) {
-      json[r'renderedFields'] = renderedFields;
-    }
-    if (schema != null) {
-      json[r'schema'] = schema;
-    }
-    if (self != null) {
-      json[r'self'] = self;
-    }
-    json[r'transitions'] = transitions.map((i) => i.toJson()).toList();
-    if (versionedRepresentations != null) {
-      json[r'versionedRepresentations'] = versionedRepresentations;
-    }
-    return json;
-  }
-
-  IssueBean copyWith(
-      {PageOfChangelogs? changelog,
-      IssueUpdateMetadata? editmeta,
-      String? expand,
-      Map<String, dynamic>? fields,
-      IncludedFields? fieldsToInclude,
-      String? id,
-      String? key,
-      Map<String, dynamic>? names,
-      Operations? operations,
-      Map<String, dynamic>? properties,
-      Map<String, dynamic>? renderedFields,
-      Map<String, dynamic>? schema,
-      String? self,
-      List<IssueTransition>? transitions,
-      Map<String, dynamic>? versionedRepresentations}) {
-    return IssueBean(
-      changelog: changelog ?? this.changelog,
-      editmeta: editmeta ?? this.editmeta,
-      expand: expand ?? this.expand,
-      fields: fields ?? this.fields,
-      fieldsToInclude: fieldsToInclude ?? this.fieldsToInclude,
-      id: id ?? this.id,
-      key: key ?? this.key,
-      names: names ?? this.names,
-      operations: operations ?? this.operations,
-      properties: properties ?? this.properties,
-      renderedFields: renderedFields ?? this.renderedFields,
-      schema: schema ?? this.schema,
-      self: self ?? this.self,
-      transitions: transitions ?? this.transitions,
-      versionedRepresentations:
-          versionedRepresentations ?? this.versionedRepresentations,
-    );
-  }
-}
-
-/// Details of an issue transition.
-class IssueTransition {
-  /// Expand options that include additional transition details in the response.
-  final String? expand;
-
-  /// Details of the fields associated with the issue transition screen. Use
-  /// this information to populate `fields` and `update` in a transition
-  /// request.
-  final Map<String, dynamic>? fields;
-
-  /// Whether there is a screen associated with the issue transition.
-  final bool hasScreen;
-
-  /// The ID of the issue transition. Required when specifying a transition to
-  /// undertake.
-  final String? id;
-
-  /// Whether the transition is available to be performed.
-  final bool isAvailable;
-
-  /// Whether the issue has to meet criteria before the issue transition is
-  /// applied.
-  final bool isConditional;
-
-  /// Whether the issue transition is global, that is, the transition is applied
-  /// to issues regardless of their status.
-  final bool isGlobal;
-
-  /// Whether this is the initial issue transition for the workflow.
-  final bool isInitial;
-  final bool looped;
-
-  /// The name of the issue transition.
-  final String? name;
-
-  /// Details of the issue status after the transition.
-  final StatusDetails? to;
-
-  IssueTransition(
-      {this.expand,
-      this.fields,
-      bool? hasScreen,
-      this.id,
-      bool? isAvailable,
-      bool? isConditional,
-      bool? isGlobal,
-      bool? isInitial,
-      bool? looped,
-      this.name,
-      this.to})
-      : hasScreen = hasScreen ?? false,
-        isAvailable = isAvailable ?? false,
-        isConditional = isConditional ?? false,
-        isGlobal = isGlobal ?? false,
-        isInitial = isInitial ?? false,
-        looped = looped ?? false;
-
-  factory IssueTransition.fromJson(Map<String, Object?> json) {
-    return IssueTransition(
-      expand: json[r'expand'] as String?,
-      fields: json[r'fields'] as Map<String, Object?>?,
-      hasScreen: json[r'hasScreen'] as bool? ?? false,
-      id: json[r'id'] as String?,
-      isAvailable: json[r'isAvailable'] as bool? ?? false,
-      isConditional: json[r'isConditional'] as bool? ?? false,
-      isGlobal: json[r'isGlobal'] as bool? ?? false,
-      isInitial: json[r'isInitial'] as bool? ?? false,
-      looped: json[r'looped'] as bool? ?? false,
-      name: json[r'name'] as String?,
-      to: json[r'to'] != null
-          ? StatusDetails.fromJson(json[r'to']! as Map<String, Object?>)
-          : null,
-    );
-  }
-
-  Map<String, Object?> toJson() {
-    var expand = this.expand;
-    var fields = this.fields;
-    var hasScreen = this.hasScreen;
-    var id = this.id;
-    var isAvailable = this.isAvailable;
-    var isConditional = this.isConditional;
-    var isGlobal = this.isGlobal;
-    var isInitial = this.isInitial;
-    var looped = this.looped;
-    var name = this.name;
-    var to = this.to;
-
-    final json = <String, Object?>{};
-    if (expand != null) {
-      json[r'expand'] = expand;
-    }
-    if (fields != null) {
-      json[r'fields'] = fields;
-    }
-    json[r'hasScreen'] = hasScreen;
-    if (id != null) {
-      json[r'id'] = id;
-    }
-    json[r'isAvailable'] = isAvailable;
-    json[r'isConditional'] = isConditional;
-    json[r'isGlobal'] = isGlobal;
-    json[r'isInitial'] = isInitial;
-    json[r'looped'] = looped;
-    if (name != null) {
-      json[r'name'] = name;
-    }
-    if (to != null) {
-      json[r'to'] = to.toJson();
-    }
-    return json;
-  }
-
-  IssueTransition copyWith(
-      {String? expand,
-      Map<String, dynamic>? fields,
-      bool? hasScreen,
-      String? id,
-      bool? isAvailable,
-      bool? isConditional,
-      bool? isGlobal,
-      bool? isInitial,
-      bool? looped,
-      String? name,
-      StatusDetails? to}) {
-    return IssueTransition(
-      expand: expand ?? this.expand,
-      fields: fields ?? this.fields,
-      hasScreen: hasScreen ?? this.hasScreen,
-      id: id ?? this.id,
-      isAvailable: isAvailable ?? this.isAvailable,
-      isConditional: isConditional ?? this.isConditional,
-      isGlobal: isGlobal ?? this.isGlobal,
-      isInitial: isInitial ?? this.isInitial,
-      looped: looped ?? this.looped,
-      name: name ?? this.name,
-      to: to ?? this.to,
-    );
-  }
-}
-
-/// A list of editable field details.
-class IssueUpdateMetadata {
-  final Map<String, dynamic>? fields;
-
-  IssueUpdateMetadata({this.fields});
-
-  factory IssueUpdateMetadata.fromJson(Map<String, Object?> json) {
-    return IssueUpdateMetadata(
-      fields: json[r'fields'] as Map<String, Object?>?,
-    );
-  }
-
-  Map<String, Object?> toJson() {
-    var fields = this.fields;
-
-    final json = <String, Object?>{};
-    if (fields != null) {
-      json[r'fields'] = fields;
-    }
-    return json;
-  }
-
-  IssueUpdateMetadata copyWith({Map<String, dynamic>? fields}) {
-    return IssueUpdateMetadata(
-      fields: fields ?? this.fields,
-    );
-  }
-}
-
-class JsonNode {
-  final bool array;
-  final bool bigDecimal;
-  final bool bigInteger;
-  final int? bigIntegerValue;
-  final bool binary;
-  final List<String> binaryValue;
-  final bool boolean;
-  final bool booleanValue;
-  final bool containerNode;
-  final num? decimalValue;
-  final bool double$;
-  final num? doubleValue;
-  final Map<String, dynamic>? elements;
-  final Map<String, dynamic>? fieldNames;
-  final Map<String, dynamic>? fields;
-  final bool floatingPointNumber;
-  final bool int$;
-  final int? intValue;
-  final bool integralNumber;
-  final bool long;
-  final int? longValue;
-  final bool missingNode;
-  final bool null$;
-  final bool number;
-  final JsonNodeNumberType? numberType;
-  final num? numberValue;
-  final bool object;
-  final bool pojo;
-  final String? textValue;
-  final bool textual;
-  final bool valueAsBoolean;
-  final num? valueAsDouble;
-  final int? valueAsInt;
-  final int? valueAsLong;
-  final String? valueAsText;
-  final bool valueNode;
-
-  JsonNode(
-      {bool? array,
-      bool? bigDecimal,
-      bool? bigInteger,
-      this.bigIntegerValue,
-      bool? binary,
-      List<String>? binaryValue,
-      bool? boolean,
-      bool? booleanValue,
-      bool? containerNode,
-      this.decimalValue,
-      bool? double$,
-      this.doubleValue,
-      this.elements,
-      this.fieldNames,
-      this.fields,
-      bool? floatingPointNumber,
-      bool? int$,
-      this.intValue,
-      bool? integralNumber,
-      bool? long,
-      this.longValue,
-      bool? missingNode,
-      bool? null$,
-      bool? number,
-      this.numberType,
-      this.numberValue,
-      bool? object,
-      bool? pojo,
-      this.textValue,
-      bool? textual,
-      bool? valueAsBoolean,
-      this.valueAsDouble,
-      this.valueAsInt,
-      this.valueAsLong,
-      this.valueAsText,
-      bool? valueNode})
-      : array = array ?? false,
-        bigDecimal = bigDecimal ?? false,
-        bigInteger = bigInteger ?? false,
-        binary = binary ?? false,
-        binaryValue = binaryValue ?? [],
-        boolean = boolean ?? false,
-        booleanValue = booleanValue ?? false,
-        containerNode = containerNode ?? false,
-        double$ = double$ ?? false,
-        floatingPointNumber = floatingPointNumber ?? false,
-        int$ = int$ ?? false,
-        integralNumber = integralNumber ?? false,
-        long = long ?? false,
-        missingNode = missingNode ?? false,
-        null$ = null$ ?? false,
-        number = number ?? false,
-        object = object ?? false,
-        pojo = pojo ?? false,
-        textual = textual ?? false,
-        valueAsBoolean = valueAsBoolean ?? false,
-        valueNode = valueNode ?? false;
-
-  factory JsonNode.fromJson(Map<String, Object?> json) {
-    return JsonNode(
-      array: json[r'array'] as bool? ?? false,
-      bigDecimal: json[r'bigDecimal'] as bool? ?? false,
-      bigInteger: json[r'bigInteger'] as bool? ?? false,
-      bigIntegerValue: (json[r'bigIntegerValue'] as num?)?.toInt(),
-      binary: json[r'binary'] as bool? ?? false,
-      binaryValue: (json[r'binaryValue'] as List<Object?>?)
-              ?.map((i) => i as String? ?? '')
-              .toList() ??
-          [],
-      boolean: json[r'boolean'] as bool? ?? false,
-      booleanValue: json[r'booleanValue'] as bool? ?? false,
-      containerNode: json[r'containerNode'] as bool? ?? false,
-      decimalValue: json[r'decimalValue'] as num?,
-      double$: json[r'double'] as bool? ?? false,
-      doubleValue: json[r'doubleValue'] as num?,
-      elements: json[r'elements'] as Map<String, Object?>?,
-      fieldNames: json[r'fieldNames'] as Map<String, Object?>?,
-      fields: json[r'fields'] as Map<String, Object?>?,
-      floatingPointNumber: json[r'floatingPointNumber'] as bool? ?? false,
-      int$: json[r'int'] as bool? ?? false,
-      intValue: (json[r'intValue'] as num?)?.toInt(),
-      integralNumber: json[r'integralNumber'] as bool? ?? false,
-      long: json[r'long'] as bool? ?? false,
-      longValue: (json[r'longValue'] as num?)?.toInt(),
-      missingNode: json[r'missingNode'] as bool? ?? false,
-      null$: json[r'null'] as bool? ?? false,
-      number: json[r'number'] as bool? ?? false,
-      numberType: json[r'numberType'] != null
-          ? JsonNodeNumberType.fromValue(json[r'numberType']! as String)
-          : null,
-      numberValue: json[r'numberValue'] as num?,
-      object: json[r'object'] as bool? ?? false,
-      pojo: json[r'pojo'] as bool? ?? false,
-      textValue: json[r'textValue'] as String?,
-      textual: json[r'textual'] as bool? ?? false,
-      valueAsBoolean: json[r'valueAsBoolean'] as bool? ?? false,
-      valueAsDouble: json[r'valueAsDouble'] as num?,
-      valueAsInt: (json[r'valueAsInt'] as num?)?.toInt(),
-      valueAsLong: (json[r'valueAsLong'] as num?)?.toInt(),
-      valueAsText: json[r'valueAsText'] as String?,
-      valueNode: json[r'valueNode'] as bool? ?? false,
-    );
-  }
-
-  Map<String, Object?> toJson() {
-    var array = this.array;
-    var bigDecimal = this.bigDecimal;
-    var bigInteger = this.bigInteger;
-    var bigIntegerValue = this.bigIntegerValue;
-    var binary = this.binary;
-    var binaryValue = this.binaryValue;
-    var boolean = this.boolean;
-    var booleanValue = this.booleanValue;
-    var containerNode = this.containerNode;
-    var decimalValue = this.decimalValue;
-    var double$ = this.double$;
-    var doubleValue = this.doubleValue;
-    var elements = this.elements;
-    var fieldNames = this.fieldNames;
-    var fields = this.fields;
-    var floatingPointNumber = this.floatingPointNumber;
-    var int$ = this.int$;
-    var intValue = this.intValue;
-    var integralNumber = this.integralNumber;
-    var long = this.long;
-    var longValue = this.longValue;
-    var missingNode = this.missingNode;
-    var null$ = this.null$;
-    var number = this.number;
-    var numberType = this.numberType;
-    var numberValue = this.numberValue;
-    var object = this.object;
-    var pojo = this.pojo;
-    var textValue = this.textValue;
-    var textual = this.textual;
-    var valueAsBoolean = this.valueAsBoolean;
-    var valueAsDouble = this.valueAsDouble;
-    var valueAsInt = this.valueAsInt;
-    var valueAsLong = this.valueAsLong;
-    var valueAsText = this.valueAsText;
-    var valueNode = this.valueNode;
-
-    final json = <String, Object?>{};
-    json[r'array'] = array;
-    json[r'bigDecimal'] = bigDecimal;
-    json[r'bigInteger'] = bigInteger;
-    if (bigIntegerValue != null) {
-      json[r'bigIntegerValue'] = bigIntegerValue;
-    }
-    json[r'binary'] = binary;
-    json[r'binaryValue'] = binaryValue;
-    json[r'boolean'] = boolean;
-    json[r'booleanValue'] = booleanValue;
-    json[r'containerNode'] = containerNode;
-    if (decimalValue != null) {
-      json[r'decimalValue'] = decimalValue;
-    }
-    json[r'double'] = double$;
-    if (doubleValue != null) {
-      json[r'doubleValue'] = doubleValue;
-    }
-    if (elements != null) {
-      json[r'elements'] = elements;
-    }
-    if (fieldNames != null) {
-      json[r'fieldNames'] = fieldNames;
-    }
-    if (fields != null) {
-      json[r'fields'] = fields;
-    }
-    json[r'floatingPointNumber'] = floatingPointNumber;
-    json[r'int'] = int$;
-    if (intValue != null) {
-      json[r'intValue'] = intValue;
-    }
-    json[r'integralNumber'] = integralNumber;
-    json[r'long'] = long;
-    if (longValue != null) {
-      json[r'longValue'] = longValue;
-    }
-    json[r'missingNode'] = missingNode;
-    json[r'null'] = null$;
-    json[r'number'] = number;
-    if (numberType != null) {
-      json[r'numberType'] = numberType.value;
-    }
-    if (numberValue != null) {
-      json[r'numberValue'] = numberValue;
-    }
-    json[r'object'] = object;
-    json[r'pojo'] = pojo;
-    if (textValue != null) {
-      json[r'textValue'] = textValue;
-    }
-    json[r'textual'] = textual;
-    json[r'valueAsBoolean'] = valueAsBoolean;
-    if (valueAsDouble != null) {
-      json[r'valueAsDouble'] = valueAsDouble;
-    }
-    if (valueAsInt != null) {
-      json[r'valueAsInt'] = valueAsInt;
-    }
-    if (valueAsLong != null) {
-      json[r'valueAsLong'] = valueAsLong;
-    }
-    if (valueAsText != null) {
-      json[r'valueAsText'] = valueAsText;
-    }
-    json[r'valueNode'] = valueNode;
-    return json;
-  }
-
-  JsonNode copyWith(
-      {bool? array,
-      bool? bigDecimal,
-      bool? bigInteger,
-      int? bigIntegerValue,
-      bool? binary,
-      List<String>? binaryValue,
-      bool? boolean,
-      bool? booleanValue,
-      bool? containerNode,
-      num? decimalValue,
-      bool? double$,
-      num? doubleValue,
-      Map<String, dynamic>? elements,
-      Map<String, dynamic>? fieldNames,
-      Map<String, dynamic>? fields,
-      bool? floatingPointNumber,
-      bool? int$,
-      int? intValue,
-      bool? integralNumber,
-      bool? long,
-      int? longValue,
-      bool? missingNode,
-      bool? null$,
-      bool? number,
-      JsonNodeNumberType? numberType,
-      num? numberValue,
-      bool? object,
-      bool? pojo,
-      String? textValue,
-      bool? textual,
-      bool? valueAsBoolean,
-      num? valueAsDouble,
-      int? valueAsInt,
-      int? valueAsLong,
-      String? valueAsText,
-      bool? valueNode}) {
-    return JsonNode(
-      array: array ?? this.array,
-      bigDecimal: bigDecimal ?? this.bigDecimal,
-      bigInteger: bigInteger ?? this.bigInteger,
-      bigIntegerValue: bigIntegerValue ?? this.bigIntegerValue,
-      binary: binary ?? this.binary,
-      binaryValue: binaryValue ?? this.binaryValue,
-      boolean: boolean ?? this.boolean,
-      booleanValue: booleanValue ?? this.booleanValue,
-      containerNode: containerNode ?? this.containerNode,
-      decimalValue: decimalValue ?? this.decimalValue,
-      double$: double$ ?? this.double$,
-      doubleValue: doubleValue ?? this.doubleValue,
-      elements: elements ?? this.elements,
-      fieldNames: fieldNames ?? this.fieldNames,
-      fields: fields ?? this.fields,
-      floatingPointNumber: floatingPointNumber ?? this.floatingPointNumber,
-      int$: int$ ?? this.int$,
-      intValue: intValue ?? this.intValue,
-      integralNumber: integralNumber ?? this.integralNumber,
-      long: long ?? this.long,
-      longValue: longValue ?? this.longValue,
-      missingNode: missingNode ?? this.missingNode,
-      null$: null$ ?? this.null$,
-      number: number ?? this.number,
-      numberType: numberType ?? this.numberType,
-      numberValue: numberValue ?? this.numberValue,
-      object: object ?? this.object,
-      pojo: pojo ?? this.pojo,
-      textValue: textValue ?? this.textValue,
-      textual: textual ?? this.textual,
-      valueAsBoolean: valueAsBoolean ?? this.valueAsBoolean,
-      valueAsDouble: valueAsDouble ?? this.valueAsDouble,
-      valueAsInt: valueAsInt ?? this.valueAsInt,
-      valueAsLong: valueAsLong ?? this.valueAsLong,
-      valueAsText: valueAsText ?? this.valueAsText,
-      valueNode: valueNode ?? this.valueNode,
-    );
-  }
-}
-
-class JsonNodeNumberType {
-  static const int$ = JsonNodeNumberType._('INT');
-  static const long = JsonNodeNumberType._('LONG');
-  static const bigInteger = JsonNodeNumberType._('BIG_INTEGER');
-  static const float = JsonNodeNumberType._('FLOAT');
-  static const double$ = JsonNodeNumberType._('DOUBLE');
-  static const bigDecimal = JsonNodeNumberType._('BIG_DECIMAL');
-
-  static const values = [
-    int$,
-    long,
-    bigInteger,
-    float,
-    double$,
-    bigDecimal,
-  ];
-  final String value;
-
-  const JsonNodeNumberType._(this.value);
-
-  static JsonNodeNumberType fromValue(String value) =>
-      values.firstWhere((e) => e.value == value,
-          orElse: () => JsonNodeNumberType._(value));
-
-  /// An enum received from the server but this version of the client doesn't recognize it.
-  bool get isUnknown => values.every((v) => v.value != value);
-
-  @override
-  String toString() => value;
-}
-
-/// The schema of a field.
-class JsonTypeBean {
-  /// If the field is a custom field, the configuration of the field.
-  final Map<String, dynamic>? configuration;
-
-  /// If the field is a custom field, the URI of the field.
-  final String? custom;
-
-  /// If the field is a custom field, the custom ID of the field.
-  final int? customId;
-
-  /// When the data type is an array, the name of the field items within the
-  /// array.
-  final String? items;
-
-  /// If the field is a system field, the name of the field.
-  final String? system;
-
-  /// The data type of the field.
-  final String type;
-
-  JsonTypeBean(
-      {this.configuration,
-      this.custom,
-      this.customId,
-      this.items,
-      this.system,
-      required this.type});
-
-  factory JsonTypeBean.fromJson(Map<String, Object?> json) {
-    return JsonTypeBean(
-      configuration: json[r'configuration'] as Map<String, Object?>?,
-      custom: json[r'custom'] as String?,
-      customId: (json[r'customId'] as num?)?.toInt(),
-      items: json[r'items'] as String?,
-      system: json[r'system'] as String?,
-      type: json[r'type'] as String? ?? '',
-    );
-  }
-
-  Map<String, Object?> toJson() {
-    var configuration = this.configuration;
-    var custom = this.custom;
-    var customId = this.customId;
-    var items = this.items;
-    var system = this.system;
-    var type = this.type;
-
-    final json = <String, Object?>{};
-    if (configuration != null) {
-      json[r'configuration'] = configuration;
-    }
-    if (custom != null) {
-      json[r'custom'] = custom;
-    }
-    if (customId != null) {
-      json[r'customId'] = customId;
-    }
-    if (items != null) {
-      json[r'items'] = items;
-    }
-    if (system != null) {
-      json[r'system'] = system;
-    }
-    json[r'type'] = type;
-    return json;
-  }
-
-  JsonTypeBean copyWith(
-      {Map<String, dynamic>? configuration,
-      String? custom,
-      int? customId,
-      String? items,
-      String? system,
-      String? type}) {
-    return JsonTypeBean(
-      configuration: configuration ?? this.configuration,
-      custom: custom ?? this.custom,
-      customId: customId ?? this.customId,
-      items: items ?? this.items,
-      system: system ?? this.system,
-      type: type ?? this.type,
-    );
-  }
-}
-
 /// Details a link group, which defines issue operations.
 class LinkGroup {
   final List<LinkGroup> groups;
-  final SimpleLink? header;
+  final ServiceManagementSimpleLink? header;
   final String? id;
-  final List<SimpleLink> links;
+  final List<ServiceManagementSimpleLink> links;
   final String? styleClass;
   final int? weight;
 
@@ -5130,7 +3812,7 @@ class LinkGroup {
       {List<LinkGroup>? groups,
       this.header,
       this.id,
-      List<SimpleLink>? links,
+      List<ServiceManagementSimpleLink>? links,
       this.styleClass,
       this.weight})
       : groups = groups ?? [],
@@ -5144,12 +3826,13 @@ class LinkGroup {
               .toList() ??
           [],
       header: json[r'header'] != null
-          ? SimpleLink.fromJson(json[r'header']! as Map<String, Object?>)
+          ? ServiceManagementSimpleLink.fromJson(
+              json[r'header']! as Map<String, Object?>)
           : null,
       id: json[r'id'] as String?,
       links: (json[r'links'] as List<Object?>?)
-              ?.map((i) =>
-                  SimpleLink.fromJson(i as Map<String, Object?>? ?? const {}))
+              ?.map((i) => ServiceManagementSimpleLink.fromJson(
+                  i as Map<String, Object?>? ?? const {}))
               .toList() ??
           [],
       styleClass: json[r'styleClass'] as String?,
@@ -5185,9 +3868,9 @@ class LinkGroup {
 
   LinkGroup copyWith(
       {List<LinkGroup>? groups,
-      SimpleLink? header,
+      ServiceManagementSimpleLink? header,
       String? id,
-      List<SimpleLink>? links,
+      List<ServiceManagementSimpleLink>? links,
       String? styleClass,
       int? weight}) {
     return LinkGroup(
@@ -5322,38 +4005,6 @@ class LinkableUserLinkDTO {
   }
 }
 
-/// Details of the operations that can be performed on the issue.
-class Operations {
-  /// Details of the link groups defining issue operations.
-  final List<LinkGroup> linkGroups;
-
-  Operations({List<LinkGroup>? linkGroups}) : linkGroups = linkGroups ?? [];
-
-  factory Operations.fromJson(Map<String, Object?> json) {
-    return Operations(
-      linkGroups: (json[r'linkGroups'] as List<Object?>?)
-              ?.map((i) =>
-                  LinkGroup.fromJson(i as Map<String, Object?>? ?? const {}))
-              .toList() ??
-          [],
-    );
-  }
-
-  Map<String, Object?> toJson() {
-    var linkGroups = this.linkGroups;
-
-    final json = <String, Object?>{};
-    json[r'linkGroups'] = linkGroups.map((i) => i.toJson()).toList();
-    return json;
-  }
-
-  Operations copyWith({List<LinkGroup>? linkGroups}) {
-    return Operations(
-      linkGroups: linkGroups ?? this.linkGroups,
-    );
-  }
-}
-
 class OrganizationCreateDTO {
   /// Name of the organization. Must contain 1-200 characters.
   final String name;
@@ -5474,7 +4125,7 @@ class OrganizationServiceDeskUpdateDTO {
 /// A page of changelogs.
 class PageOfChangelogs {
   /// The list of changelogs.
-  final List<Changelog> histories;
+  final List<ServiceManagementChangelog> histories;
 
   /// The maximum number of results that could be on the page.
   final int? maxResults;
@@ -5486,14 +4137,17 @@ class PageOfChangelogs {
   final int? total;
 
   PageOfChangelogs(
-      {List<Changelog>? histories, this.maxResults, this.startAt, this.total})
+      {List<ServiceManagementChangelog>? histories,
+      this.maxResults,
+      this.startAt,
+      this.total})
       : histories = histories ?? [];
 
   factory PageOfChangelogs.fromJson(Map<String, Object?> json) {
     return PageOfChangelogs(
       histories: (json[r'histories'] as List<Object?>?)
-              ?.map((i) =>
-                  Changelog.fromJson(i as Map<String, Object?>? ?? const {}))
+              ?.map((i) => ServiceManagementChangelog.fromJson(
+                  i as Map<String, Object?>? ?? const {}))
               .toList() ??
           [],
       maxResults: (json[r'maxResults'] as num?)?.toInt(),
@@ -5523,7 +4177,10 @@ class PageOfChangelogs {
   }
 
   PageOfChangelogs copyWith(
-      {List<Changelog>? histories, int? maxResults, int? startAt, int? total}) {
+      {List<ServiceManagementChangelog>? histories,
+      int? maxResults,
+      int? startAt,
+      int? total}) {
     return PageOfChangelogs(
       histories: histories ?? this.histories,
       maxResults: maxResults ?? this.maxResults,
@@ -6480,7 +5137,7 @@ class PagedDTOIssueBean {
   final int? start;
 
   /// Details of the items included in the page.
-  final List<IssueBean> values;
+  final List<ServiceManagementIssueBean> values;
 
   PagedDTOIssueBean(
       {List<String>? expands,
@@ -6489,7 +5146,7 @@ class PagedDTOIssueBean {
       this.limit,
       this.size,
       this.start,
-      List<IssueBean>? values})
+      List<ServiceManagementIssueBean>? values})
       : expands = expands ?? [],
         isLastPage = isLastPage ?? false,
         values = values ?? [];
@@ -6508,8 +5165,8 @@ class PagedDTOIssueBean {
       size: (json[r'size'] as num?)?.toInt(),
       start: (json[r'start'] as num?)?.toInt(),
       values: (json[r'values'] as List<Object?>?)
-              ?.map((i) =>
-                  IssueBean.fromJson(i as Map<String, Object?>? ?? const {}))
+              ?.map((i) => ServiceManagementIssueBean.fromJson(
+                  i as Map<String, Object?>? ?? const {}))
               .toList() ??
           [],
     );
@@ -6550,7 +5207,7 @@ class PagedDTOIssueBean {
       int? limit,
       int? size,
       int? start,
-      List<IssueBean>? values}) {
+      List<ServiceManagementIssueBean>? values}) {
     return PagedDTOIssueBean(
       expands: expands ?? this.expands,
       links: links ?? this.links,
@@ -7986,7 +6643,7 @@ class RequestTypeFieldDTO {
   final String? fieldId;
 
   /// Jira specific implementation details for the field in the UI.
-  final JsonTypeBean? jiraSchema;
+  final ServiceManagementJsonTypeBean? jiraSchema;
 
   /// Name of the field.
   final String? name;
@@ -8027,7 +6684,8 @@ class RequestTypeFieldDTO {
       description: json[r'description'] as String?,
       fieldId: json[r'fieldId'] as String?,
       jiraSchema: json[r'jiraSchema'] != null
-          ? JsonTypeBean.fromJson(json[r'jiraSchema']! as Map<String, Object?>)
+          ? ServiceManagementJsonTypeBean.fromJson(
+              json[r'jiraSchema']! as Map<String, Object?>)
           : null,
       name: json[r'name'] as String?,
       presetValues: (json[r'presetValues'] as List<Object?>?)
@@ -8080,7 +6738,7 @@ class RequestTypeFieldDTO {
       {List<RequestTypeFieldValueDTO>? defaultValues,
       String? description,
       String? fieldId,
-      JsonTypeBean? jiraSchema,
+      ServiceManagementJsonTypeBean? jiraSchema,
       String? name,
       List<String>? presetValues,
       bool? required,
@@ -8410,8 +7068,1369 @@ class ServiceDeskDTO {
   }
 }
 
+/// A log of changes made to issue fields. Changelogs related to workflow
+/// associations are currently being deprecated.
+class ServiceManagementChangelog {
+  /// The user who made the change.
+  final ServiceManagementUserDetails? author;
+
+  /// The date on which the change took place.
+  final DateTime? created;
+
+  /// The history metadata associated with the changed.
+  final ServiceManagementHistoryMetadata? historyMetadata;
+
+  /// The ID of the changelog.
+  final String? id;
+
+  /// The list of items changed.
+  final List<ChangeDetails> items;
+
+  ServiceManagementChangelog(
+      {this.author,
+      this.created,
+      this.historyMetadata,
+      this.id,
+      List<ChangeDetails>? items})
+      : items = items ?? [];
+
+  factory ServiceManagementChangelog.fromJson(Map<String, Object?> json) {
+    return ServiceManagementChangelog(
+      author: json[r'author'] != null
+          ? ServiceManagementUserDetails.fromJson(
+              json[r'author']! as Map<String, Object?>)
+          : null,
+      created: DateTime.tryParse(json[r'created'] as String? ?? ''),
+      historyMetadata: json[r'historyMetadata'] != null
+          ? ServiceManagementHistoryMetadata.fromJson(
+              json[r'historyMetadata']! as Map<String, Object?>)
+          : null,
+      id: json[r'id'] as String?,
+      items: (json[r'items'] as List<Object?>?)
+              ?.map((i) => ChangeDetails.fromJson(
+                  i as Map<String, Object?>? ?? const {}))
+              .toList() ??
+          [],
+    );
+  }
+
+  Map<String, Object?> toJson() {
+    var author = this.author;
+    var created = this.created;
+    var historyMetadata = this.historyMetadata;
+    var id = this.id;
+    var items = this.items;
+
+    final json = <String, Object?>{};
+    if (author != null) {
+      json[r'author'] = author.toJson();
+    }
+    if (created != null) {
+      json[r'created'] = created.toIsoWithNumericOffset();
+    }
+    if (historyMetadata != null) {
+      json[r'historyMetadata'] = historyMetadata.toJson();
+    }
+    if (id != null) {
+      json[r'id'] = id;
+    }
+    json[r'items'] = items.map((i) => i.toJson()).toList();
+    return json;
+  }
+
+  ServiceManagementChangelog copyWith(
+      {ServiceManagementUserDetails? author,
+      DateTime? created,
+      ServiceManagementHistoryMetadata? historyMetadata,
+      String? id,
+      List<ChangeDetails>? items}) {
+    return ServiceManagementChangelog(
+      author: author ?? this.author,
+      created: created ?? this.created,
+      historyMetadata: historyMetadata ?? this.historyMetadata,
+      id: id ?? this.id,
+      items: items ?? this.items,
+    );
+  }
+}
+
+/// The metadata describing an issue field.
+class ServiceManagementFieldMetadata {
+  /// The list of values allowed in the field.
+  final List<dynamic> allowedValues;
+
+  /// The URL that can be used to automatically complete the field.
+  final String? autoCompleteUrl;
+
+  /// The configuration properties.
+  final Map<String, dynamic>? configuration;
+
+  /// The default value of the field.
+  final dynamic defaultValue;
+
+  /// Whether the field has a default value.
+  final bool hasDefaultValue;
+
+  /// The key of the field.
+  final String key;
+
+  /// The name of the field.
+  final String name;
+
+  /// The list of operations that can be performed on the field.
+  final List<String> operations;
+
+  /// Whether the field is required.
+  final bool required;
+
+  /// The data type of the field.
+  final ServiceManagementJsonTypeBean schema;
+
+  ServiceManagementFieldMetadata(
+      {List<dynamic>? allowedValues,
+      this.autoCompleteUrl,
+      this.configuration,
+      this.defaultValue,
+      bool? hasDefaultValue,
+      required this.key,
+      required this.name,
+      required this.operations,
+      required this.required,
+      required this.schema})
+      : allowedValues = allowedValues ?? [],
+        hasDefaultValue = hasDefaultValue ?? false;
+
+  factory ServiceManagementFieldMetadata.fromJson(Map<String, Object?> json) {
+    return ServiceManagementFieldMetadata(
+      allowedValues:
+          (json[r'allowedValues'] as List<Object?>?)?.map((i) => i).toList() ??
+              [],
+      autoCompleteUrl: json[r'autoCompleteUrl'] as String?,
+      configuration: json[r'configuration'] as Map<String, Object?>?,
+      defaultValue: json[r'defaultValue'],
+      hasDefaultValue: json[r'hasDefaultValue'] as bool? ?? false,
+      key: json[r'key'] as String? ?? '',
+      name: json[r'name'] as String? ?? '',
+      operations: (json[r'operations'] as List<Object?>?)
+              ?.map((i) => i as String? ?? '')
+              .toList() ??
+          [],
+      required: json[r'required'] as bool? ?? false,
+      schema: ServiceManagementJsonTypeBean.fromJson(
+          json[r'schema'] as Map<String, Object?>? ?? const {}),
+    );
+  }
+
+  Map<String, Object?> toJson() {
+    var allowedValues = this.allowedValues;
+    var autoCompleteUrl = this.autoCompleteUrl;
+    var configuration = this.configuration;
+    var defaultValue = this.defaultValue;
+    var hasDefaultValue = this.hasDefaultValue;
+    var key = this.key;
+    var name = this.name;
+    var operations = this.operations;
+    var required = this.required;
+    var schema = this.schema;
+
+    final json = <String, Object?>{};
+    json[r'allowedValues'] = allowedValues;
+    if (autoCompleteUrl != null) {
+      json[r'autoCompleteUrl'] = autoCompleteUrl;
+    }
+    if (configuration != null) {
+      json[r'configuration'] = configuration;
+    }
+    if (defaultValue != null) {
+      json[r'defaultValue'] = defaultValue;
+    }
+    json[r'hasDefaultValue'] = hasDefaultValue;
+    json[r'key'] = key;
+    json[r'name'] = name;
+    json[r'operations'] = operations;
+    json[r'required'] = required;
+    json[r'schema'] = schema.toJson();
+    return json;
+  }
+
+  ServiceManagementFieldMetadata copyWith(
+      {List<dynamic>? allowedValues,
+      String? autoCompleteUrl,
+      Map<String, dynamic>? configuration,
+      dynamic defaultValue,
+      bool? hasDefaultValue,
+      String? key,
+      String? name,
+      List<String>? operations,
+      bool? required,
+      ServiceManagementJsonTypeBean? schema}) {
+    return ServiceManagementFieldMetadata(
+      allowedValues: allowedValues ?? this.allowedValues,
+      autoCompleteUrl: autoCompleteUrl ?? this.autoCompleteUrl,
+      configuration: configuration ?? this.configuration,
+      defaultValue: defaultValue ?? this.defaultValue,
+      hasDefaultValue: hasDefaultValue ?? this.hasDefaultValue,
+      key: key ?? this.key,
+      name: name ?? this.name,
+      operations: operations ?? this.operations,
+      required: required ?? this.required,
+      schema: schema ?? this.schema,
+    );
+  }
+}
+
+/// Details of issue history metadata.
+class ServiceManagementHistoryMetadata {
+  /// The activity described in the history record.
+  final String? activityDescription;
+
+  /// The key of the activity described in the history record.
+  final String? activityDescriptionKey;
+
+  /// Details of the user whose action created the history record.
+  final ServiceManagementHistoryMetadataParticipant? actor;
+
+  /// Details of the cause that triggered the creation the history record.
+  final ServiceManagementHistoryMetadataParticipant? cause;
+
+  /// The description of the history record.
+  final String? description;
+
+  /// The description key of the history record.
+  final String? descriptionKey;
+
+  /// The description of the email address associated the history record.
+  final String? emailDescription;
+
+  /// The description key of the email address associated the history record.
+  final String? emailDescriptionKey;
+
+  /// Additional arbitrary information about the history record.
+  final Map<String, dynamic>? extraData;
+
+  /// Details of the system that generated the history record.
+  final ServiceManagementHistoryMetadataParticipant? generator;
+
+  /// The type of the history record.
+  final String? type;
+
+  ServiceManagementHistoryMetadata(
+      {this.activityDescription,
+      this.activityDescriptionKey,
+      this.actor,
+      this.cause,
+      this.description,
+      this.descriptionKey,
+      this.emailDescription,
+      this.emailDescriptionKey,
+      this.extraData,
+      this.generator,
+      this.type});
+
+  factory ServiceManagementHistoryMetadata.fromJson(Map<String, Object?> json) {
+    return ServiceManagementHistoryMetadata(
+      activityDescription: json[r'activityDescription'] as String?,
+      activityDescriptionKey: json[r'activityDescriptionKey'] as String?,
+      actor: json[r'actor'] != null
+          ? ServiceManagementHistoryMetadataParticipant.fromJson(
+              json[r'actor']! as Map<String, Object?>)
+          : null,
+      cause: json[r'cause'] != null
+          ? ServiceManagementHistoryMetadataParticipant.fromJson(
+              json[r'cause']! as Map<String, Object?>)
+          : null,
+      description: json[r'description'] as String?,
+      descriptionKey: json[r'descriptionKey'] as String?,
+      emailDescription: json[r'emailDescription'] as String?,
+      emailDescriptionKey: json[r'emailDescriptionKey'] as String?,
+      extraData: json[r'extraData'] as Map<String, Object?>?,
+      generator: json[r'generator'] != null
+          ? ServiceManagementHistoryMetadataParticipant.fromJson(
+              json[r'generator']! as Map<String, Object?>)
+          : null,
+      type: json[r'type'] as String?,
+    );
+  }
+
+  Map<String, Object?> toJson() {
+    var activityDescription = this.activityDescription;
+    var activityDescriptionKey = this.activityDescriptionKey;
+    var actor = this.actor;
+    var cause = this.cause;
+    var description = this.description;
+    var descriptionKey = this.descriptionKey;
+    var emailDescription = this.emailDescription;
+    var emailDescriptionKey = this.emailDescriptionKey;
+    var extraData = this.extraData;
+    var generator = this.generator;
+    var type = this.type;
+
+    final json = <String, Object?>{};
+    if (activityDescription != null) {
+      json[r'activityDescription'] = activityDescription;
+    }
+    if (activityDescriptionKey != null) {
+      json[r'activityDescriptionKey'] = activityDescriptionKey;
+    }
+    if (actor != null) {
+      json[r'actor'] = actor.toJson();
+    }
+    if (cause != null) {
+      json[r'cause'] = cause.toJson();
+    }
+    if (description != null) {
+      json[r'description'] = description;
+    }
+    if (descriptionKey != null) {
+      json[r'descriptionKey'] = descriptionKey;
+    }
+    if (emailDescription != null) {
+      json[r'emailDescription'] = emailDescription;
+    }
+    if (emailDescriptionKey != null) {
+      json[r'emailDescriptionKey'] = emailDescriptionKey;
+    }
+    if (extraData != null) {
+      json[r'extraData'] = extraData;
+    }
+    if (generator != null) {
+      json[r'generator'] = generator.toJson();
+    }
+    if (type != null) {
+      json[r'type'] = type;
+    }
+    return json;
+  }
+
+  ServiceManagementHistoryMetadata copyWith(
+      {String? activityDescription,
+      String? activityDescriptionKey,
+      ServiceManagementHistoryMetadataParticipant? actor,
+      ServiceManagementHistoryMetadataParticipant? cause,
+      String? description,
+      String? descriptionKey,
+      String? emailDescription,
+      String? emailDescriptionKey,
+      Map<String, dynamic>? extraData,
+      ServiceManagementHistoryMetadataParticipant? generator,
+      String? type}) {
+    return ServiceManagementHistoryMetadata(
+      activityDescription: activityDescription ?? this.activityDescription,
+      activityDescriptionKey:
+          activityDescriptionKey ?? this.activityDescriptionKey,
+      actor: actor ?? this.actor,
+      cause: cause ?? this.cause,
+      description: description ?? this.description,
+      descriptionKey: descriptionKey ?? this.descriptionKey,
+      emailDescription: emailDescription ?? this.emailDescription,
+      emailDescriptionKey: emailDescriptionKey ?? this.emailDescriptionKey,
+      extraData: extraData ?? this.extraData,
+      generator: generator ?? this.generator,
+      type: type ?? this.type,
+    );
+  }
+}
+
+/// Details of user or system associated with a issue history metadata item.
+class ServiceManagementHistoryMetadataParticipant {
+  /// The URL to an avatar for the user or system associated with a history
+  /// record.
+  final String? avatarUrl;
+
+  /// The display name of the user or system associated with a history record.
+  final String? displayName;
+
+  /// The key of the display name of the user or system associated with a
+  /// history record.
+  final String? displayNameKey;
+
+  /// The ID of the user or system associated with a history record.
+  final String? id;
+
+  /// The type of the user or system associated with a history record.
+  final String? type;
+
+  /// The URL of the user or system associated with a history record.
+  final String? url;
+
+  ServiceManagementHistoryMetadataParticipant(
+      {this.avatarUrl,
+      this.displayName,
+      this.displayNameKey,
+      this.id,
+      this.type,
+      this.url});
+
+  factory ServiceManagementHistoryMetadataParticipant.fromJson(
+      Map<String, Object?> json) {
+    return ServiceManagementHistoryMetadataParticipant(
+      avatarUrl: json[r'avatarUrl'] as String?,
+      displayName: json[r'displayName'] as String?,
+      displayNameKey: json[r'displayNameKey'] as String?,
+      id: json[r'id'] as String?,
+      type: json[r'type'] as String?,
+      url: json[r'url'] as String?,
+    );
+  }
+
+  Map<String, Object?> toJson() {
+    var avatarUrl = this.avatarUrl;
+    var displayName = this.displayName;
+    var displayNameKey = this.displayNameKey;
+    var id = this.id;
+    var type = this.type;
+    var url = this.url;
+
+    final json = <String, Object?>{};
+    if (avatarUrl != null) {
+      json[r'avatarUrl'] = avatarUrl;
+    }
+    if (displayName != null) {
+      json[r'displayName'] = displayName;
+    }
+    if (displayNameKey != null) {
+      json[r'displayNameKey'] = displayNameKey;
+    }
+    if (id != null) {
+      json[r'id'] = id;
+    }
+    if (type != null) {
+      json[r'type'] = type;
+    }
+    if (url != null) {
+      json[r'url'] = url;
+    }
+    return json;
+  }
+
+  ServiceManagementHistoryMetadataParticipant copyWith(
+      {String? avatarUrl,
+      String? displayName,
+      String? displayNameKey,
+      String? id,
+      String? type,
+      String? url}) {
+    return ServiceManagementHistoryMetadataParticipant(
+      avatarUrl: avatarUrl ?? this.avatarUrl,
+      displayName: displayName ?? this.displayName,
+      displayNameKey: displayNameKey ?? this.displayNameKey,
+      id: id ?? this.id,
+      type: type ?? this.type,
+      url: url ?? this.url,
+    );
+  }
+}
+
+class ServiceManagementIncludedFields {
+  final List<String> actuallyIncluded;
+  final List<String> excluded;
+  final List<String> included;
+
+  ServiceManagementIncludedFields(
+      {List<String>? actuallyIncluded,
+      List<String>? excluded,
+      List<String>? included})
+      : actuallyIncluded = actuallyIncluded ?? [],
+        excluded = excluded ?? [],
+        included = included ?? [];
+
+  factory ServiceManagementIncludedFields.fromJson(Map<String, Object?> json) {
+    return ServiceManagementIncludedFields(
+      actuallyIncluded: (json[r'actuallyIncluded'] as List<Object?>?)
+              ?.map((i) => i as String? ?? '')
+              .toList() ??
+          [],
+      excluded: (json[r'excluded'] as List<Object?>?)
+              ?.map((i) => i as String? ?? '')
+              .toList() ??
+          [],
+      included: (json[r'included'] as List<Object?>?)
+              ?.map((i) => i as String? ?? '')
+              .toList() ??
+          [],
+    );
+  }
+
+  Map<String, Object?> toJson() {
+    var actuallyIncluded = this.actuallyIncluded;
+    var excluded = this.excluded;
+    var included = this.included;
+
+    final json = <String, Object?>{};
+    json[r'actuallyIncluded'] = actuallyIncluded;
+    json[r'excluded'] = excluded;
+    json[r'included'] = included;
+    return json;
+  }
+
+  ServiceManagementIncludedFields copyWith(
+      {List<String>? actuallyIncluded,
+      List<String>? excluded,
+      List<String>? included}) {
+    return ServiceManagementIncludedFields(
+      actuallyIncluded: actuallyIncluded ?? this.actuallyIncluded,
+      excluded: excluded ?? this.excluded,
+      included: included ?? this.included,
+    );
+  }
+}
+
+/// Details about an issue.
+class ServiceManagementIssueBean {
+  /// Details of changelogs associated with the issue.
+  final PageOfChangelogs? changelog;
+
+  /// The metadata for the fields on the issue that can be amended.
+  final ServiceManagementIssueUpdateMetadata? editmeta;
+
+  /// Expand options that include additional issue details in the response.
+  final String? expand;
+  final Map<String, dynamic>? fields;
+  final ServiceManagementIncludedFields? fieldsToInclude;
+
+  /// The ID of the issue.
+  final String? id;
+
+  /// The key of the issue.
+  final String? key;
+
+  /// The ID and name of each field present on the issue.
+  final Map<String, dynamic>? names;
+
+  /// The operations that can be performed on the issue.
+  final ServiceManagementOperations? operations;
+
+  /// Details of the issue properties identified in the request.
+  final Map<String, dynamic>? properties;
+
+  /// The rendered value of each field present on the issue.
+  final Map<String, dynamic>? renderedFields;
+
+  /// The schema describing each field present on the issue.
+  final Map<String, dynamic>? schema;
+
+  /// The URL of the issue details.
+  final String? self;
+
+  /// The transitions that can be performed on the issue.
+  final List<ServiceManagementIssueTransition> transitions;
+
+  /// The versions of each field on the issue.
+  final Map<String, dynamic>? versionedRepresentations;
+
+  ServiceManagementIssueBean(
+      {this.changelog,
+      this.editmeta,
+      this.expand,
+      this.fields,
+      this.fieldsToInclude,
+      this.id,
+      this.key,
+      this.names,
+      this.operations,
+      this.properties,
+      this.renderedFields,
+      this.schema,
+      this.self,
+      List<ServiceManagementIssueTransition>? transitions,
+      this.versionedRepresentations})
+      : transitions = transitions ?? [];
+
+  factory ServiceManagementIssueBean.fromJson(Map<String, Object?> json) {
+    return ServiceManagementIssueBean(
+      changelog: json[r'changelog'] != null
+          ? PageOfChangelogs.fromJson(
+              json[r'changelog']! as Map<String, Object?>)
+          : null,
+      editmeta: json[r'editmeta'] != null
+          ? ServiceManagementIssueUpdateMetadata.fromJson(
+              json[r'editmeta']! as Map<String, Object?>)
+          : null,
+      expand: json[r'expand'] as String?,
+      fields: json[r'fields'] as Map<String, Object?>?,
+      fieldsToInclude: json[r'fieldsToInclude'] != null
+          ? ServiceManagementIncludedFields.fromJson(
+              json[r'fieldsToInclude']! as Map<String, Object?>)
+          : null,
+      id: json[r'id'] as String?,
+      key: json[r'key'] as String?,
+      names: json[r'names'] as Map<String, Object?>?,
+      operations: json[r'operations'] != null
+          ? ServiceManagementOperations.fromJson(
+              json[r'operations']! as Map<String, Object?>)
+          : null,
+      properties: json[r'properties'] as Map<String, Object?>?,
+      renderedFields: json[r'renderedFields'] as Map<String, Object?>?,
+      schema: json[r'schema'] as Map<String, Object?>?,
+      self: json[r'self'] as String?,
+      transitions: (json[r'transitions'] as List<Object?>?)
+              ?.map((i) => ServiceManagementIssueTransition.fromJson(
+                  i as Map<String, Object?>? ?? const {}))
+              .toList() ??
+          [],
+      versionedRepresentations:
+          json[r'versionedRepresentations'] as Map<String, Object?>?,
+    );
+  }
+
+  Map<String, Object?> toJson() {
+    var changelog = this.changelog;
+    var editmeta = this.editmeta;
+    var expand = this.expand;
+    var fields = this.fields;
+    var fieldsToInclude = this.fieldsToInclude;
+    var id = this.id;
+    var key = this.key;
+    var names = this.names;
+    var operations = this.operations;
+    var properties = this.properties;
+    var renderedFields = this.renderedFields;
+    var schema = this.schema;
+    var self = this.self;
+    var transitions = this.transitions;
+    var versionedRepresentations = this.versionedRepresentations;
+
+    final json = <String, Object?>{};
+    if (changelog != null) {
+      json[r'changelog'] = changelog.toJson();
+    }
+    if (editmeta != null) {
+      json[r'editmeta'] = editmeta.toJson();
+    }
+    if (expand != null) {
+      json[r'expand'] = expand;
+    }
+    if (fields != null) {
+      json[r'fields'] = fields;
+    }
+    if (fieldsToInclude != null) {
+      json[r'fieldsToInclude'] = fieldsToInclude.toJson();
+    }
+    if (id != null) {
+      json[r'id'] = id;
+    }
+    if (key != null) {
+      json[r'key'] = key;
+    }
+    if (names != null) {
+      json[r'names'] = names;
+    }
+    if (operations != null) {
+      json[r'operations'] = operations.toJson();
+    }
+    if (properties != null) {
+      json[r'properties'] = properties;
+    }
+    if (renderedFields != null) {
+      json[r'renderedFields'] = renderedFields;
+    }
+    if (schema != null) {
+      json[r'schema'] = schema;
+    }
+    if (self != null) {
+      json[r'self'] = self;
+    }
+    json[r'transitions'] = transitions.map((i) => i.toJson()).toList();
+    if (versionedRepresentations != null) {
+      json[r'versionedRepresentations'] = versionedRepresentations;
+    }
+    return json;
+  }
+
+  ServiceManagementIssueBean copyWith(
+      {PageOfChangelogs? changelog,
+      ServiceManagementIssueUpdateMetadata? editmeta,
+      String? expand,
+      Map<String, dynamic>? fields,
+      ServiceManagementIncludedFields? fieldsToInclude,
+      String? id,
+      String? key,
+      Map<String, dynamic>? names,
+      ServiceManagementOperations? operations,
+      Map<String, dynamic>? properties,
+      Map<String, dynamic>? renderedFields,
+      Map<String, dynamic>? schema,
+      String? self,
+      List<ServiceManagementIssueTransition>? transitions,
+      Map<String, dynamic>? versionedRepresentations}) {
+    return ServiceManagementIssueBean(
+      changelog: changelog ?? this.changelog,
+      editmeta: editmeta ?? this.editmeta,
+      expand: expand ?? this.expand,
+      fields: fields ?? this.fields,
+      fieldsToInclude: fieldsToInclude ?? this.fieldsToInclude,
+      id: id ?? this.id,
+      key: key ?? this.key,
+      names: names ?? this.names,
+      operations: operations ?? this.operations,
+      properties: properties ?? this.properties,
+      renderedFields: renderedFields ?? this.renderedFields,
+      schema: schema ?? this.schema,
+      self: self ?? this.self,
+      transitions: transitions ?? this.transitions,
+      versionedRepresentations:
+          versionedRepresentations ?? this.versionedRepresentations,
+    );
+  }
+}
+
+/// Details of an issue transition.
+class ServiceManagementIssueTransition {
+  /// Expand options that include additional transition details in the response.
+  final String? expand;
+
+  /// Details of the fields associated with the issue transition screen. Use
+  /// this information to populate `fields` and `update` in a transition
+  /// request.
+  final Map<String, dynamic>? fields;
+
+  /// Whether there is a screen associated with the issue transition.
+  final bool hasScreen;
+
+  /// The ID of the issue transition. Required when specifying a transition to
+  /// undertake.
+  final String? id;
+
+  /// Whether the transition is available to be performed.
+  final bool isAvailable;
+
+  /// Whether the issue has to meet criteria before the issue transition is
+  /// applied.
+  final bool isConditional;
+
+  /// Whether the issue transition is global, that is, the transition is applied
+  /// to issues regardless of their status.
+  final bool isGlobal;
+
+  /// Whether this is the initial issue transition for the workflow.
+  final bool isInitial;
+  final bool looped;
+
+  /// The name of the issue transition.
+  final String? name;
+
+  /// Details of the issue status after the transition.
+  final ServiceManagementStatusDetails? to;
+
+  ServiceManagementIssueTransition(
+      {this.expand,
+      this.fields,
+      bool? hasScreen,
+      this.id,
+      bool? isAvailable,
+      bool? isConditional,
+      bool? isGlobal,
+      bool? isInitial,
+      bool? looped,
+      this.name,
+      this.to})
+      : hasScreen = hasScreen ?? false,
+        isAvailable = isAvailable ?? false,
+        isConditional = isConditional ?? false,
+        isGlobal = isGlobal ?? false,
+        isInitial = isInitial ?? false,
+        looped = looped ?? false;
+
+  factory ServiceManagementIssueTransition.fromJson(Map<String, Object?> json) {
+    return ServiceManagementIssueTransition(
+      expand: json[r'expand'] as String?,
+      fields: json[r'fields'] as Map<String, Object?>?,
+      hasScreen: json[r'hasScreen'] as bool? ?? false,
+      id: json[r'id'] as String?,
+      isAvailable: json[r'isAvailable'] as bool? ?? false,
+      isConditional: json[r'isConditional'] as bool? ?? false,
+      isGlobal: json[r'isGlobal'] as bool? ?? false,
+      isInitial: json[r'isInitial'] as bool? ?? false,
+      looped: json[r'looped'] as bool? ?? false,
+      name: json[r'name'] as String?,
+      to: json[r'to'] != null
+          ? ServiceManagementStatusDetails.fromJson(
+              json[r'to']! as Map<String, Object?>)
+          : null,
+    );
+  }
+
+  Map<String, Object?> toJson() {
+    var expand = this.expand;
+    var fields = this.fields;
+    var hasScreen = this.hasScreen;
+    var id = this.id;
+    var isAvailable = this.isAvailable;
+    var isConditional = this.isConditional;
+    var isGlobal = this.isGlobal;
+    var isInitial = this.isInitial;
+    var looped = this.looped;
+    var name = this.name;
+    var to = this.to;
+
+    final json = <String, Object?>{};
+    if (expand != null) {
+      json[r'expand'] = expand;
+    }
+    if (fields != null) {
+      json[r'fields'] = fields;
+    }
+    json[r'hasScreen'] = hasScreen;
+    if (id != null) {
+      json[r'id'] = id;
+    }
+    json[r'isAvailable'] = isAvailable;
+    json[r'isConditional'] = isConditional;
+    json[r'isGlobal'] = isGlobal;
+    json[r'isInitial'] = isInitial;
+    json[r'looped'] = looped;
+    if (name != null) {
+      json[r'name'] = name;
+    }
+    if (to != null) {
+      json[r'to'] = to.toJson();
+    }
+    return json;
+  }
+
+  ServiceManagementIssueTransition copyWith(
+      {String? expand,
+      Map<String, dynamic>? fields,
+      bool? hasScreen,
+      String? id,
+      bool? isAvailable,
+      bool? isConditional,
+      bool? isGlobal,
+      bool? isInitial,
+      bool? looped,
+      String? name,
+      ServiceManagementStatusDetails? to}) {
+    return ServiceManagementIssueTransition(
+      expand: expand ?? this.expand,
+      fields: fields ?? this.fields,
+      hasScreen: hasScreen ?? this.hasScreen,
+      id: id ?? this.id,
+      isAvailable: isAvailable ?? this.isAvailable,
+      isConditional: isConditional ?? this.isConditional,
+      isGlobal: isGlobal ?? this.isGlobal,
+      isInitial: isInitial ?? this.isInitial,
+      looped: looped ?? this.looped,
+      name: name ?? this.name,
+      to: to ?? this.to,
+    );
+  }
+}
+
+/// A list of editable field details.
+class ServiceManagementIssueUpdateMetadata {
+  final Map<String, dynamic>? fields;
+
+  ServiceManagementIssueUpdateMetadata({this.fields});
+
+  factory ServiceManagementIssueUpdateMetadata.fromJson(
+      Map<String, Object?> json) {
+    return ServiceManagementIssueUpdateMetadata(
+      fields: json[r'fields'] as Map<String, Object?>?,
+    );
+  }
+
+  Map<String, Object?> toJson() {
+    var fields = this.fields;
+
+    final json = <String, Object?>{};
+    if (fields != null) {
+      json[r'fields'] = fields;
+    }
+    return json;
+  }
+
+  ServiceManagementIssueUpdateMetadata copyWith(
+      {Map<String, dynamic>? fields}) {
+    return ServiceManagementIssueUpdateMetadata(
+      fields: fields ?? this.fields,
+    );
+  }
+}
+
+class ServiceManagementJsonNode {
+  final bool array;
+  final bool bigDecimal;
+  final bool bigInteger;
+  final int? bigIntegerValue;
+  final bool binary;
+  final List<String> binaryValue;
+  final bool boolean;
+  final bool booleanValue;
+  final bool containerNode;
+  final num? decimalValue;
+  final bool double$;
+  final num? doubleValue;
+  final Map<String, dynamic>? elements;
+  final Map<String, dynamic>? fieldNames;
+  final Map<String, dynamic>? fields;
+  final bool floatingPointNumber;
+  final bool int$;
+  final int? intValue;
+  final bool integralNumber;
+  final bool long;
+  final int? longValue;
+  final bool missingNode;
+  final bool null$;
+  final bool number;
+  final ServiceManagementJsonNodeNumberType? numberType;
+  final num? numberValue;
+  final bool object;
+  final bool pojo;
+  final String? textValue;
+  final bool textual;
+  final bool valueAsBoolean;
+  final num? valueAsDouble;
+  final int? valueAsInt;
+  final int? valueAsLong;
+  final String? valueAsText;
+  final bool valueNode;
+
+  ServiceManagementJsonNode(
+      {bool? array,
+      bool? bigDecimal,
+      bool? bigInteger,
+      this.bigIntegerValue,
+      bool? binary,
+      List<String>? binaryValue,
+      bool? boolean,
+      bool? booleanValue,
+      bool? containerNode,
+      this.decimalValue,
+      bool? double$,
+      this.doubleValue,
+      this.elements,
+      this.fieldNames,
+      this.fields,
+      bool? floatingPointNumber,
+      bool? int$,
+      this.intValue,
+      bool? integralNumber,
+      bool? long,
+      this.longValue,
+      bool? missingNode,
+      bool? null$,
+      bool? number,
+      this.numberType,
+      this.numberValue,
+      bool? object,
+      bool? pojo,
+      this.textValue,
+      bool? textual,
+      bool? valueAsBoolean,
+      this.valueAsDouble,
+      this.valueAsInt,
+      this.valueAsLong,
+      this.valueAsText,
+      bool? valueNode})
+      : array = array ?? false,
+        bigDecimal = bigDecimal ?? false,
+        bigInteger = bigInteger ?? false,
+        binary = binary ?? false,
+        binaryValue = binaryValue ?? [],
+        boolean = boolean ?? false,
+        booleanValue = booleanValue ?? false,
+        containerNode = containerNode ?? false,
+        double$ = double$ ?? false,
+        floatingPointNumber = floatingPointNumber ?? false,
+        int$ = int$ ?? false,
+        integralNumber = integralNumber ?? false,
+        long = long ?? false,
+        missingNode = missingNode ?? false,
+        null$ = null$ ?? false,
+        number = number ?? false,
+        object = object ?? false,
+        pojo = pojo ?? false,
+        textual = textual ?? false,
+        valueAsBoolean = valueAsBoolean ?? false,
+        valueNode = valueNode ?? false;
+
+  factory ServiceManagementJsonNode.fromJson(Map<String, Object?> json) {
+    return ServiceManagementJsonNode(
+      array: json[r'array'] as bool? ?? false,
+      bigDecimal: json[r'bigDecimal'] as bool? ?? false,
+      bigInteger: json[r'bigInteger'] as bool? ?? false,
+      bigIntegerValue: (json[r'bigIntegerValue'] as num?)?.toInt(),
+      binary: json[r'binary'] as bool? ?? false,
+      binaryValue: (json[r'binaryValue'] as List<Object?>?)
+              ?.map((i) => i as String? ?? '')
+              .toList() ??
+          [],
+      boolean: json[r'boolean'] as bool? ?? false,
+      booleanValue: json[r'booleanValue'] as bool? ?? false,
+      containerNode: json[r'containerNode'] as bool? ?? false,
+      decimalValue: json[r'decimalValue'] as num?,
+      double$: json[r'double'] as bool? ?? false,
+      doubleValue: json[r'doubleValue'] as num?,
+      elements: json[r'elements'] as Map<String, Object?>?,
+      fieldNames: json[r'fieldNames'] as Map<String, Object?>?,
+      fields: json[r'fields'] as Map<String, Object?>?,
+      floatingPointNumber: json[r'floatingPointNumber'] as bool? ?? false,
+      int$: json[r'int'] as bool? ?? false,
+      intValue: (json[r'intValue'] as num?)?.toInt(),
+      integralNumber: json[r'integralNumber'] as bool? ?? false,
+      long: json[r'long'] as bool? ?? false,
+      longValue: (json[r'longValue'] as num?)?.toInt(),
+      missingNode: json[r'missingNode'] as bool? ?? false,
+      null$: json[r'null'] as bool? ?? false,
+      number: json[r'number'] as bool? ?? false,
+      numberType: json[r'numberType'] != null
+          ? ServiceManagementJsonNodeNumberType.fromValue(
+              json[r'numberType']! as String)
+          : null,
+      numberValue: json[r'numberValue'] as num?,
+      object: json[r'object'] as bool? ?? false,
+      pojo: json[r'pojo'] as bool? ?? false,
+      textValue: json[r'textValue'] as String?,
+      textual: json[r'textual'] as bool? ?? false,
+      valueAsBoolean: json[r'valueAsBoolean'] as bool? ?? false,
+      valueAsDouble: json[r'valueAsDouble'] as num?,
+      valueAsInt: (json[r'valueAsInt'] as num?)?.toInt(),
+      valueAsLong: (json[r'valueAsLong'] as num?)?.toInt(),
+      valueAsText: json[r'valueAsText'] as String?,
+      valueNode: json[r'valueNode'] as bool? ?? false,
+    );
+  }
+
+  Map<String, Object?> toJson() {
+    var array = this.array;
+    var bigDecimal = this.bigDecimal;
+    var bigInteger = this.bigInteger;
+    var bigIntegerValue = this.bigIntegerValue;
+    var binary = this.binary;
+    var binaryValue = this.binaryValue;
+    var boolean = this.boolean;
+    var booleanValue = this.booleanValue;
+    var containerNode = this.containerNode;
+    var decimalValue = this.decimalValue;
+    var double$ = this.double$;
+    var doubleValue = this.doubleValue;
+    var elements = this.elements;
+    var fieldNames = this.fieldNames;
+    var fields = this.fields;
+    var floatingPointNumber = this.floatingPointNumber;
+    var int$ = this.int$;
+    var intValue = this.intValue;
+    var integralNumber = this.integralNumber;
+    var long = this.long;
+    var longValue = this.longValue;
+    var missingNode = this.missingNode;
+    var null$ = this.null$;
+    var number = this.number;
+    var numberType = this.numberType;
+    var numberValue = this.numberValue;
+    var object = this.object;
+    var pojo = this.pojo;
+    var textValue = this.textValue;
+    var textual = this.textual;
+    var valueAsBoolean = this.valueAsBoolean;
+    var valueAsDouble = this.valueAsDouble;
+    var valueAsInt = this.valueAsInt;
+    var valueAsLong = this.valueAsLong;
+    var valueAsText = this.valueAsText;
+    var valueNode = this.valueNode;
+
+    final json = <String, Object?>{};
+    json[r'array'] = array;
+    json[r'bigDecimal'] = bigDecimal;
+    json[r'bigInteger'] = bigInteger;
+    if (bigIntegerValue != null) {
+      json[r'bigIntegerValue'] = bigIntegerValue;
+    }
+    json[r'binary'] = binary;
+    json[r'binaryValue'] = binaryValue;
+    json[r'boolean'] = boolean;
+    json[r'booleanValue'] = booleanValue;
+    json[r'containerNode'] = containerNode;
+    if (decimalValue != null) {
+      json[r'decimalValue'] = decimalValue;
+    }
+    json[r'double'] = double$;
+    if (doubleValue != null) {
+      json[r'doubleValue'] = doubleValue;
+    }
+    if (elements != null) {
+      json[r'elements'] = elements;
+    }
+    if (fieldNames != null) {
+      json[r'fieldNames'] = fieldNames;
+    }
+    if (fields != null) {
+      json[r'fields'] = fields;
+    }
+    json[r'floatingPointNumber'] = floatingPointNumber;
+    json[r'int'] = int$;
+    if (intValue != null) {
+      json[r'intValue'] = intValue;
+    }
+    json[r'integralNumber'] = integralNumber;
+    json[r'long'] = long;
+    if (longValue != null) {
+      json[r'longValue'] = longValue;
+    }
+    json[r'missingNode'] = missingNode;
+    json[r'null'] = null$;
+    json[r'number'] = number;
+    if (numberType != null) {
+      json[r'numberType'] = numberType.value;
+    }
+    if (numberValue != null) {
+      json[r'numberValue'] = numberValue;
+    }
+    json[r'object'] = object;
+    json[r'pojo'] = pojo;
+    if (textValue != null) {
+      json[r'textValue'] = textValue;
+    }
+    json[r'textual'] = textual;
+    json[r'valueAsBoolean'] = valueAsBoolean;
+    if (valueAsDouble != null) {
+      json[r'valueAsDouble'] = valueAsDouble;
+    }
+    if (valueAsInt != null) {
+      json[r'valueAsInt'] = valueAsInt;
+    }
+    if (valueAsLong != null) {
+      json[r'valueAsLong'] = valueAsLong;
+    }
+    if (valueAsText != null) {
+      json[r'valueAsText'] = valueAsText;
+    }
+    json[r'valueNode'] = valueNode;
+    return json;
+  }
+
+  ServiceManagementJsonNode copyWith(
+      {bool? array,
+      bool? bigDecimal,
+      bool? bigInteger,
+      int? bigIntegerValue,
+      bool? binary,
+      List<String>? binaryValue,
+      bool? boolean,
+      bool? booleanValue,
+      bool? containerNode,
+      num? decimalValue,
+      bool? double$,
+      num? doubleValue,
+      Map<String, dynamic>? elements,
+      Map<String, dynamic>? fieldNames,
+      Map<String, dynamic>? fields,
+      bool? floatingPointNumber,
+      bool? int$,
+      int? intValue,
+      bool? integralNumber,
+      bool? long,
+      int? longValue,
+      bool? missingNode,
+      bool? null$,
+      bool? number,
+      ServiceManagementJsonNodeNumberType? numberType,
+      num? numberValue,
+      bool? object,
+      bool? pojo,
+      String? textValue,
+      bool? textual,
+      bool? valueAsBoolean,
+      num? valueAsDouble,
+      int? valueAsInt,
+      int? valueAsLong,
+      String? valueAsText,
+      bool? valueNode}) {
+    return ServiceManagementJsonNode(
+      array: array ?? this.array,
+      bigDecimal: bigDecimal ?? this.bigDecimal,
+      bigInteger: bigInteger ?? this.bigInteger,
+      bigIntegerValue: bigIntegerValue ?? this.bigIntegerValue,
+      binary: binary ?? this.binary,
+      binaryValue: binaryValue ?? this.binaryValue,
+      boolean: boolean ?? this.boolean,
+      booleanValue: booleanValue ?? this.booleanValue,
+      containerNode: containerNode ?? this.containerNode,
+      decimalValue: decimalValue ?? this.decimalValue,
+      double$: double$ ?? this.double$,
+      doubleValue: doubleValue ?? this.doubleValue,
+      elements: elements ?? this.elements,
+      fieldNames: fieldNames ?? this.fieldNames,
+      fields: fields ?? this.fields,
+      floatingPointNumber: floatingPointNumber ?? this.floatingPointNumber,
+      int$: int$ ?? this.int$,
+      intValue: intValue ?? this.intValue,
+      integralNumber: integralNumber ?? this.integralNumber,
+      long: long ?? this.long,
+      longValue: longValue ?? this.longValue,
+      missingNode: missingNode ?? this.missingNode,
+      null$: null$ ?? this.null$,
+      number: number ?? this.number,
+      numberType: numberType ?? this.numberType,
+      numberValue: numberValue ?? this.numberValue,
+      object: object ?? this.object,
+      pojo: pojo ?? this.pojo,
+      textValue: textValue ?? this.textValue,
+      textual: textual ?? this.textual,
+      valueAsBoolean: valueAsBoolean ?? this.valueAsBoolean,
+      valueAsDouble: valueAsDouble ?? this.valueAsDouble,
+      valueAsInt: valueAsInt ?? this.valueAsInt,
+      valueAsLong: valueAsLong ?? this.valueAsLong,
+      valueAsText: valueAsText ?? this.valueAsText,
+      valueNode: valueNode ?? this.valueNode,
+    );
+  }
+}
+
+class ServiceManagementJsonNodeNumberType {
+  static const int$ = ServiceManagementJsonNodeNumberType._('INT');
+  static const long = ServiceManagementJsonNodeNumberType._('LONG');
+  static const bigInteger =
+      ServiceManagementJsonNodeNumberType._('BIG_INTEGER');
+  static const float = ServiceManagementJsonNodeNumberType._('FLOAT');
+  static const double$ = ServiceManagementJsonNodeNumberType._('DOUBLE');
+  static const bigDecimal =
+      ServiceManagementJsonNodeNumberType._('BIG_DECIMAL');
+
+  static const values = [
+    int$,
+    long,
+    bigInteger,
+    float,
+    double$,
+    bigDecimal,
+  ];
+  final String value;
+
+  const ServiceManagementJsonNodeNumberType._(this.value);
+
+  static ServiceManagementJsonNodeNumberType fromValue(String value) =>
+      values.firstWhere((e) => e.value == value,
+          orElse: () => ServiceManagementJsonNodeNumberType._(value));
+
+  /// An enum received from the server but this version of the client doesn't recognize it.
+  bool get isUnknown => values.every((v) => v.value != value);
+
+  @override
+  String toString() => value;
+}
+
+/// The schema of a field.
+class ServiceManagementJsonTypeBean {
+  /// If the field is a custom field, the configuration of the field.
+  final Map<String, dynamic>? configuration;
+
+  /// If the field is a custom field, the URI of the field.
+  final String? custom;
+
+  /// If the field is a custom field, the custom ID of the field.
+  final int? customId;
+
+  /// When the data type is an array, the name of the field items within the
+  /// array.
+  final String? items;
+
+  /// If the field is a system field, the name of the field.
+  final String? system;
+
+  /// The data type of the field.
+  final String type;
+
+  ServiceManagementJsonTypeBean(
+      {this.configuration,
+      this.custom,
+      this.customId,
+      this.items,
+      this.system,
+      required this.type});
+
+  factory ServiceManagementJsonTypeBean.fromJson(Map<String, Object?> json) {
+    return ServiceManagementJsonTypeBean(
+      configuration: json[r'configuration'] as Map<String, Object?>?,
+      custom: json[r'custom'] as String?,
+      customId: (json[r'customId'] as num?)?.toInt(),
+      items: json[r'items'] as String?,
+      system: json[r'system'] as String?,
+      type: json[r'type'] as String? ?? '',
+    );
+  }
+
+  Map<String, Object?> toJson() {
+    var configuration = this.configuration;
+    var custom = this.custom;
+    var customId = this.customId;
+    var items = this.items;
+    var system = this.system;
+    var type = this.type;
+
+    final json = <String, Object?>{};
+    if (configuration != null) {
+      json[r'configuration'] = configuration;
+    }
+    if (custom != null) {
+      json[r'custom'] = custom;
+    }
+    if (customId != null) {
+      json[r'customId'] = customId;
+    }
+    if (items != null) {
+      json[r'items'] = items;
+    }
+    if (system != null) {
+      json[r'system'] = system;
+    }
+    json[r'type'] = type;
+    return json;
+  }
+
+  ServiceManagementJsonTypeBean copyWith(
+      {Map<String, dynamic>? configuration,
+      String? custom,
+      int? customId,
+      String? items,
+      String? system,
+      String? type}) {
+    return ServiceManagementJsonTypeBean(
+      configuration: configuration ?? this.configuration,
+      custom: custom ?? this.custom,
+      customId: customId ?? this.customId,
+      items: items ?? this.items,
+      system: system ?? this.system,
+      type: type ?? this.type,
+    );
+  }
+}
+
+/// Details of the operations that can be performed on the issue.
+class ServiceManagementOperations {
+  /// Details of the link groups defining issue operations.
+  final List<LinkGroup> linkGroups;
+
+  ServiceManagementOperations({List<LinkGroup>? linkGroups})
+      : linkGroups = linkGroups ?? [];
+
+  factory ServiceManagementOperations.fromJson(Map<String, Object?> json) {
+    return ServiceManagementOperations(
+      linkGroups: (json[r'linkGroups'] as List<Object?>?)
+              ?.map((i) =>
+                  LinkGroup.fromJson(i as Map<String, Object?>? ?? const {}))
+              .toList() ??
+          [],
+    );
+  }
+
+  Map<String, Object?> toJson() {
+    var linkGroups = this.linkGroups;
+
+    final json = <String, Object?>{};
+    json[r'linkGroups'] = linkGroups.map((i) => i.toJson()).toList();
+    return json;
+  }
+
+  ServiceManagementOperations copyWith({List<LinkGroup>? linkGroups}) {
+    return ServiceManagementOperations(
+      linkGroups: linkGroups ?? this.linkGroups,
+    );
+  }
+}
+
 /// Details about the operations available in this version.
-class SimpleLink {
+class ServiceManagementSimpleLink {
   final String? href;
   final String? iconClass;
   final String? id;
@@ -8420,7 +8439,7 @@ class SimpleLink {
   final String? title;
   final int? weight;
 
-  SimpleLink(
+  ServiceManagementSimpleLink(
       {this.href,
       this.iconClass,
       this.id,
@@ -8429,8 +8448,8 @@ class SimpleLink {
       this.title,
       this.weight});
 
-  factory SimpleLink.fromJson(Map<String, Object?> json) {
-    return SimpleLink(
+  factory ServiceManagementSimpleLink.fromJson(Map<String, Object?> json) {
+    return ServiceManagementSimpleLink(
       href: json[r'href'] as String?,
       iconClass: json[r'iconClass'] as String?,
       id: json[r'id'] as String?,
@@ -8475,7 +8494,7 @@ class SimpleLink {
     return json;
   }
 
-  SimpleLink copyWith(
+  ServiceManagementSimpleLink copyWith(
       {String? href,
       String? iconClass,
       String? id,
@@ -8483,7 +8502,7 @@ class SimpleLink {
       String? styleClass,
       String? title,
       int? weight}) {
-    return SimpleLink(
+    return ServiceManagementSimpleLink(
       href: href ?? this.href,
       iconClass: iconClass ?? this.iconClass,
       id: id ?? this.id,
@@ -8491,6 +8510,320 @@ class SimpleLink {
       styleClass: styleClass ?? this.styleClass,
       title: title ?? this.title,
       weight: weight ?? this.weight,
+    );
+  }
+}
+
+/// A status category.
+class ServiceManagementStatusCategory {
+  /// The name of the color used to represent the status category.
+  final String? colorName;
+
+  /// The ID of the status category.
+  final int? id;
+
+  /// The key of the status category.
+  final String? key;
+
+  /// The name of the status category.
+  final String? name;
+
+  /// The URL of the status category.
+  final String? self;
+
+  ServiceManagementStatusCategory(
+      {this.colorName, this.id, this.key, this.name, this.self});
+
+  factory ServiceManagementStatusCategory.fromJson(Map<String, Object?> json) {
+    return ServiceManagementStatusCategory(
+      colorName: json[r'colorName'] as String?,
+      id: (json[r'id'] as num?)?.toInt(),
+      key: json[r'key'] as String?,
+      name: json[r'name'] as String?,
+      self: json[r'self'] as String?,
+    );
+  }
+
+  Map<String, Object?> toJson() {
+    var colorName = this.colorName;
+    var id = this.id;
+    var key = this.key;
+    var name = this.name;
+    var self = this.self;
+
+    final json = <String, Object?>{};
+    if (colorName != null) {
+      json[r'colorName'] = colorName;
+    }
+    if (id != null) {
+      json[r'id'] = id;
+    }
+    if (key != null) {
+      json[r'key'] = key;
+    }
+    if (name != null) {
+      json[r'name'] = name;
+    }
+    if (self != null) {
+      json[r'self'] = self;
+    }
+    return json;
+  }
+
+  ServiceManagementStatusCategory copyWith(
+      {String? colorName, int? id, String? key, String? name, String? self}) {
+    return ServiceManagementStatusCategory(
+      colorName: colorName ?? this.colorName,
+      id: id ?? this.id,
+      key: key ?? this.key,
+      name: name ?? this.name,
+      self: self ?? this.self,
+    );
+  }
+}
+
+/// A status.
+class ServiceManagementStatusDetails {
+  /// The description of the status.
+  final String? description;
+
+  /// The URL of the icon used to represent the status.
+  final String? iconUrl;
+
+  /// The ID of the status.
+  final String? id;
+
+  /// The name of the status.
+  final String? name;
+
+  /// The URL of the status.
+  final String? self;
+
+  /// The category assigned to the status.
+  final ServiceManagementStatusCategory? statusCategory;
+
+  ServiceManagementStatusDetails(
+      {this.description,
+      this.iconUrl,
+      this.id,
+      this.name,
+      this.self,
+      this.statusCategory});
+
+  factory ServiceManagementStatusDetails.fromJson(Map<String, Object?> json) {
+    return ServiceManagementStatusDetails(
+      description: json[r'description'] as String?,
+      iconUrl: json[r'iconUrl'] as String?,
+      id: json[r'id'] as String?,
+      name: json[r'name'] as String?,
+      self: json[r'self'] as String?,
+      statusCategory: json[r'statusCategory'] != null
+          ? ServiceManagementStatusCategory.fromJson(
+              json[r'statusCategory']! as Map<String, Object?>)
+          : null,
+    );
+  }
+
+  Map<String, Object?> toJson() {
+    var description = this.description;
+    var iconUrl = this.iconUrl;
+    var id = this.id;
+    var name = this.name;
+    var self = this.self;
+    var statusCategory = this.statusCategory;
+
+    final json = <String, Object?>{};
+    if (description != null) {
+      json[r'description'] = description;
+    }
+    if (iconUrl != null) {
+      json[r'iconUrl'] = iconUrl;
+    }
+    if (id != null) {
+      json[r'id'] = id;
+    }
+    if (name != null) {
+      json[r'name'] = name;
+    }
+    if (self != null) {
+      json[r'self'] = self;
+    }
+    if (statusCategory != null) {
+      json[r'statusCategory'] = statusCategory.toJson();
+    }
+    return json;
+  }
+
+  ServiceManagementStatusDetails copyWith(
+      {String? description,
+      String? iconUrl,
+      String? id,
+      String? name,
+      String? self,
+      ServiceManagementStatusCategory? statusCategory}) {
+    return ServiceManagementStatusDetails(
+      description: description ?? this.description,
+      iconUrl: iconUrl ?? this.iconUrl,
+      id: id ?? this.id,
+      name: name ?? this.name,
+      self: self ?? this.self,
+      statusCategory: statusCategory ?? this.statusCategory,
+    );
+  }
+}
+
+/// User details permitted by the user's Atlassian Account privacy settings.
+/// However, be aware of these exceptions:
+///
+///  *  User record deleted from Atlassian: This occurs as the result of a right
+/// to be forgotten request. In this case, `displayName` provides an indication
+/// and other parameters have default values or are blank (for example, email is
+/// blank).
+///  *  User record corrupted: This occurs as a results of events such as a
+/// server import and can only happen to deleted users. In this case,
+/// `accountId` returns *unknown* and all other parameters have fallback values.
+///  *  User record unavailable: This usually occurs due to an internal service
+/// outage. In this case, all parameters have fallback values.
+class ServiceManagementUserDetails {
+  /// The account ID of the user, which uniquely identifies the user across all
+  /// Atlassian products. For example, *5b10ac8d82e05b22cc7d4ef5*.
+  final String? accountId;
+
+  /// The type of account represented by this user. This will be one of
+  /// 'atlassian' (normal users), 'app' (application user) or 'customer' (Jira
+  /// Service Desk customer user)
+  final String? accountType;
+
+  /// Whether the user is active.
+  final bool active;
+
+  /// The avatars of the user.
+  final AvatarUrlsBean? avatarUrls;
+
+  /// The display name of the user. Depending on the user’s privacy settings,
+  /// this may return an alternative value.
+  final String? displayName;
+
+  /// The email address of the user. Depending on the user’s privacy settings,
+  /// this may be returned as null.
+  final String? emailAddress;
+
+  /// This property is no longer available and will be removed from the
+  /// documentation soon. See the
+  /// [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/)
+  /// for details.
+  final String? key;
+
+  /// This property is no longer available and will be removed from the
+  /// documentation soon. See the
+  /// [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/)
+  /// for details.
+  final String? name;
+
+  /// The URL of the user.
+  final String? self;
+
+  /// The time zone specified in the user's profile. Depending on the user’s
+  /// privacy settings, this may be returned as null.
+  final String? timeZone;
+
+  ServiceManagementUserDetails(
+      {this.accountId,
+      this.accountType,
+      bool? active,
+      this.avatarUrls,
+      this.displayName,
+      this.emailAddress,
+      this.key,
+      this.name,
+      this.self,
+      this.timeZone})
+      : active = active ?? false;
+
+  factory ServiceManagementUserDetails.fromJson(Map<String, Object?> json) {
+    return ServiceManagementUserDetails(
+      accountId: json[r'accountId'] as String?,
+      accountType: json[r'accountType'] as String?,
+      active: json[r'active'] as bool? ?? false,
+      avatarUrls: json[r'avatarUrls'] != null
+          ? AvatarUrlsBean.fromJson(
+              json[r'avatarUrls']! as Map<String, Object?>)
+          : null,
+      displayName: json[r'displayName'] as String?,
+      emailAddress: json[r'emailAddress'] as String?,
+      key: json[r'key'] as String?,
+      name: json[r'name'] as String?,
+      self: json[r'self'] as String?,
+      timeZone: json[r'timeZone'] as String?,
+    );
+  }
+
+  Map<String, Object?> toJson() {
+    var accountId = this.accountId;
+    var accountType = this.accountType;
+    var active = this.active;
+    var avatarUrls = this.avatarUrls;
+    var displayName = this.displayName;
+    var emailAddress = this.emailAddress;
+    var key = this.key;
+    var name = this.name;
+    var self = this.self;
+    var timeZone = this.timeZone;
+
+    final json = <String, Object?>{};
+    if (accountId != null) {
+      json[r'accountId'] = accountId;
+    }
+    if (accountType != null) {
+      json[r'accountType'] = accountType;
+    }
+    json[r'active'] = active;
+    if (avatarUrls != null) {
+      json[r'avatarUrls'] = avatarUrls.toJson();
+    }
+    if (displayName != null) {
+      json[r'displayName'] = displayName;
+    }
+    if (emailAddress != null) {
+      json[r'emailAddress'] = emailAddress;
+    }
+    if (key != null) {
+      json[r'key'] = key;
+    }
+    if (name != null) {
+      json[r'name'] = name;
+    }
+    if (self != null) {
+      json[r'self'] = self;
+    }
+    if (timeZone != null) {
+      json[r'timeZone'] = timeZone;
+    }
+    return json;
+  }
+
+  ServiceManagementUserDetails copyWith(
+      {String? accountId,
+      String? accountType,
+      bool? active,
+      AvatarUrlsBean? avatarUrls,
+      String? displayName,
+      String? emailAddress,
+      String? key,
+      String? name,
+      String? self,
+      String? timeZone}) {
+    return ServiceManagementUserDetails(
+      accountId: accountId ?? this.accountId,
+      accountType: accountType ?? this.accountType,
+      active: active ?? this.active,
+      avatarUrls: avatarUrls ?? this.avatarUrls,
+      displayName: displayName ?? this.displayName,
+      emailAddress: emailAddress ?? this.emailAddress,
+      key: key ?? this.key,
+      name: name ?? this.name,
+      self: self ?? this.self,
+      timeZone: timeZone ?? this.timeZone,
     );
   }
 }
@@ -8958,163 +9291,6 @@ class SourceDTOType {
   String toString() => value;
 }
 
-/// A status category.
-class StatusCategory {
-  /// The name of the color used to represent the status category.
-  final String? colorName;
-
-  /// The ID of the status category.
-  final int? id;
-
-  /// The key of the status category.
-  final String? key;
-
-  /// The name of the status category.
-  final String? name;
-
-  /// The URL of the status category.
-  final String? self;
-
-  StatusCategory({this.colorName, this.id, this.key, this.name, this.self});
-
-  factory StatusCategory.fromJson(Map<String, Object?> json) {
-    return StatusCategory(
-      colorName: json[r'colorName'] as String?,
-      id: (json[r'id'] as num?)?.toInt(),
-      key: json[r'key'] as String?,
-      name: json[r'name'] as String?,
-      self: json[r'self'] as String?,
-    );
-  }
-
-  Map<String, Object?> toJson() {
-    var colorName = this.colorName;
-    var id = this.id;
-    var key = this.key;
-    var name = this.name;
-    var self = this.self;
-
-    final json = <String, Object?>{};
-    if (colorName != null) {
-      json[r'colorName'] = colorName;
-    }
-    if (id != null) {
-      json[r'id'] = id;
-    }
-    if (key != null) {
-      json[r'key'] = key;
-    }
-    if (name != null) {
-      json[r'name'] = name;
-    }
-    if (self != null) {
-      json[r'self'] = self;
-    }
-    return json;
-  }
-
-  StatusCategory copyWith(
-      {String? colorName, int? id, String? key, String? name, String? self}) {
-    return StatusCategory(
-      colorName: colorName ?? this.colorName,
-      id: id ?? this.id,
-      key: key ?? this.key,
-      name: name ?? this.name,
-      self: self ?? this.self,
-    );
-  }
-}
-
-/// A status.
-class StatusDetails {
-  /// The description of the status.
-  final String? description;
-
-  /// The URL of the icon used to represent the status.
-  final String? iconUrl;
-
-  /// The ID of the status.
-  final String? id;
-
-  /// The name of the status.
-  final String? name;
-
-  /// The URL of the status.
-  final String? self;
-
-  /// The category assigned to the status.
-  final StatusCategory? statusCategory;
-
-  StatusDetails(
-      {this.description,
-      this.iconUrl,
-      this.id,
-      this.name,
-      this.self,
-      this.statusCategory});
-
-  factory StatusDetails.fromJson(Map<String, Object?> json) {
-    return StatusDetails(
-      description: json[r'description'] as String?,
-      iconUrl: json[r'iconUrl'] as String?,
-      id: json[r'id'] as String?,
-      name: json[r'name'] as String?,
-      self: json[r'self'] as String?,
-      statusCategory: json[r'statusCategory'] != null
-          ? StatusCategory.fromJson(
-              json[r'statusCategory']! as Map<String, Object?>)
-          : null,
-    );
-  }
-
-  Map<String, Object?> toJson() {
-    var description = this.description;
-    var iconUrl = this.iconUrl;
-    var id = this.id;
-    var name = this.name;
-    var self = this.self;
-    var statusCategory = this.statusCategory;
-
-    final json = <String, Object?>{};
-    if (description != null) {
-      json[r'description'] = description;
-    }
-    if (iconUrl != null) {
-      json[r'iconUrl'] = iconUrl;
-    }
-    if (id != null) {
-      json[r'id'] = id;
-    }
-    if (name != null) {
-      json[r'name'] = name;
-    }
-    if (self != null) {
-      json[r'self'] = self;
-    }
-    if (statusCategory != null) {
-      json[r'statusCategory'] = statusCategory.toJson();
-    }
-    return json;
-  }
-
-  StatusDetails copyWith(
-      {String? description,
-      String? iconUrl,
-      String? id,
-      String? name,
-      String? self,
-      StatusCategory? statusCategory}) {
-    return StatusDetails(
-      description: description ?? this.description,
-      iconUrl: iconUrl ?? this.iconUrl,
-      id: id ?? this.id,
-      name: name ?? this.name,
-      self: self ?? this.self,
-      statusCategory: statusCategory ?? this.statusCategory,
-    );
-  }
-}
-
 class TemporaryAttachment {
   final String? temporaryAttachmentId;
   final String? fileName;
@@ -9299,162 +9475,6 @@ class UserDTO {
       emailAddress: emailAddress ?? this.emailAddress,
       key: key ?? this.key,
       name: name ?? this.name,
-      timeZone: timeZone ?? this.timeZone,
-    );
-  }
-}
-
-/// User details permitted by the user's Atlassian Account privacy settings.
-/// However, be aware of these exceptions:
-///
-///  *  User record deleted from Atlassian: This occurs as the result of a right
-/// to be forgotten request. In this case, `displayName` provides an indication
-/// and other parameters have default values or are blank (for example, email is
-/// blank).
-///  *  User record corrupted: This occurs as a results of events such as a
-/// server import and can only happen to deleted users. In this case,
-/// `accountId` returns *unknown* and all other parameters have fallback values.
-///  *  User record unavailable: This usually occurs due to an internal service
-/// outage. In this case, all parameters have fallback values.
-class UserDetails {
-  /// The account ID of the user, which uniquely identifies the user across all
-  /// Atlassian products. For example, *5b10ac8d82e05b22cc7d4ef5*.
-  final String? accountId;
-
-  /// The type of account represented by this user. This will be one of
-  /// 'atlassian' (normal users), 'app' (application user) or 'customer' (Jira
-  /// Service Desk customer user)
-  final String? accountType;
-
-  /// Whether the user is active.
-  final bool active;
-
-  /// The avatars of the user.
-  final AvatarUrlsBean? avatarUrls;
-
-  /// The display name of the user. Depending on the user’s privacy settings,
-  /// this may return an alternative value.
-  final String? displayName;
-
-  /// The email address of the user. Depending on the user’s privacy settings,
-  /// this may be returned as null.
-  final String? emailAddress;
-
-  /// This property is no longer available and will be removed from the
-  /// documentation soon. See the
-  /// [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/)
-  /// for details.
-  final String? key;
-
-  /// This property is no longer available and will be removed from the
-  /// documentation soon. See the
-  /// [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/)
-  /// for details.
-  final String? name;
-
-  /// The URL of the user.
-  final String? self;
-
-  /// The time zone specified in the user's profile. Depending on the user’s
-  /// privacy settings, this may be returned as null.
-  final String? timeZone;
-
-  UserDetails(
-      {this.accountId,
-      this.accountType,
-      bool? active,
-      this.avatarUrls,
-      this.displayName,
-      this.emailAddress,
-      this.key,
-      this.name,
-      this.self,
-      this.timeZone})
-      : active = active ?? false;
-
-  factory UserDetails.fromJson(Map<String, Object?> json) {
-    return UserDetails(
-      accountId: json[r'accountId'] as String?,
-      accountType: json[r'accountType'] as String?,
-      active: json[r'active'] as bool? ?? false,
-      avatarUrls: json[r'avatarUrls'] != null
-          ? AvatarUrlsBean.fromJson(
-              json[r'avatarUrls']! as Map<String, Object?>)
-          : null,
-      displayName: json[r'displayName'] as String?,
-      emailAddress: json[r'emailAddress'] as String?,
-      key: json[r'key'] as String?,
-      name: json[r'name'] as String?,
-      self: json[r'self'] as String?,
-      timeZone: json[r'timeZone'] as String?,
-    );
-  }
-
-  Map<String, Object?> toJson() {
-    var accountId = this.accountId;
-    var accountType = this.accountType;
-    var active = this.active;
-    var avatarUrls = this.avatarUrls;
-    var displayName = this.displayName;
-    var emailAddress = this.emailAddress;
-    var key = this.key;
-    var name = this.name;
-    var self = this.self;
-    var timeZone = this.timeZone;
-
-    final json = <String, Object?>{};
-    if (accountId != null) {
-      json[r'accountId'] = accountId;
-    }
-    if (accountType != null) {
-      json[r'accountType'] = accountType;
-    }
-    json[r'active'] = active;
-    if (avatarUrls != null) {
-      json[r'avatarUrls'] = avatarUrls.toJson();
-    }
-    if (displayName != null) {
-      json[r'displayName'] = displayName;
-    }
-    if (emailAddress != null) {
-      json[r'emailAddress'] = emailAddress;
-    }
-    if (key != null) {
-      json[r'key'] = key;
-    }
-    if (name != null) {
-      json[r'name'] = name;
-    }
-    if (self != null) {
-      json[r'self'] = self;
-    }
-    if (timeZone != null) {
-      json[r'timeZone'] = timeZone;
-    }
-    return json;
-  }
-
-  UserDetails copyWith(
-      {String? accountId,
-      String? accountType,
-      bool? active,
-      AvatarUrlsBean? avatarUrls,
-      String? displayName,
-      String? emailAddress,
-      String? key,
-      String? name,
-      String? self,
-      String? timeZone}) {
-    return UserDetails(
-      accountId: accountId ?? this.accountId,
-      accountType: accountType ?? this.accountType,
-      active: active ?? this.active,
-      avatarUrls: avatarUrls ?? this.avatarUrls,
-      displayName: displayName ?? this.displayName,
-      emailAddress: emailAddress ?? this.emailAddress,
-      key: key ?? this.key,
-      name: name ?? this.name,
-      self: self ?? this.self,
       timeZone: timeZone ?? this.timeZone,
     );
   }

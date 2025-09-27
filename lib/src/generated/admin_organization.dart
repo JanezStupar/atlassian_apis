@@ -609,6 +609,188 @@ class AddGroupMembershipInput {
   }
 }
 
+class AdminOrganizationUser {
+  /// The account ID for the user. The format is [a-zA-Z0-9_|-:]{1,128}
+  final String accountId;
+
+  /// The type of account
+  final AdminOrganizationUserAccountType accountType;
+
+  /// The lifecycle status of the account
+  final AdminOrganizationUserAccountStatus accountStatus;
+
+  /// The display name of the user. Should be used for contextual rendering of
+  /// the authorship in content. If the user has restricted visibility of their
+  /// name, their nickname will be displayed as a substitute value
+  final String name;
+
+  /// The absolute URI (RFC3986) to the avatar name of the user. Should be used
+  /// for contextual rendering of the authorship in content. If the user has
+  /// restricted visibility of their avatar, an alternative URI will be provided
+  /// as a substitute value
+  final String picture;
+
+  /// The email address of the user. If the user has restricted visibility of
+  /// the email address, the property will be absent
+  final String? email;
+
+  /// Billable status of User in Atlassian Access
+  final bool accessBillable;
+
+  /// Last active date for a user
+  final DateTime? lastActive;
+
+  /// Products which the User is using
+  final List<Product> productAccess;
+
+  /// Link to this User for mutation
+  final LinkSelfModel? links;
+
+  AdminOrganizationUser(
+      {required this.accountId,
+      required this.accountType,
+      required this.accountStatus,
+      required this.name,
+      required this.picture,
+      this.email,
+      bool? accessBillable,
+      this.lastActive,
+      List<Product>? productAccess,
+      this.links})
+      : accessBillable = accessBillable ?? false,
+        productAccess = productAccess ?? [];
+
+  factory AdminOrganizationUser.fromJson(Map<String, Object?> json) {
+    return AdminOrganizationUser(
+      accountId: json[r'account_id'] as String? ?? '',
+      accountType: AdminOrganizationUserAccountType.fromValue(
+          json[r'account_type'] as String? ?? ''),
+      accountStatus: AdminOrganizationUserAccountStatus.fromValue(
+          json[r'account_status'] as String? ?? ''),
+      name: json[r'name'] as String? ?? '',
+      picture: json[r'picture'] as String? ?? '',
+      email: json[r'email'] as String?,
+      accessBillable: json[r'access_billable'] as bool? ?? false,
+      lastActive: DateTime.tryParse(json[r'last_active'] as String? ?? ''),
+      productAccess: (json[r'product_access'] as List<Object?>?)
+              ?.map((i) =>
+                  Product.fromJson(i as Map<String, Object?>? ?? const {}))
+              .toList() ??
+          [],
+      links: json[r'links'] != null
+          ? LinkSelfModel.fromJson(json[r'links']! as Map<String, Object?>)
+          : null,
+    );
+  }
+
+  Map<String, Object?> toJson() {
+    var accountId = this.accountId;
+    var accountType = this.accountType;
+    var accountStatus = this.accountStatus;
+    var name = this.name;
+    var picture = this.picture;
+    var email = this.email;
+    var accessBillable = this.accessBillable;
+    var lastActive = this.lastActive;
+    var productAccess = this.productAccess;
+    var links = this.links;
+
+    final json = <String, Object?>{};
+    json[r'account_id'] = accountId;
+    json[r'account_type'] = accountType.value;
+    json[r'account_status'] = accountStatus.value;
+    json[r'name'] = name;
+    json[r'picture'] = picture;
+    if (email != null) {
+      json[r'email'] = email;
+    }
+    json[r'access_billable'] = accessBillable;
+    if (lastActive != null) {
+      json[r'last_active'] = lastActive.toIsoWithNumericOffset();
+    }
+    json[r'product_access'] = productAccess.map((i) => i.toJson()).toList();
+    if (links != null) {
+      json[r'links'] = links.toJson();
+    }
+    return json;
+  }
+
+  AdminOrganizationUser copyWith(
+      {String? accountId,
+      AdminOrganizationUserAccountType? accountType,
+      AdminOrganizationUserAccountStatus? accountStatus,
+      String? name,
+      String? picture,
+      String? email,
+      bool? accessBillable,
+      DateTime? lastActive,
+      List<Product>? productAccess,
+      LinkSelfModel? links}) {
+    return AdminOrganizationUser(
+      accountId: accountId ?? this.accountId,
+      accountType: accountType ?? this.accountType,
+      accountStatus: accountStatus ?? this.accountStatus,
+      name: name ?? this.name,
+      picture: picture ?? this.picture,
+      email: email ?? this.email,
+      accessBillable: accessBillable ?? this.accessBillable,
+      lastActive: lastActive ?? this.lastActive,
+      productAccess: productAccess ?? this.productAccess,
+      links: links ?? this.links,
+    );
+  }
+}
+
+class AdminOrganizationUserAccountType {
+  static const atlassian = AdminOrganizationUserAccountType._('atlassian');
+  static const customer = AdminOrganizationUserAccountType._('customer');
+  static const app = AdminOrganizationUserAccountType._('app');
+
+  static const values = [
+    atlassian,
+    customer,
+    app,
+  ];
+  final String value;
+
+  const AdminOrganizationUserAccountType._(this.value);
+
+  static AdminOrganizationUserAccountType fromValue(String value) =>
+      values.firstWhere((e) => e.value == value,
+          orElse: () => AdminOrganizationUserAccountType._(value));
+
+  /// An enum received from the server but this version of the client doesn't recognize it.
+  bool get isUnknown => values.every((v) => v.value != value);
+
+  @override
+  String toString() => value;
+}
+
+class AdminOrganizationUserAccountStatus {
+  static const active = AdminOrganizationUserAccountStatus._('active');
+  static const inactive = AdminOrganizationUserAccountStatus._('inactive');
+  static const closed = AdminOrganizationUserAccountStatus._('closed');
+
+  static const values = [
+    active,
+    inactive,
+    closed,
+  ];
+  final String value;
+
+  const AdminOrganizationUserAccountStatus._(this.value);
+
+  static AdminOrganizationUserAccountStatus fromValue(String value) =>
+      values.firstWhere((e) => e.value == value,
+          orElse: () => AdminOrganizationUserAccountStatus._(value));
+
+  /// An enum received from the server but this version of the client doesn't recognize it.
+  bool get isUnknown => values.every((v) => v.value != value);
+
+  @override
+  String toString() => value;
+}
+
 /// Applicable when policy type is `ip-allowlist` or `data-residency`
 class AllowIfContainedRule {
   final List<String> in$;
@@ -4488,203 +4670,22 @@ class SortFieldOrder {
   String toString() => value;
 }
 
-class User {
-  /// The account ID for the user. The format is [a-zA-Z0-9_|-:]{1,128}
-  final String accountId;
-
-  /// The type of account
-  final UserAccountType accountType;
-
-  /// The lifecycle status of the account
-  final UserAccountStatus accountStatus;
-
-  /// The display name of the user. Should be used for contextual rendering of
-  /// the authorship in content. If the user has restricted visibility of their
-  /// name, their nickname will be displayed as a substitute value
-  final String name;
-
-  /// The absolute URI (RFC3986) to the avatar name of the user. Should be used
-  /// for contextual rendering of the authorship in content. If the user has
-  /// restricted visibility of their avatar, an alternative URI will be provided
-  /// as a substitute value
-  final String picture;
-
-  /// The email address of the user. If the user has restricted visibility of
-  /// the email address, the property will be absent
-  final String? email;
-
-  /// Billable status of User in Atlassian Access
-  final bool accessBillable;
-
-  /// Last active date for a user
-  final DateTime? lastActive;
-
-  /// Products which the User is using
-  final List<Product> productAccess;
-
-  /// Link to this User for mutation
-  final LinkSelfModel? links;
-
-  User(
-      {required this.accountId,
-      required this.accountType,
-      required this.accountStatus,
-      required this.name,
-      required this.picture,
-      this.email,
-      bool? accessBillable,
-      this.lastActive,
-      List<Product>? productAccess,
-      this.links})
-      : accessBillable = accessBillable ?? false,
-        productAccess = productAccess ?? [];
-
-  factory User.fromJson(Map<String, Object?> json) {
-    return User(
-      accountId: json[r'account_id'] as String? ?? '',
-      accountType:
-          UserAccountType.fromValue(json[r'account_type'] as String? ?? ''),
-      accountStatus:
-          UserAccountStatus.fromValue(json[r'account_status'] as String? ?? ''),
-      name: json[r'name'] as String? ?? '',
-      picture: json[r'picture'] as String? ?? '',
-      email: json[r'email'] as String?,
-      accessBillable: json[r'access_billable'] as bool? ?? false,
-      lastActive: DateTime.tryParse(json[r'last_active'] as String? ?? ''),
-      productAccess: (json[r'product_access'] as List<Object?>?)
-              ?.map((i) =>
-                  Product.fromJson(i as Map<String, Object?>? ?? const {}))
-              .toList() ??
-          [],
-      links: json[r'links'] != null
-          ? LinkSelfModel.fromJson(json[r'links']! as Map<String, Object?>)
-          : null,
-    );
-  }
-
-  Map<String, Object?> toJson() {
-    var accountId = this.accountId;
-    var accountType = this.accountType;
-    var accountStatus = this.accountStatus;
-    var name = this.name;
-    var picture = this.picture;
-    var email = this.email;
-    var accessBillable = this.accessBillable;
-    var lastActive = this.lastActive;
-    var productAccess = this.productAccess;
-    var links = this.links;
-
-    final json = <String, Object?>{};
-    json[r'account_id'] = accountId;
-    json[r'account_type'] = accountType.value;
-    json[r'account_status'] = accountStatus.value;
-    json[r'name'] = name;
-    json[r'picture'] = picture;
-    if (email != null) {
-      json[r'email'] = email;
-    }
-    json[r'access_billable'] = accessBillable;
-    if (lastActive != null) {
-      json[r'last_active'] = lastActive.toIsoWithNumericOffset();
-    }
-    json[r'product_access'] = productAccess.map((i) => i.toJson()).toList();
-    if (links != null) {
-      json[r'links'] = links.toJson();
-    }
-    return json;
-  }
-
-  User copyWith(
-      {String? accountId,
-      UserAccountType? accountType,
-      UserAccountStatus? accountStatus,
-      String? name,
-      String? picture,
-      String? email,
-      bool? accessBillable,
-      DateTime? lastActive,
-      List<Product>? productAccess,
-      LinkSelfModel? links}) {
-    return User(
-      accountId: accountId ?? this.accountId,
-      accountType: accountType ?? this.accountType,
-      accountStatus: accountStatus ?? this.accountStatus,
-      name: name ?? this.name,
-      picture: picture ?? this.picture,
-      email: email ?? this.email,
-      accessBillable: accessBillable ?? this.accessBillable,
-      lastActive: lastActive ?? this.lastActive,
-      productAccess: productAccess ?? this.productAccess,
-      links: links ?? this.links,
-    );
-  }
-}
-
-class UserAccountType {
-  static const atlassian = UserAccountType._('atlassian');
-  static const customer = UserAccountType._('customer');
-  static const app = UserAccountType._('app');
-
-  static const values = [
-    atlassian,
-    customer,
-    app,
-  ];
-  final String value;
-
-  const UserAccountType._(this.value);
-
-  static UserAccountType fromValue(String value) =>
-      values.firstWhere((e) => e.value == value,
-          orElse: () => UserAccountType._(value));
-
-  /// An enum received from the server but this version of the client doesn't recognize it.
-  bool get isUnknown => values.every((v) => v.value != value);
-
-  @override
-  String toString() => value;
-}
-
-class UserAccountStatus {
-  static const active = UserAccountStatus._('active');
-  static const inactive = UserAccountStatus._('inactive');
-  static const closed = UserAccountStatus._('closed');
-
-  static const values = [
-    active,
-    inactive,
-    closed,
-  ];
-  final String value;
-
-  const UserAccountStatus._(this.value);
-
-  static UserAccountStatus fromValue(String value) =>
-      values.firstWhere((e) => e.value == value,
-          orElse: () => UserAccountStatus._(value));
-
-  /// An enum received from the server but this version of the client doesn't recognize it.
-  bool get isUnknown => values.every((v) => v.value != value);
-
-  @override
-  String toString() => value;
-}
-
 class UserPage {
   /// 0 or more values of Users are returned
-  final List<User> data;
+  final List<AdminOrganizationUser> data;
   final UserPageMeta? meta;
 
   /// Links for Pagination.
   final LinkPageModel? links;
 
-  UserPage({List<User>? data, this.meta, this.links}) : data = data ?? [];
+  UserPage({List<AdminOrganizationUser>? data, this.meta, this.links})
+      : data = data ?? [];
 
   factory UserPage.fromJson(Map<String, Object?> json) {
     return UserPage(
       data: (json[r'data'] as List<Object?>?)
-              ?.map(
-                  (i) => User.fromJson(i as Map<String, Object?>? ?? const {}))
+              ?.map((i) => AdminOrganizationUser.fromJson(
+                  i as Map<String, Object?>? ?? const {}))
               .toList() ??
           [],
       meta: json[r'meta'] != null
@@ -4713,7 +4714,9 @@ class UserPage {
   }
 
   UserPage copyWith(
-      {List<User>? data, UserPageMeta? meta, LinkPageModel? links}) {
+      {List<AdminOrganizationUser>? data,
+      UserPageMeta? meta,
+      LinkPageModel? links}) {
     return UserPage(
       data: data ?? this.data,
       meta: meta ?? this.meta,

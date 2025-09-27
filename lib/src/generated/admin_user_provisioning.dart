@@ -366,6 +366,236 @@ class UsersApi {
   }
 }
 
+class AdminUserProvisioningJsonNode {
+  final bool array;
+  final bool null$;
+  final bool valueNode;
+  final bool containerNode;
+  final bool missingNode;
+  final bool object;
+  final AdminUserProvisioningJsonNodeNodeType? nodeType;
+  final bool pojo;
+  final bool number;
+  final bool integralNumber;
+  final bool floatingPointNumber;
+  final bool short;
+  final bool int$;
+  final bool long;
+  final bool double$;
+  final bool bigDecimal;
+  final bool bigInteger;
+  final bool textual;
+  final bool boolean;
+  final bool binary;
+  final bool float;
+
+  AdminUserProvisioningJsonNode(
+      {bool? array,
+      bool? null$,
+      bool? valueNode,
+      bool? containerNode,
+      bool? missingNode,
+      bool? object,
+      this.nodeType,
+      bool? pojo,
+      bool? number,
+      bool? integralNumber,
+      bool? floatingPointNumber,
+      bool? short,
+      bool? int$,
+      bool? long,
+      bool? double$,
+      bool? bigDecimal,
+      bool? bigInteger,
+      bool? textual,
+      bool? boolean,
+      bool? binary,
+      bool? float})
+      : array = array ?? false,
+        null$ = null$ ?? false,
+        valueNode = valueNode ?? false,
+        containerNode = containerNode ?? false,
+        missingNode = missingNode ?? false,
+        object = object ?? false,
+        pojo = pojo ?? false,
+        number = number ?? false,
+        integralNumber = integralNumber ?? false,
+        floatingPointNumber = floatingPointNumber ?? false,
+        short = short ?? false,
+        int$ = int$ ?? false,
+        long = long ?? false,
+        double$ = double$ ?? false,
+        bigDecimal = bigDecimal ?? false,
+        bigInteger = bigInteger ?? false,
+        textual = textual ?? false,
+        boolean = boolean ?? false,
+        binary = binary ?? false,
+        float = float ?? false;
+
+  factory AdminUserProvisioningJsonNode.fromJson(Map<String, Object?> json) {
+    return AdminUserProvisioningJsonNode(
+      array: json[r'array'] as bool? ?? false,
+      null$: json[r'null'] as bool? ?? false,
+      valueNode: json[r'valueNode'] as bool? ?? false,
+      containerNode: json[r'containerNode'] as bool? ?? false,
+      missingNode: json[r'missingNode'] as bool? ?? false,
+      object: json[r'object'] as bool? ?? false,
+      nodeType: json[r'nodeType'] != null
+          ? AdminUserProvisioningJsonNodeNodeType.fromValue(
+              json[r'nodeType']! as String)
+          : null,
+      pojo: json[r'pojo'] as bool? ?? false,
+      number: json[r'number'] as bool? ?? false,
+      integralNumber: json[r'integralNumber'] as bool? ?? false,
+      floatingPointNumber: json[r'floatingPointNumber'] as bool? ?? false,
+      short: json[r'short'] as bool? ?? false,
+      int$: json[r'int'] as bool? ?? false,
+      long: json[r'long'] as bool? ?? false,
+      double$: json[r'double'] as bool? ?? false,
+      bigDecimal: json[r'bigDecimal'] as bool? ?? false,
+      bigInteger: json[r'bigInteger'] as bool? ?? false,
+      textual: json[r'textual'] as bool? ?? false,
+      boolean: json[r'boolean'] as bool? ?? false,
+      binary: json[r'binary'] as bool? ?? false,
+      float: json[r'float'] as bool? ?? false,
+    );
+  }
+
+  Map<String, Object?> toJson() {
+    var array = this.array;
+    var null$ = this.null$;
+    var valueNode = this.valueNode;
+    var containerNode = this.containerNode;
+    var missingNode = this.missingNode;
+    var object = this.object;
+    var nodeType = this.nodeType;
+    var pojo = this.pojo;
+    var number = this.number;
+    var integralNumber = this.integralNumber;
+    var floatingPointNumber = this.floatingPointNumber;
+    var short = this.short;
+    var int$ = this.int$;
+    var long = this.long;
+    var double$ = this.double$;
+    var bigDecimal = this.bigDecimal;
+    var bigInteger = this.bigInteger;
+    var textual = this.textual;
+    var boolean = this.boolean;
+    var binary = this.binary;
+    var float = this.float;
+
+    final json = <String, Object?>{};
+    json[r'array'] = array;
+    json[r'null'] = null$;
+    json[r'valueNode'] = valueNode;
+    json[r'containerNode'] = containerNode;
+    json[r'missingNode'] = missingNode;
+    json[r'object'] = object;
+    if (nodeType != null) {
+      json[r'nodeType'] = nodeType.value;
+    }
+    json[r'pojo'] = pojo;
+    json[r'number'] = number;
+    json[r'integralNumber'] = integralNumber;
+    json[r'floatingPointNumber'] = floatingPointNumber;
+    json[r'short'] = short;
+    json[r'int'] = int$;
+    json[r'long'] = long;
+    json[r'double'] = double$;
+    json[r'bigDecimal'] = bigDecimal;
+    json[r'bigInteger'] = bigInteger;
+    json[r'textual'] = textual;
+    json[r'boolean'] = boolean;
+    json[r'binary'] = binary;
+    json[r'float'] = float;
+    return json;
+  }
+
+  AdminUserProvisioningJsonNode copyWith(
+      {bool? array,
+      bool? null$,
+      bool? valueNode,
+      bool? containerNode,
+      bool? missingNode,
+      bool? object,
+      AdminUserProvisioningJsonNodeNodeType? nodeType,
+      bool? pojo,
+      bool? number,
+      bool? integralNumber,
+      bool? floatingPointNumber,
+      bool? short,
+      bool? int$,
+      bool? long,
+      bool? double$,
+      bool? bigDecimal,
+      bool? bigInteger,
+      bool? textual,
+      bool? boolean,
+      bool? binary,
+      bool? float}) {
+    return AdminUserProvisioningJsonNode(
+      array: array ?? this.array,
+      null$: null$ ?? this.null$,
+      valueNode: valueNode ?? this.valueNode,
+      containerNode: containerNode ?? this.containerNode,
+      missingNode: missingNode ?? this.missingNode,
+      object: object ?? this.object,
+      nodeType: nodeType ?? this.nodeType,
+      pojo: pojo ?? this.pojo,
+      number: number ?? this.number,
+      integralNumber: integralNumber ?? this.integralNumber,
+      floatingPointNumber: floatingPointNumber ?? this.floatingPointNumber,
+      short: short ?? this.short,
+      int$: int$ ?? this.int$,
+      long: long ?? this.long,
+      double$: double$ ?? this.double$,
+      bigDecimal: bigDecimal ?? this.bigDecimal,
+      bigInteger: bigInteger ?? this.bigInteger,
+      textual: textual ?? this.textual,
+      boolean: boolean ?? this.boolean,
+      binary: binary ?? this.binary,
+      float: float ?? this.float,
+    );
+  }
+}
+
+class AdminUserProvisioningJsonNodeNodeType {
+  static const array = AdminUserProvisioningJsonNodeNodeType._('ARRAY');
+  static const binary = AdminUserProvisioningJsonNodeNodeType._('BINARY');
+  static const boolean = AdminUserProvisioningJsonNodeNodeType._('BOOLEAN');
+  static const missing = AdminUserProvisioningJsonNodeNodeType._('MISSING');
+  static const null$ = AdminUserProvisioningJsonNodeNodeType._('NULL');
+  static const number = AdminUserProvisioningJsonNodeNodeType._('NUMBER');
+  static const object = AdminUserProvisioningJsonNodeNodeType._('OBJECT');
+  static const pojo = AdminUserProvisioningJsonNodeNodeType._('POJO');
+  static const string = AdminUserProvisioningJsonNodeNodeType._('STRING');
+
+  static const values = [
+    array,
+    binary,
+    boolean,
+    missing,
+    null$,
+    number,
+    object,
+    pojo,
+    string,
+  ];
+  final String value;
+
+  const AdminUserProvisioningJsonNodeNodeType._(this.value);
+
+  static AdminUserProvisioningJsonNodeNodeType fromValue(String value) =>
+      values.firstWhere((e) => e.value == value,
+          orElse: () => AdminUserProvisioningJsonNodeNodeType._(value));
+
+  /// An enum received from the server but this version of the client doesn't recognize it.
+  bool get isUnknown => values.every((v) => v.value != value);
+
+  @override
+  String toString() => value;
+}
+
 class BadRequestException {
   final Throwable? cause;
   final List<StackTraceElement> stackTrace;
@@ -725,240 +955,11 @@ class Failure {
   }
 }
 
-class JsonNode {
-  final bool array;
-  final bool null$;
-  final bool valueNode;
-  final bool containerNode;
-  final bool missingNode;
-  final bool object;
-  final JsonNodeNodeType? nodeType;
-  final bool pojo;
-  final bool number;
-  final bool integralNumber;
-  final bool floatingPointNumber;
-  final bool short;
-  final bool int$;
-  final bool long;
-  final bool double$;
-  final bool bigDecimal;
-  final bool bigInteger;
-  final bool textual;
-  final bool boolean;
-  final bool binary;
-  final bool float;
-
-  JsonNode(
-      {bool? array,
-      bool? null$,
-      bool? valueNode,
-      bool? containerNode,
-      bool? missingNode,
-      bool? object,
-      this.nodeType,
-      bool? pojo,
-      bool? number,
-      bool? integralNumber,
-      bool? floatingPointNumber,
-      bool? short,
-      bool? int$,
-      bool? long,
-      bool? double$,
-      bool? bigDecimal,
-      bool? bigInteger,
-      bool? textual,
-      bool? boolean,
-      bool? binary,
-      bool? float})
-      : array = array ?? false,
-        null$ = null$ ?? false,
-        valueNode = valueNode ?? false,
-        containerNode = containerNode ?? false,
-        missingNode = missingNode ?? false,
-        object = object ?? false,
-        pojo = pojo ?? false,
-        number = number ?? false,
-        integralNumber = integralNumber ?? false,
-        floatingPointNumber = floatingPointNumber ?? false,
-        short = short ?? false,
-        int$ = int$ ?? false,
-        long = long ?? false,
-        double$ = double$ ?? false,
-        bigDecimal = bigDecimal ?? false,
-        bigInteger = bigInteger ?? false,
-        textual = textual ?? false,
-        boolean = boolean ?? false,
-        binary = binary ?? false,
-        float = float ?? false;
-
-  factory JsonNode.fromJson(Map<String, Object?> json) {
-    return JsonNode(
-      array: json[r'array'] as bool? ?? false,
-      null$: json[r'null'] as bool? ?? false,
-      valueNode: json[r'valueNode'] as bool? ?? false,
-      containerNode: json[r'containerNode'] as bool? ?? false,
-      missingNode: json[r'missingNode'] as bool? ?? false,
-      object: json[r'object'] as bool? ?? false,
-      nodeType: json[r'nodeType'] != null
-          ? JsonNodeNodeType.fromValue(json[r'nodeType']! as String)
-          : null,
-      pojo: json[r'pojo'] as bool? ?? false,
-      number: json[r'number'] as bool? ?? false,
-      integralNumber: json[r'integralNumber'] as bool? ?? false,
-      floatingPointNumber: json[r'floatingPointNumber'] as bool? ?? false,
-      short: json[r'short'] as bool? ?? false,
-      int$: json[r'int'] as bool? ?? false,
-      long: json[r'long'] as bool? ?? false,
-      double$: json[r'double'] as bool? ?? false,
-      bigDecimal: json[r'bigDecimal'] as bool? ?? false,
-      bigInteger: json[r'bigInteger'] as bool? ?? false,
-      textual: json[r'textual'] as bool? ?? false,
-      boolean: json[r'boolean'] as bool? ?? false,
-      binary: json[r'binary'] as bool? ?? false,
-      float: json[r'float'] as bool? ?? false,
-    );
-  }
-
-  Map<String, Object?> toJson() {
-    var array = this.array;
-    var null$ = this.null$;
-    var valueNode = this.valueNode;
-    var containerNode = this.containerNode;
-    var missingNode = this.missingNode;
-    var object = this.object;
-    var nodeType = this.nodeType;
-    var pojo = this.pojo;
-    var number = this.number;
-    var integralNumber = this.integralNumber;
-    var floatingPointNumber = this.floatingPointNumber;
-    var short = this.short;
-    var int$ = this.int$;
-    var long = this.long;
-    var double$ = this.double$;
-    var bigDecimal = this.bigDecimal;
-    var bigInteger = this.bigInteger;
-    var textual = this.textual;
-    var boolean = this.boolean;
-    var binary = this.binary;
-    var float = this.float;
-
-    final json = <String, Object?>{};
-    json[r'array'] = array;
-    json[r'null'] = null$;
-    json[r'valueNode'] = valueNode;
-    json[r'containerNode'] = containerNode;
-    json[r'missingNode'] = missingNode;
-    json[r'object'] = object;
-    if (nodeType != null) {
-      json[r'nodeType'] = nodeType.value;
-    }
-    json[r'pojo'] = pojo;
-    json[r'number'] = number;
-    json[r'integralNumber'] = integralNumber;
-    json[r'floatingPointNumber'] = floatingPointNumber;
-    json[r'short'] = short;
-    json[r'int'] = int$;
-    json[r'long'] = long;
-    json[r'double'] = double$;
-    json[r'bigDecimal'] = bigDecimal;
-    json[r'bigInteger'] = bigInteger;
-    json[r'textual'] = textual;
-    json[r'boolean'] = boolean;
-    json[r'binary'] = binary;
-    json[r'float'] = float;
-    return json;
-  }
-
-  JsonNode copyWith(
-      {bool? array,
-      bool? null$,
-      bool? valueNode,
-      bool? containerNode,
-      bool? missingNode,
-      bool? object,
-      JsonNodeNodeType? nodeType,
-      bool? pojo,
-      bool? number,
-      bool? integralNumber,
-      bool? floatingPointNumber,
-      bool? short,
-      bool? int$,
-      bool? long,
-      bool? double$,
-      bool? bigDecimal,
-      bool? bigInteger,
-      bool? textual,
-      bool? boolean,
-      bool? binary,
-      bool? float}) {
-    return JsonNode(
-      array: array ?? this.array,
-      null$: null$ ?? this.null$,
-      valueNode: valueNode ?? this.valueNode,
-      containerNode: containerNode ?? this.containerNode,
-      missingNode: missingNode ?? this.missingNode,
-      object: object ?? this.object,
-      nodeType: nodeType ?? this.nodeType,
-      pojo: pojo ?? this.pojo,
-      number: number ?? this.number,
-      integralNumber: integralNumber ?? this.integralNumber,
-      floatingPointNumber: floatingPointNumber ?? this.floatingPointNumber,
-      short: short ?? this.short,
-      int$: int$ ?? this.int$,
-      long: long ?? this.long,
-      double$: double$ ?? this.double$,
-      bigDecimal: bigDecimal ?? this.bigDecimal,
-      bigInteger: bigInteger ?? this.bigInteger,
-      textual: textual ?? this.textual,
-      boolean: boolean ?? this.boolean,
-      binary: binary ?? this.binary,
-      float: float ?? this.float,
-    );
-  }
-}
-
-class JsonNodeNodeType {
-  static const array = JsonNodeNodeType._('ARRAY');
-  static const binary = JsonNodeNodeType._('BINARY');
-  static const boolean = JsonNodeNodeType._('BOOLEAN');
-  static const missing = JsonNodeNodeType._('MISSING');
-  static const null$ = JsonNodeNodeType._('NULL');
-  static const number = JsonNodeNodeType._('NUMBER');
-  static const object = JsonNodeNodeType._('OBJECT');
-  static const pojo = JsonNodeNodeType._('POJO');
-  static const string = JsonNodeNodeType._('STRING');
-
-  static const values = [
-    array,
-    binary,
-    boolean,
-    missing,
-    null$,
-    number,
-    object,
-    pojo,
-    string,
-  ];
-  final String value;
-
-  const JsonNodeNodeType._(this.value);
-
-  static JsonNodeNodeType fromValue(String value) =>
-      values.firstWhere((e) => e.value == value,
-          orElse: () => JsonNodeNodeType._(value));
-
-  /// An enum received from the server but this version of the client doesn't recognize it.
-  bool get isUnknown => values.every((v) => v.value != value);
-
-  @override
-  String toString() => value;
-}
-
 /// Operation for a SCIM patch
 class OperationForAScimPatch {
   final String? op;
   final String? path;
-  final JsonNode? value;
+  final AdminUserProvisioningJsonNode? value;
 
   OperationForAScimPatch({this.op, this.path, this.value});
 
@@ -967,7 +968,8 @@ class OperationForAScimPatch {
       op: json[r'op'] as String?,
       path: json[r'path'] as String?,
       value: json[r'value'] != null
-          ? JsonNode.fromJson(json[r'value']! as Map<String, Object?>)
+          ? AdminUserProvisioningJsonNode.fromJson(
+              json[r'value']! as Map<String, Object?>)
           : null,
     );
   }
@@ -990,7 +992,8 @@ class OperationForAScimPatch {
     return json;
   }
 
-  OperationForAScimPatch copyWith({String? op, String? path, JsonNode? value}) {
+  OperationForAScimPatch copyWith(
+      {String? op, String? path, AdminUserProvisioningJsonNode? value}) {
     return OperationForAScimPatch(
       op: op ?? this.op,
       path: path ?? this.path,

@@ -2367,11 +2367,11 @@ class ContentVersionsApi {
   ///
   /// **[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:
   /// Permission to update the content.
-  Future<Version> restoreContentVersion(
+  Future<ConfluenceVersion> restoreContentVersion(
       {required String id,
       List<String>? expand,
       required VersionRestore body}) async {
-    return Version.fromJson(await _client.send(
+    return ConfluenceVersion.fromJson(await _client.send(
       'post',
       'wiki/rest/api/content/{id}/version',
       pathParameters: {
@@ -2394,11 +2394,11 @@ class ContentVersionsApi {
   /// permission
   /// for the space is required.
   @deprecated
-  Future<Version> getContentVersion(
+  Future<ConfluenceVersion> getContentVersion(
       {required String id,
       required int versionNumber,
       List<String>? expand}) async {
-    return Version.fromJson(await _client.send(
+    return ConfluenceVersion.fromJson(await _client.send(
       'get',
       'wiki/rest/api/content/{id}/version/{versionNumber}',
       pathParameters: {
@@ -4690,9 +4690,9 @@ class UsersApi {
   ///
   /// **[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:
   /// Permission to access the Confluence site ('Can use' global permission).
-  Future<User> getUser(
+  Future<ConfluenceUser> getUser(
       {required String accountId, List<String>? expand}) async {
-    return User.fromJson(await _client.send(
+    return ConfluenceUser.fromJson(await _client.send(
       'get',
       'wiki/rest/api/user',
       queryParameters: {
@@ -4723,8 +4723,8 @@ class UsersApi {
   ///
   /// **[Permissions](https://confluence.atlassian.com/x/_AozKw) required**:
   /// Permission to access the Confluence site ('Can use' global permission).
-  Future<User> getCurrentUser({List<String>? expand}) async {
-    return User.fromJson(await _client.send(
+  Future<ConfluenceUser> getCurrentUser({List<String>? expand}) async {
+    return ConfluenceUser.fromJson(await _client.send(
       'get',
       'wiki/rest/api/user/current',
       queryParameters: {
@@ -5575,7 +5575,7 @@ class AttachmentPropertiesUpdateBody {
   final Container? container;
   final AttachmentPropertiesUpdateBodyMetadata? metadata;
   final Map<String, dynamic>? extensions;
-  final Version version;
+  final ConfluenceVersion version;
 
   AttachmentPropertiesUpdateBody(
       {required this.id,
@@ -5601,7 +5601,7 @@ class AttachmentPropertiesUpdateBody {
               json[r'metadata']! as Map<String, Object?>)
           : null,
       extensions: json[r'extensions'] as Map<String, Object?>?,
-      version: Version.fromJson(
+      version: ConfluenceVersion.fromJson(
           json[r'version'] as Map<String, Object?>? ?? const {}),
     );
   }
@@ -5646,7 +5646,7 @@ class AttachmentPropertiesUpdateBody {
       Container? container,
       AttachmentPropertiesUpdateBodyMetadata? metadata,
       Map<String, dynamic>? extensions,
-      Version? version}) {
+      ConfluenceVersion? version}) {
     return AttachmentPropertiesUpdateBody(
       id: id ?? this.id,
       type: type ?? this.type,
@@ -6853,7 +6853,7 @@ class BulkUserLookup {
   /// Whether the user is an external collaborator user
   final bool isExternalCollaborator;
   final List<OperationCheckResult> operations;
-  final UserDetails? details;
+  final ConfluenceUserDetails? details;
   final Space? personalSpace;
   final BulkUserLookupExpandable expandable;
   final GenericLinks links;
@@ -6898,7 +6898,8 @@ class BulkUserLookup {
               .toList() ??
           [],
       details: json[r'details'] != null
-          ? UserDetails.fromJson(json[r'details']! as Map<String, Object?>)
+          ? ConfluenceUserDetails.fromJson(
+              json[r'details']! as Map<String, Object?>)
           : null,
       personalSpace: json[r'personalSpace'] != null
           ? Space.fromJson(json[r'personalSpace']! as Map<String, Object?>)
@@ -6971,7 +6972,7 @@ class BulkUserLookup {
       String? timeZone,
       bool? isExternalCollaborator,
       List<OperationCheckResult>? operations,
-      UserDetails? details,
+      ConfluenceUserDetails? details,
       Space? personalSpace,
       BulkUserLookupExpandable? expandable,
       GenericLinks? links}) {
@@ -7282,6 +7283,678 @@ class ChangedValue {
   }
 }
 
+class ConfluenceUser {
+  final ConfluenceUserType type;
+  final String? username;
+  final String? userKey;
+  final String? accountId;
+
+  /// The account type of the user, may return empty string if unavailable. App
+  /// is if the user is a bot user created on behalf of an Atlassian app.
+  final ConfluenceUserAccountType? accountType;
+
+  /// The email address of the user. Depending on the user's privacy setting,
+  /// this may return an empty string.
+  final String? email;
+
+  /// The public name or nickname of the user. Will always contain a value.
+  final String? publicName;
+  final Icon? profilePicture;
+
+  /// The displays name of the user. Depending on the user's privacy setting,
+  /// this may be the same as publicName.
+  final String? displayName;
+
+  /// This displays user time zone. Depending on the user's privacy setting,
+  /// this may return null.
+  final String? timeZone;
+
+  /// Whether the user is an external collaborator user
+  final bool isExternalCollaborator;
+
+  /// Whether the user is an external collaborator user
+  final bool externalCollaborator;
+  final List<OperationCheckResult> operations;
+  final ConfluenceUserDetails? details;
+  final Space? personalSpace;
+  final ConfluenceUserExpandable? expandable;
+  final GenericLinks? links;
+
+  ConfluenceUser(
+      {required this.type,
+      this.username,
+      this.userKey,
+      this.accountId,
+      this.accountType,
+      this.email,
+      this.publicName,
+      this.profilePicture,
+      this.displayName,
+      this.timeZone,
+      bool? isExternalCollaborator,
+      bool? externalCollaborator,
+      List<OperationCheckResult>? operations,
+      this.details,
+      this.personalSpace,
+      this.expandable,
+      this.links})
+      : isExternalCollaborator = isExternalCollaborator ?? false,
+        externalCollaborator = externalCollaborator ?? false,
+        operations = operations ?? [];
+
+  factory ConfluenceUser.fromJson(Map<String, Object?> json) {
+    return ConfluenceUser(
+      type: ConfluenceUserType.fromValue(json[r'type'] as String? ?? ''),
+      username: json[r'username'] as String?,
+      userKey: json[r'userKey'] as String?,
+      accountId: json[r'accountId'] as String?,
+      accountType: json[r'accountType'] != null
+          ? ConfluenceUserAccountType.fromValue(json[r'accountType']! as String)
+          : null,
+      email: json[r'email'] as String?,
+      publicName: json[r'publicName'] as String?,
+      profilePicture: json[r'profilePicture'] != null
+          ? Icon.fromJson(json[r'profilePicture']! as Map<String, Object?>)
+          : null,
+      displayName: json[r'displayName'] as String?,
+      timeZone: json[r'timeZone'] as String?,
+      isExternalCollaborator: json[r'isExternalCollaborator'] as bool? ?? false,
+      externalCollaborator: json[r'externalCollaborator'] as bool? ?? false,
+      operations: (json[r'operations'] as List<Object?>?)
+              ?.map((i) => OperationCheckResult.fromJson(
+                  i as Map<String, Object?>? ?? const {}))
+              .toList() ??
+          [],
+      details: json[r'details'] != null
+          ? ConfluenceUserDetails.fromJson(
+              json[r'details']! as Map<String, Object?>)
+          : null,
+      personalSpace: json[r'personalSpace'] != null
+          ? Space.fromJson(json[r'personalSpace']! as Map<String, Object?>)
+          : null,
+      expandable: json[r'_expandable'] != null
+          ? ConfluenceUserExpandable.fromJson(
+              json[r'_expandable']! as Map<String, Object?>)
+          : null,
+      links: json[r'_links'] != null
+          ? GenericLinks.fromJson(json[r'_links']! as Map<String, Object?>)
+          : null,
+    );
+  }
+
+  Map<String, Object?> toJson() {
+    var type = this.type;
+    var username = this.username;
+    var userKey = this.userKey;
+    var accountId = this.accountId;
+    var accountType = this.accountType;
+    var email = this.email;
+    var publicName = this.publicName;
+    var profilePicture = this.profilePicture;
+    var displayName = this.displayName;
+    var timeZone = this.timeZone;
+    var isExternalCollaborator = this.isExternalCollaborator;
+    var externalCollaborator = this.externalCollaborator;
+    var operations = this.operations;
+    var details = this.details;
+    var personalSpace = this.personalSpace;
+    var expandable = this.expandable;
+    var links = this.links;
+
+    final json = <String, Object?>{};
+    json[r'type'] = type.value;
+    if (username != null) {
+      json[r'username'] = username;
+    }
+    if (userKey != null) {
+      json[r'userKey'] = userKey;
+    }
+    if (accountId != null) {
+      json[r'accountId'] = accountId;
+    }
+    if (accountType != null) {
+      json[r'accountType'] = accountType.value;
+    }
+    if (email != null) {
+      json[r'email'] = email;
+    }
+    if (publicName != null) {
+      json[r'publicName'] = publicName;
+    }
+    if (profilePicture != null) {
+      json[r'profilePicture'] = profilePicture.toJson();
+    }
+    if (displayName != null) {
+      json[r'displayName'] = displayName;
+    }
+    if (timeZone != null) {
+      json[r'timeZone'] = timeZone;
+    }
+    json[r'isExternalCollaborator'] = isExternalCollaborator;
+    json[r'externalCollaborator'] = externalCollaborator;
+    json[r'operations'] = operations.map((i) => i.toJson()).toList();
+    if (details != null) {
+      json[r'details'] = details.toJson();
+    }
+    if (personalSpace != null) {
+      json[r'personalSpace'] = personalSpace.toJson();
+    }
+    if (expandable != null) {
+      json[r'_expandable'] = expandable.toJson();
+    }
+    if (links != null) {
+      json[r'_links'] = links.toJson();
+    }
+    return json;
+  }
+
+  ConfluenceUser copyWith(
+      {ConfluenceUserType? type,
+      String? username,
+      String? userKey,
+      String? accountId,
+      ConfluenceUserAccountType? accountType,
+      String? email,
+      String? publicName,
+      Icon? profilePicture,
+      String? displayName,
+      String? timeZone,
+      bool? isExternalCollaborator,
+      bool? externalCollaborator,
+      List<OperationCheckResult>? operations,
+      ConfluenceUserDetails? details,
+      Space? personalSpace,
+      ConfluenceUserExpandable? expandable,
+      GenericLinks? links}) {
+    return ConfluenceUser(
+      type: type ?? this.type,
+      username: username ?? this.username,
+      userKey: userKey ?? this.userKey,
+      accountId: accountId ?? this.accountId,
+      accountType: accountType ?? this.accountType,
+      email: email ?? this.email,
+      publicName: publicName ?? this.publicName,
+      profilePicture: profilePicture ?? this.profilePicture,
+      displayName: displayName ?? this.displayName,
+      timeZone: timeZone ?? this.timeZone,
+      isExternalCollaborator:
+          isExternalCollaborator ?? this.isExternalCollaborator,
+      externalCollaborator: externalCollaborator ?? this.externalCollaborator,
+      operations: operations ?? this.operations,
+      details: details ?? this.details,
+      personalSpace: personalSpace ?? this.personalSpace,
+      expandable: expandable ?? this.expandable,
+      links: links ?? this.links,
+    );
+  }
+}
+
+class ConfluenceUserType {
+  static const known = ConfluenceUserType._('known');
+  static const unknown = ConfluenceUserType._('unknown');
+  static const anonymous = ConfluenceUserType._('anonymous');
+  static const user = ConfluenceUserType._('user');
+
+  static const values = [
+    known,
+    unknown,
+    anonymous,
+    user,
+  ];
+  final String value;
+
+  const ConfluenceUserType._(this.value);
+
+  static ConfluenceUserType fromValue(String value) =>
+      values.firstWhere((e) => e.value == value,
+          orElse: () => ConfluenceUserType._(value));
+
+  /// An enum received from the server but this version of the client doesn't recognize it.
+  bool get isUnknown => values.every((v) => v.value != value);
+
+  @override
+  String toString() => value;
+}
+
+class ConfluenceUserAccountType {
+  static const atlassian = ConfluenceUserAccountType._('atlassian');
+  static const app = ConfluenceUserAccountType._('app');
+
+  static const values = [
+    atlassian,
+    app,
+  ];
+  final String value;
+
+  const ConfluenceUserAccountType._(this.value);
+
+  static ConfluenceUserAccountType fromValue(String value) =>
+      values.firstWhere((e) => e.value == value,
+          orElse: () => ConfluenceUserAccountType._(value));
+
+  /// An enum received from the server but this version of the client doesn't recognize it.
+  bool get isUnknown => values.every((v) => v.value != value);
+
+  @override
+  String toString() => value;
+}
+
+class ConfluenceUserDetails {
+  final ConfluenceUserDetailsBusiness? business;
+  final ConfluenceUserDetailsPersonal? personal;
+
+  ConfluenceUserDetails({this.business, this.personal});
+
+  factory ConfluenceUserDetails.fromJson(Map<String, Object?> json) {
+    return ConfluenceUserDetails(
+      business: json[r'business'] != null
+          ? ConfluenceUserDetailsBusiness.fromJson(
+              json[r'business']! as Map<String, Object?>)
+          : null,
+      personal: json[r'personal'] != null
+          ? ConfluenceUserDetailsPersonal.fromJson(
+              json[r'personal']! as Map<String, Object?>)
+          : null,
+    );
+  }
+
+  Map<String, Object?> toJson() {
+    var business = this.business;
+    var personal = this.personal;
+
+    final json = <String, Object?>{};
+    if (business != null) {
+      json[r'business'] = business.toJson();
+    }
+    if (personal != null) {
+      json[r'personal'] = personal.toJson();
+    }
+    return json;
+  }
+
+  ConfluenceUserDetails copyWith(
+      {ConfluenceUserDetailsBusiness? business,
+      ConfluenceUserDetailsPersonal? personal}) {
+    return ConfluenceUserDetails(
+      business: business ?? this.business,
+      personal: personal ?? this.personal,
+    );
+  }
+}
+
+class ConfluenceUserDetailsBusiness {
+  /// This property has been deprecated due to privacy changes. There is no
+  /// replacement. See the
+  /// [migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)
+  /// for details.
+  final String? position;
+
+  /// This property has been deprecated due to privacy changes. There is no
+  /// replacement. See the
+  /// [migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)
+  /// for details.
+  final String? department;
+
+  /// This property has been deprecated due to privacy changes. There is no
+  /// replacement. See the
+  /// [migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)
+  /// for details.
+  final String? location;
+
+  ConfluenceUserDetailsBusiness(
+      {this.position, this.department, this.location});
+
+  factory ConfluenceUserDetailsBusiness.fromJson(Map<String, Object?> json) {
+    return ConfluenceUserDetailsBusiness(
+      position: json[r'position'] as String?,
+      department: json[r'department'] as String?,
+      location: json[r'location'] as String?,
+    );
+  }
+
+  Map<String, Object?> toJson() {
+    var position = this.position;
+    var department = this.department;
+    var location = this.location;
+
+    final json = <String, Object?>{};
+    if (position != null) {
+      json[r'position'] = position;
+    }
+    if (department != null) {
+      json[r'department'] = department;
+    }
+    if (location != null) {
+      json[r'location'] = location;
+    }
+    return json;
+  }
+
+  ConfluenceUserDetailsBusiness copyWith(
+      {String? position, String? department, String? location}) {
+    return ConfluenceUserDetailsBusiness(
+      position: position ?? this.position,
+      department: department ?? this.department,
+      location: location ?? this.location,
+    );
+  }
+}
+
+class ConfluenceUserDetailsPersonal {
+  /// This property has been deprecated due to privacy changes. There is no
+  /// replacement. See the
+  /// [migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)
+  /// for details.
+  final String? phone;
+
+  /// This property has been deprecated due to privacy changes. There is no
+  /// replacement. See the
+  /// [migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)
+  /// for details.
+  final String? im;
+
+  /// This property has been deprecated due to privacy changes. There is no
+  /// replacement. See the
+  /// [migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)
+  /// for details.
+  final String? website;
+
+  /// This property has been deprecated due to privacy changes. Use the
+  /// `User.email` property instead. See the
+  /// [migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)
+  /// for details.
+  final String? email;
+
+  ConfluenceUserDetailsPersonal(
+      {this.phone, this.im, this.website, this.email});
+
+  factory ConfluenceUserDetailsPersonal.fromJson(Map<String, Object?> json) {
+    return ConfluenceUserDetailsPersonal(
+      phone: json[r'phone'] as String?,
+      im: json[r'im'] as String?,
+      website: json[r'website'] as String?,
+      email: json[r'email'] as String?,
+    );
+  }
+
+  Map<String, Object?> toJson() {
+    var phone = this.phone;
+    var im = this.im;
+    var website = this.website;
+    var email = this.email;
+
+    final json = <String, Object?>{};
+    if (phone != null) {
+      json[r'phone'] = phone;
+    }
+    if (im != null) {
+      json[r'im'] = im;
+    }
+    if (website != null) {
+      json[r'website'] = website;
+    }
+    if (email != null) {
+      json[r'email'] = email;
+    }
+    return json;
+  }
+
+  ConfluenceUserDetailsPersonal copyWith(
+      {String? phone, String? im, String? website, String? email}) {
+    return ConfluenceUserDetailsPersonal(
+      phone: phone ?? this.phone,
+      im: im ?? this.im,
+      website: website ?? this.website,
+      email: email ?? this.email,
+    );
+  }
+}
+
+class ConfluenceUserExpandable {
+  final String? operations;
+  final String? details;
+  final String? personalSpace;
+
+  ConfluenceUserExpandable({this.operations, this.details, this.personalSpace});
+
+  factory ConfluenceUserExpandable.fromJson(Map<String, Object?> json) {
+    return ConfluenceUserExpandable(
+      operations: json[r'operations'] as String?,
+      details: json[r'details'] as String?,
+      personalSpace: json[r'personalSpace'] as String?,
+    );
+  }
+
+  Map<String, Object?> toJson() {
+    var operations = this.operations;
+    var details = this.details;
+    var personalSpace = this.personalSpace;
+
+    final json = <String, Object?>{};
+    if (operations != null) {
+      json[r'operations'] = operations;
+    }
+    if (details != null) {
+      json[r'details'] = details;
+    }
+    if (personalSpace != null) {
+      json[r'personalSpace'] = personalSpace;
+    }
+    return json;
+  }
+
+  ConfluenceUserExpandable copyWith(
+      {String? operations, String? details, String? personalSpace}) {
+    return ConfluenceUserExpandable(
+      operations: operations ?? this.operations,
+      details: details ?? this.details,
+      personalSpace: personalSpace ?? this.personalSpace,
+    );
+  }
+}
+
+class ConfluenceVersion {
+  final ConfluenceUser? by;
+  final DateTime when;
+  final String? friendlyWhen;
+  final String? message;
+
+  /// Set this to the current version number incremented by one
+  final int number;
+
+  /// If `minorEdit` is set to 'true', no notification email or activity
+  /// stream will be generated for the change.
+  final bool minorEdit;
+  final Content? content;
+  final UsersUserKeys? collaborators;
+  final ConfluenceVersionExpandable? expandable;
+  final GenericLinks? links;
+
+  /// True if content type is modifed in this version (e.g. page to blog)
+  final bool contentTypeModified;
+
+  /// The revision id provided by confluence to be used as a revision in
+  /// Synchrony
+  final String? confRev;
+
+  /// The revision id provided by Synchrony
+  final String? syncRev;
+
+  /// Source of the synchrony revision
+  final String? syncRevSource;
+
+  ConfluenceVersion(
+      {this.by,
+      required this.when,
+      this.friendlyWhen,
+      this.message,
+      required this.number,
+      required this.minorEdit,
+      this.content,
+      this.collaborators,
+      this.expandable,
+      this.links,
+      bool? contentTypeModified,
+      this.confRev,
+      this.syncRev,
+      this.syncRevSource})
+      : contentTypeModified = contentTypeModified ?? false;
+
+  factory ConfluenceVersion.fromJson(Map<String, Object?> json) {
+    return ConfluenceVersion(
+      by: json[r'by'] != null
+          ? ConfluenceUser.fromJson(json[r'by']! as Map<String, Object?>)
+          : null,
+      when: DateTime.tryParse(json[r'when'] as String? ?? '') ?? DateTime(0),
+      friendlyWhen: json[r'friendlyWhen'] as String?,
+      message: json[r'message'] as String?,
+      number: (json[r'number'] as num?)?.toInt() ?? 0,
+      minorEdit: json[r'minorEdit'] as bool? ?? false,
+      content: json[r'content'] != null
+          ? Content.fromJson(json[r'content']! as Map<String, Object?>)
+          : null,
+      collaborators: json[r'collaborators'] != null
+          ? UsersUserKeys.fromJson(
+              json[r'collaborators']! as Map<String, Object?>)
+          : null,
+      expandable: json[r'_expandable'] != null
+          ? ConfluenceVersionExpandable.fromJson(
+              json[r'_expandable']! as Map<String, Object?>)
+          : null,
+      links: json[r'_links'] != null
+          ? GenericLinks.fromJson(json[r'_links']! as Map<String, Object?>)
+          : null,
+      contentTypeModified: json[r'contentTypeModified'] as bool? ?? false,
+      confRev: json[r'confRev'] as String?,
+      syncRev: json[r'syncRev'] as String?,
+      syncRevSource: json[r'syncRevSource'] as String?,
+    );
+  }
+
+  Map<String, Object?> toJson() {
+    var by = this.by;
+    var when = this.when;
+    var friendlyWhen = this.friendlyWhen;
+    var message = this.message;
+    var number = this.number;
+    var minorEdit = this.minorEdit;
+    var content = this.content;
+    var collaborators = this.collaborators;
+    var expandable = this.expandable;
+    var links = this.links;
+    var contentTypeModified = this.contentTypeModified;
+    var confRev = this.confRev;
+    var syncRev = this.syncRev;
+    var syncRevSource = this.syncRevSource;
+
+    final json = <String, Object?>{};
+    if (by != null) {
+      json[r'by'] = by.toJson();
+    }
+    json[r'when'] = when.toIsoWithNumericOffset();
+    if (friendlyWhen != null) {
+      json[r'friendlyWhen'] = friendlyWhen;
+    }
+    if (message != null) {
+      json[r'message'] = message;
+    }
+    json[r'number'] = number;
+    json[r'minorEdit'] = minorEdit;
+    if (content != null) {
+      json[r'content'] = content.toJson();
+    }
+    if (collaborators != null) {
+      json[r'collaborators'] = collaborators.toJson();
+    }
+    if (expandable != null) {
+      json[r'_expandable'] = expandable.toJson();
+    }
+    if (links != null) {
+      json[r'_links'] = links.toJson();
+    }
+    json[r'contentTypeModified'] = contentTypeModified;
+    if (confRev != null) {
+      json[r'confRev'] = confRev;
+    }
+    if (syncRev != null) {
+      json[r'syncRev'] = syncRev;
+    }
+    if (syncRevSource != null) {
+      json[r'syncRevSource'] = syncRevSource;
+    }
+    return json;
+  }
+
+  ConfluenceVersion copyWith(
+      {ConfluenceUser? by,
+      DateTime? when,
+      String? friendlyWhen,
+      String? message,
+      int? number,
+      bool? minorEdit,
+      Content? content,
+      UsersUserKeys? collaborators,
+      ConfluenceVersionExpandable? expandable,
+      GenericLinks? links,
+      bool? contentTypeModified,
+      String? confRev,
+      String? syncRev,
+      String? syncRevSource}) {
+    return ConfluenceVersion(
+      by: by ?? this.by,
+      when: when ?? this.when,
+      friendlyWhen: friendlyWhen ?? this.friendlyWhen,
+      message: message ?? this.message,
+      number: number ?? this.number,
+      minorEdit: minorEdit ?? this.minorEdit,
+      content: content ?? this.content,
+      collaborators: collaborators ?? this.collaborators,
+      expandable: expandable ?? this.expandable,
+      links: links ?? this.links,
+      contentTypeModified: contentTypeModified ?? this.contentTypeModified,
+      confRev: confRev ?? this.confRev,
+      syncRev: syncRev ?? this.syncRev,
+      syncRevSource: syncRevSource ?? this.syncRevSource,
+    );
+  }
+}
+
+class ConfluenceVersionExpandable {
+  final String? content;
+  final String? collaborators;
+
+  ConfluenceVersionExpandable({this.content, this.collaborators});
+
+  factory ConfluenceVersionExpandable.fromJson(Map<String, Object?> json) {
+    return ConfluenceVersionExpandable(
+      content: json[r'content'] as String?,
+      collaborators: json[r'collaborators'] as String?,
+    );
+  }
+
+  Map<String, Object?> toJson() {
+    var content = this.content;
+    var collaborators = this.collaborators;
+
+    final json = <String, Object?>{};
+    if (content != null) {
+      json[r'content'] = content;
+    }
+    if (collaborators != null) {
+      json[r'collaborators'] = collaborators;
+    }
+    return json;
+  }
+
+  ConfluenceVersionExpandable copyWith(
+      {String? content, String? collaborators}) {
+    return ConfluenceVersionExpandable(
+      content: content ?? this.content,
+      collaborators: collaborators ?? this.collaborators,
+    );
+  }
+}
+
 /// A
 /// [Connect module](https://developer.atlassian.com/cloud/confluence/modules/admin-page/)
 /// in the same format as in the
@@ -7505,7 +8178,7 @@ class Content {
   final String? title;
   final Space? space;
   final ContentHistory? history;
-  final Version? version;
+  final ConfluenceVersion? version;
   final List<Content> ancestors;
   final List<OperationCheckResult> operations;
   final ContentChildren? children;
@@ -7557,7 +8230,8 @@ class Content {
           ? ContentHistory.fromJson(json[r'history']! as Map<String, Object?>)
           : null,
       version: json[r'version'] != null
-          ? Version.fromJson(json[r'version']! as Map<String, Object?>)
+          ? ConfluenceVersion.fromJson(
+              json[r'version']! as Map<String, Object?>)
           : null,
       ancestors: (json[r'ancestors'] as List<Object?>?)
               ?.map((i) =>
@@ -7691,7 +8365,7 @@ class Content {
       String? title,
       Space? space,
       ContentHistory? history,
-      Version? version,
+      ConfluenceVersion? version,
       List<Content>? ancestors,
       List<OperationCheckResult>? operations,
       ContentChildren? children,
@@ -9743,7 +10417,7 @@ class ContentCreateSpaceDescriptionExpandable {
 
 class ContentCreateSpaceHistory {
   final DateTime createdDate;
-  final User? createdBy;
+  final ConfluenceUser? createdBy;
 
   ContentCreateSpaceHistory({required this.createdDate, this.createdBy});
 
@@ -9752,7 +10426,7 @@ class ContentCreateSpaceHistory {
       createdDate: DateTime.tryParse(json[r'createdDate'] as String? ?? '') ??
           DateTime(0),
       createdBy: json[r'createdBy'] != null
-          ? User.fromJson(json[r'createdBy']! as Map<String, Object?>)
+          ? ConfluenceUser.fromJson(json[r'createdBy']! as Map<String, Object?>)
           : null,
     );
   }
@@ -9769,7 +10443,8 @@ class ContentCreateSpaceHistory {
     return json;
   }
 
-  ContentCreateSpaceHistory copyWith({DateTime? createdDate, User? createdBy}) {
+  ContentCreateSpaceHistory copyWith(
+      {DateTime? createdDate, ConfluenceUser? createdBy}) {
     return ContentCreateSpaceHistory(
       createdDate: createdDate ?? this.createdDate,
       createdBy: createdBy ?? this.createdBy,
@@ -9982,14 +10657,14 @@ class ContentExpandable {
 
 class ContentHistory {
   final bool latest;
-  final User? createdBy;
-  final User? ownedBy;
-  final User? lastOwnedBy;
+  final ConfluenceUser? createdBy;
+  final ConfluenceUser? ownedBy;
+  final ConfluenceUser? lastOwnedBy;
   final DateTime? createdDate;
-  final Version? lastUpdated;
-  final Version? previousVersion;
+  final ConfluenceVersion? lastUpdated;
+  final ConfluenceVersion? previousVersion;
   final ContentHistoryContributors? contributors;
-  final Version? nextVersion;
+  final ConfluenceVersion? nextVersion;
   final ContentHistoryExpandable? expandable;
   final GenericLinks? links;
 
@@ -10010,27 +10685,31 @@ class ContentHistory {
     return ContentHistory(
       latest: json[r'latest'] as bool? ?? false,
       createdBy: json[r'createdBy'] != null
-          ? User.fromJson(json[r'createdBy']! as Map<String, Object?>)
+          ? ConfluenceUser.fromJson(json[r'createdBy']! as Map<String, Object?>)
           : null,
       ownedBy: json[r'ownedBy'] != null
-          ? User.fromJson(json[r'ownedBy']! as Map<String, Object?>)
+          ? ConfluenceUser.fromJson(json[r'ownedBy']! as Map<String, Object?>)
           : null,
       lastOwnedBy: json[r'lastOwnedBy'] != null
-          ? User.fromJson(json[r'lastOwnedBy']! as Map<String, Object?>)
+          ? ConfluenceUser.fromJson(
+              json[r'lastOwnedBy']! as Map<String, Object?>)
           : null,
       createdDate: DateTime.tryParse(json[r'createdDate'] as String? ?? ''),
       lastUpdated: json[r'lastUpdated'] != null
-          ? Version.fromJson(json[r'lastUpdated']! as Map<String, Object?>)
+          ? ConfluenceVersion.fromJson(
+              json[r'lastUpdated']! as Map<String, Object?>)
           : null,
       previousVersion: json[r'previousVersion'] != null
-          ? Version.fromJson(json[r'previousVersion']! as Map<String, Object?>)
+          ? ConfluenceVersion.fromJson(
+              json[r'previousVersion']! as Map<String, Object?>)
           : null,
       contributors: json[r'contributors'] != null
           ? ContentHistoryContributors.fromJson(
               json[r'contributors']! as Map<String, Object?>)
           : null,
       nextVersion: json[r'nextVersion'] != null
-          ? Version.fromJson(json[r'nextVersion']! as Map<String, Object?>)
+          ? ConfluenceVersion.fromJson(
+              json[r'nextVersion']! as Map<String, Object?>)
           : null,
       expandable: json[r'_expandable'] != null
           ? ContentHistoryExpandable.fromJson(
@@ -10092,14 +10771,14 @@ class ContentHistory {
 
   ContentHistory copyWith(
       {bool? latest,
-      User? createdBy,
-      User? ownedBy,
-      User? lastOwnedBy,
+      ConfluenceUser? createdBy,
+      ConfluenceUser? ownedBy,
+      ConfluenceUser? lastOwnedBy,
       DateTime? createdDate,
-      Version? lastUpdated,
-      Version? previousVersion,
+      ConfluenceVersion? lastUpdated,
+      ConfluenceVersion? previousVersion,
       ContentHistoryContributors? contributors,
-      Version? nextVersion,
+      ConfluenceVersion? nextVersion,
       ContentHistoryExpandable? expandable,
       GenericLinks? links}) {
     return ContentHistory(
@@ -10579,7 +11258,7 @@ class ContentMetadataCurrentuserLastcontributed {
 }
 
 class ContentMetadataCurrentuserLastmodified {
-  final Version? version;
+  final ConfluenceVersion? version;
   final String? friendlyLastModified;
 
   ContentMetadataCurrentuserLastmodified(
@@ -10589,7 +11268,8 @@ class ContentMetadataCurrentuserLastmodified {
       Map<String, Object?> json) {
     return ContentMetadataCurrentuserLastmodified(
       version: json[r'version'] != null
-          ? Version.fromJson(json[r'version']! as Map<String, Object?>)
+          ? ConfluenceVersion.fromJson(
+              json[r'version']! as Map<String, Object?>)
           : null,
       friendlyLastModified: json[r'friendlyLastModified'] as String?,
     );
@@ -10610,7 +11290,7 @@ class ContentMetadataCurrentuserLastmodified {
   }
 
   ContentMetadataCurrentuserLastmodified copyWith(
-      {Version? version, String? friendlyLastModified}) {
+      {ConfluenceVersion? version, String? friendlyLastModified}) {
     return ContentMetadataCurrentuserLastmodified(
       version: version ?? this.version,
       friendlyLastModified: friendlyLastModified ?? this.friendlyLastModified,
@@ -16088,7 +16768,7 @@ class RelationArray {
 }
 
 class RelationData {
-  final User? createdBy;
+  final ConfluenceUser? createdBy;
   final DateTime? createdDate;
   final String? friendlyCreatedDate;
 
@@ -16097,7 +16777,7 @@ class RelationData {
   factory RelationData.fromJson(Map<String, Object?> json) {
     return RelationData(
       createdBy: json[r'createdBy'] != null
-          ? User.fromJson(json[r'createdBy']! as Map<String, Object?>)
+          ? ConfluenceUser.fromJson(json[r'createdBy']! as Map<String, Object?>)
           : null,
       createdDate: DateTime.tryParse(json[r'createdDate'] as String? ?? ''),
       friendlyCreatedDate: json[r'friendlyCreatedDate'] as String?,
@@ -16123,7 +16803,9 @@ class RelationData {
   }
 
   RelationData copyWith(
-      {User? createdBy, DateTime? createdDate, String? friendlyCreatedDate}) {
+      {ConfluenceUser? createdBy,
+      DateTime? createdDate,
+      String? friendlyCreatedDate}) {
     return RelationData(
       createdBy: createdBy ?? this.createdBy,
       createdDate: createdDate ?? this.createdDate,
@@ -16576,7 +17258,7 @@ class SearchPageResponseSearchResult {
 
 class SearchResult {
   final Content? content;
-  final User? user;
+  final ConfluenceUser? user;
   final Space? space;
   final String title;
   final String excerpt;
@@ -16612,7 +17294,7 @@ class SearchResult {
           ? Content.fromJson(json[r'content']! as Map<String, Object?>)
           : null,
       user: json[r'user'] != null
-          ? User.fromJson(json[r'user']! as Map<String, Object?>)
+          ? ConfluenceUser.fromJson(json[r'user']! as Map<String, Object?>)
           : null,
       space: json[r'space'] != null
           ? Space.fromJson(json[r'space']! as Map<String, Object?>)
@@ -16692,7 +17374,7 @@ class SearchResult {
 
   SearchResult copyWith(
       {Content? content,
-      User? user,
+      ConfluenceUser? user,
       Space? space,
       String? title,
       String? excerpt,
@@ -17394,7 +18076,7 @@ class SpaceExpandable {
 
 class SpaceHistory {
   final DateTime createdDate;
-  final User? createdBy;
+  final ConfluenceUser? createdBy;
 
   SpaceHistory({required this.createdDate, this.createdBy});
 
@@ -17403,7 +18085,7 @@ class SpaceHistory {
       createdDate: DateTime.tryParse(json[r'createdDate'] as String? ?? '') ??
           DateTime(0),
       createdBy: json[r'createdBy'] != null
-          ? User.fromJson(json[r'createdBy']! as Map<String, Object?>)
+          ? ConfluenceUser.fromJson(json[r'createdBy']! as Map<String, Object?>)
           : null,
     );
   }
@@ -17420,7 +18102,7 @@ class SpaceHistory {
     return json;
   }
 
-  SpaceHistory copyWith({DateTime? createdDate, User? createdBy}) {
+  SpaceHistory copyWith({DateTime? createdDate, ConfluenceUser? createdBy}) {
     return SpaceHistory(
       createdDate: createdDate ?? this.createdDate,
       createdBy: createdBy ?? this.createdBy,
@@ -17703,7 +18385,7 @@ class SpacePermissionCreateSubjectsGroup {
 }
 
 class SpacePermissionCreateSubjectsUser {
-  final List<User> results;
+  final List<ConfluenceUser> results;
   final int size;
 
   SpacePermissionCreateSubjectsUser(
@@ -17713,8 +18395,8 @@ class SpacePermissionCreateSubjectsUser {
       Map<String, Object?> json) {
     return SpacePermissionCreateSubjectsUser(
       results: (json[r'results'] as List<Object?>?)
-              ?.map(
-                  (i) => User.fromJson(i as Map<String, Object?>? ?? const {}))
+              ?.map((i) => ConfluenceUser.fromJson(
+                  i as Map<String, Object?>? ?? const {}))
               .toList() ??
           [],
       size: (json[r'size'] as num?)?.toInt() ?? 0,
@@ -17731,7 +18413,8 @@ class SpacePermissionCreateSubjectsUser {
     return json;
   }
 
-  SpacePermissionCreateSubjectsUser copyWith({List<User>? results, int? size}) {
+  SpacePermissionCreateSubjectsUser copyWith(
+      {List<ConfluenceUser>? results, int? size}) {
     return SpacePermissionCreateSubjectsUser(
       results: results ?? this.results,
       size: size ?? this.size,
@@ -18194,7 +18877,7 @@ class SpacePermissionSubjectsGroup {
 }
 
 class SpacePermissionSubjectsUser {
-  final List<User> results;
+  final List<ConfluenceUser> results;
   final int size;
   final int? start;
   final int? limit;
@@ -18205,8 +18888,8 @@ class SpacePermissionSubjectsUser {
   factory SpacePermissionSubjectsUser.fromJson(Map<String, Object?> json) {
     return SpacePermissionSubjectsUser(
       results: (json[r'results'] as List<Object?>?)
-              ?.map(
-                  (i) => User.fromJson(i as Map<String, Object?>? ?? const {}))
+              ?.map((i) => ConfluenceUser.fromJson(
+                  i as Map<String, Object?>? ?? const {}))
               .toList() ??
           [],
       size: (json[r'size'] as num?)?.toInt() ?? 0,
@@ -18234,7 +18917,7 @@ class SpacePermissionSubjectsUser {
   }
 
   SpacePermissionSubjectsUser copyWith(
-      {List<User>? results, int? size, int? start, int? limit}) {
+      {List<ConfluenceUser>? results, int? size, int? start, int? limit}) {
     return SpacePermissionSubjectsUser(
       results: results ?? this.results,
       size: size ?? this.size,
@@ -18449,7 +19132,7 @@ class SpaceProperty {
   final String id;
   final String key;
   final dynamic value;
-  final Version? version;
+  final ConfluenceVersion? version;
   final Space? space;
   final GenericLinks? links;
   final SpacePropertyExpandable expandable;
@@ -18469,7 +19152,8 @@ class SpaceProperty {
       key: json[r'key'] as String? ?? '',
       value: json[r'value'],
       version: json[r'version'] != null
-          ? Version.fromJson(json[r'version']! as Map<String, Object?>)
+          ? ConfluenceVersion.fromJson(
+              json[r'version']! as Map<String, Object?>)
           : null,
       space: json[r'space'] != null
           ? Space.fromJson(json[r'space']! as Map<String, Object?>)
@@ -18512,7 +19196,7 @@ class SpaceProperty {
       {String? id,
       String? key,
       dynamic value,
-      Version? version,
+      ConfluenceVersion? version,
       Space? space,
       GenericLinks? links,
       SpacePropertyExpandable? expandable}) {
@@ -18727,7 +19411,7 @@ class SpacePropertyExpandable {
 class SpacePropertyUpdate {
   final String? key;
   final dynamic value;
-  final Version version;
+  final ConfluenceVersion version;
   final SpacePropertyUpdateSpace? space;
 
   SpacePropertyUpdate(
@@ -18737,7 +19421,7 @@ class SpacePropertyUpdate {
     return SpacePropertyUpdate(
       key: json[r'key'] as String?,
       value: json[r'value'],
-      version: Version.fromJson(
+      version: ConfluenceVersion.fromJson(
           json[r'version'] as Map<String, Object?>? ?? const {}),
       space: json[r'space'] != null
           ? SpacePropertyUpdateSpace.fromJson(
@@ -18767,7 +19451,7 @@ class SpacePropertyUpdate {
   SpacePropertyUpdate copyWith(
       {String? key,
       dynamic value,
-      Version? version,
+      ConfluenceVersion? version,
       SpacePropertyUpdateSpace? space}) {
     return SpacePropertyUpdate(
       key: key ?? this.key,
@@ -19911,260 +20595,6 @@ class TopNavigationLookAndFeelHoverOrFocus {
   }
 }
 
-class User {
-  final UserType type;
-  final String? username;
-  final String? userKey;
-  final String? accountId;
-
-  /// The account type of the user, may return empty string if unavailable. App
-  /// is if the user is a bot user created on behalf of an Atlassian app.
-  final UserAccountType? accountType;
-
-  /// The email address of the user. Depending on the user's privacy setting,
-  /// this may return an empty string.
-  final String? email;
-
-  /// The public name or nickname of the user. Will always contain a value.
-  final String? publicName;
-  final Icon? profilePicture;
-
-  /// The displays name of the user. Depending on the user's privacy setting,
-  /// this may be the same as publicName.
-  final String? displayName;
-
-  /// This displays user time zone. Depending on the user's privacy setting,
-  /// this may return null.
-  final String? timeZone;
-
-  /// Whether the user is an external collaborator user
-  final bool isExternalCollaborator;
-
-  /// Whether the user is an external collaborator user
-  final bool externalCollaborator;
-  final List<OperationCheckResult> operations;
-  final UserDetails? details;
-  final Space? personalSpace;
-  final UserExpandable? expandable;
-  final GenericLinks? links;
-
-  User(
-      {required this.type,
-      this.username,
-      this.userKey,
-      this.accountId,
-      this.accountType,
-      this.email,
-      this.publicName,
-      this.profilePicture,
-      this.displayName,
-      this.timeZone,
-      bool? isExternalCollaborator,
-      bool? externalCollaborator,
-      List<OperationCheckResult>? operations,
-      this.details,
-      this.personalSpace,
-      this.expandable,
-      this.links})
-      : isExternalCollaborator = isExternalCollaborator ?? false,
-        externalCollaborator = externalCollaborator ?? false,
-        operations = operations ?? [];
-
-  factory User.fromJson(Map<String, Object?> json) {
-    return User(
-      type: UserType.fromValue(json[r'type'] as String? ?? ''),
-      username: json[r'username'] as String?,
-      userKey: json[r'userKey'] as String?,
-      accountId: json[r'accountId'] as String?,
-      accountType: json[r'accountType'] != null
-          ? UserAccountType.fromValue(json[r'accountType']! as String)
-          : null,
-      email: json[r'email'] as String?,
-      publicName: json[r'publicName'] as String?,
-      profilePicture: json[r'profilePicture'] != null
-          ? Icon.fromJson(json[r'profilePicture']! as Map<String, Object?>)
-          : null,
-      displayName: json[r'displayName'] as String?,
-      timeZone: json[r'timeZone'] as String?,
-      isExternalCollaborator: json[r'isExternalCollaborator'] as bool? ?? false,
-      externalCollaborator: json[r'externalCollaborator'] as bool? ?? false,
-      operations: (json[r'operations'] as List<Object?>?)
-              ?.map((i) => OperationCheckResult.fromJson(
-                  i as Map<String, Object?>? ?? const {}))
-              .toList() ??
-          [],
-      details: json[r'details'] != null
-          ? UserDetails.fromJson(json[r'details']! as Map<String, Object?>)
-          : null,
-      personalSpace: json[r'personalSpace'] != null
-          ? Space.fromJson(json[r'personalSpace']! as Map<String, Object?>)
-          : null,
-      expandable: json[r'_expandable'] != null
-          ? UserExpandable.fromJson(
-              json[r'_expandable']! as Map<String, Object?>)
-          : null,
-      links: json[r'_links'] != null
-          ? GenericLinks.fromJson(json[r'_links']! as Map<String, Object?>)
-          : null,
-    );
-  }
-
-  Map<String, Object?> toJson() {
-    var type = this.type;
-    var username = this.username;
-    var userKey = this.userKey;
-    var accountId = this.accountId;
-    var accountType = this.accountType;
-    var email = this.email;
-    var publicName = this.publicName;
-    var profilePicture = this.profilePicture;
-    var displayName = this.displayName;
-    var timeZone = this.timeZone;
-    var isExternalCollaborator = this.isExternalCollaborator;
-    var externalCollaborator = this.externalCollaborator;
-    var operations = this.operations;
-    var details = this.details;
-    var personalSpace = this.personalSpace;
-    var expandable = this.expandable;
-    var links = this.links;
-
-    final json = <String, Object?>{};
-    json[r'type'] = type.value;
-    if (username != null) {
-      json[r'username'] = username;
-    }
-    if (userKey != null) {
-      json[r'userKey'] = userKey;
-    }
-    if (accountId != null) {
-      json[r'accountId'] = accountId;
-    }
-    if (accountType != null) {
-      json[r'accountType'] = accountType.value;
-    }
-    if (email != null) {
-      json[r'email'] = email;
-    }
-    if (publicName != null) {
-      json[r'publicName'] = publicName;
-    }
-    if (profilePicture != null) {
-      json[r'profilePicture'] = profilePicture.toJson();
-    }
-    if (displayName != null) {
-      json[r'displayName'] = displayName;
-    }
-    if (timeZone != null) {
-      json[r'timeZone'] = timeZone;
-    }
-    json[r'isExternalCollaborator'] = isExternalCollaborator;
-    json[r'externalCollaborator'] = externalCollaborator;
-    json[r'operations'] = operations.map((i) => i.toJson()).toList();
-    if (details != null) {
-      json[r'details'] = details.toJson();
-    }
-    if (personalSpace != null) {
-      json[r'personalSpace'] = personalSpace.toJson();
-    }
-    if (expandable != null) {
-      json[r'_expandable'] = expandable.toJson();
-    }
-    if (links != null) {
-      json[r'_links'] = links.toJson();
-    }
-    return json;
-  }
-
-  User copyWith(
-      {UserType? type,
-      String? username,
-      String? userKey,
-      String? accountId,
-      UserAccountType? accountType,
-      String? email,
-      String? publicName,
-      Icon? profilePicture,
-      String? displayName,
-      String? timeZone,
-      bool? isExternalCollaborator,
-      bool? externalCollaborator,
-      List<OperationCheckResult>? operations,
-      UserDetails? details,
-      Space? personalSpace,
-      UserExpandable? expandable,
-      GenericLinks? links}) {
-    return User(
-      type: type ?? this.type,
-      username: username ?? this.username,
-      userKey: userKey ?? this.userKey,
-      accountId: accountId ?? this.accountId,
-      accountType: accountType ?? this.accountType,
-      email: email ?? this.email,
-      publicName: publicName ?? this.publicName,
-      profilePicture: profilePicture ?? this.profilePicture,
-      displayName: displayName ?? this.displayName,
-      timeZone: timeZone ?? this.timeZone,
-      isExternalCollaborator:
-          isExternalCollaborator ?? this.isExternalCollaborator,
-      externalCollaborator: externalCollaborator ?? this.externalCollaborator,
-      operations: operations ?? this.operations,
-      details: details ?? this.details,
-      personalSpace: personalSpace ?? this.personalSpace,
-      expandable: expandable ?? this.expandable,
-      links: links ?? this.links,
-    );
-  }
-}
-
-class UserType {
-  static const known = UserType._('known');
-  static const unknown = UserType._('unknown');
-  static const anonymous = UserType._('anonymous');
-  static const user = UserType._('user');
-
-  static const values = [
-    known,
-    unknown,
-    anonymous,
-    user,
-  ];
-  final String value;
-
-  const UserType._(this.value);
-
-  static UserType fromValue(String value) => values
-      .firstWhere((e) => e.value == value, orElse: () => UserType._(value));
-
-  /// An enum received from the server but this version of the client doesn't recognize it.
-  bool get isUnknown => values.every((v) => v.value != value);
-
-  @override
-  String toString() => value;
-}
-
-class UserAccountType {
-  static const atlassian = UserAccountType._('atlassian');
-  static const app = UserAccountType._('app');
-
-  static const values = [
-    atlassian,
-    app,
-  ];
-  final String value;
-
-  const UserAccountType._(this.value);
-
-  static UserAccountType fromValue(String value) =>
-      values.firstWhere((e) => e.value == value,
-          orElse: () => UserAccountType._(value));
-
-  /// An enum received from the server but this version of the client doesn't recognize it.
-  bool get isUnknown => values.every((v) => v.value != value);
-
-  @override
-  String toString() => value;
-}
-
 class UserAnonymous {
   final String type;
   final Icon profilePicture;
@@ -20280,7 +20710,7 @@ class UserAnonymousExpandable {
 }
 
 class UserArray {
-  final List<User> results;
+  final List<ConfluenceUser> results;
   final int? start;
   final int? limit;
   final int? size;
@@ -20302,8 +20732,8 @@ class UserArray {
   factory UserArray.fromJson(Map<String, Object?> json) {
     return UserArray(
       results: (json[r'results'] as List<Object?>?)
-              ?.map(
-                  (i) => User.fromJson(i as Map<String, Object?>? ?? const {}))
+              ?.map((i) => ConfluenceUser.fromJson(
+                  i as Map<String, Object?>? ?? const {}))
               .toList() ??
           [],
       start: (json[r'start'] as num?)?.toInt(),
@@ -20345,7 +20775,7 @@ class UserArray {
   }
 
   UserArray copyWith(
-      {List<User>? results,
+      {List<ConfluenceUser>? results,
       int? start,
       int? limit,
       int? size,
@@ -20358,217 +20788,6 @@ class UserArray {
       size: size ?? this.size,
       totalSize: totalSize ?? this.totalSize,
       links: links ?? this.links,
-    );
-  }
-}
-
-class UserDetails {
-  final UserDetailsBusiness? business;
-  final UserDetailsPersonal? personal;
-
-  UserDetails({this.business, this.personal});
-
-  factory UserDetails.fromJson(Map<String, Object?> json) {
-    return UserDetails(
-      business: json[r'business'] != null
-          ? UserDetailsBusiness.fromJson(
-              json[r'business']! as Map<String, Object?>)
-          : null,
-      personal: json[r'personal'] != null
-          ? UserDetailsPersonal.fromJson(
-              json[r'personal']! as Map<String, Object?>)
-          : null,
-    );
-  }
-
-  Map<String, Object?> toJson() {
-    var business = this.business;
-    var personal = this.personal;
-
-    final json = <String, Object?>{};
-    if (business != null) {
-      json[r'business'] = business.toJson();
-    }
-    if (personal != null) {
-      json[r'personal'] = personal.toJson();
-    }
-    return json;
-  }
-
-  UserDetails copyWith(
-      {UserDetailsBusiness? business, UserDetailsPersonal? personal}) {
-    return UserDetails(
-      business: business ?? this.business,
-      personal: personal ?? this.personal,
-    );
-  }
-}
-
-class UserDetailsBusiness {
-  /// This property has been deprecated due to privacy changes. There is no
-  /// replacement. See the
-  /// [migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)
-  /// for details.
-  final String? position;
-
-  /// This property has been deprecated due to privacy changes. There is no
-  /// replacement. See the
-  /// [migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)
-  /// for details.
-  final String? department;
-
-  /// This property has been deprecated due to privacy changes. There is no
-  /// replacement. See the
-  /// [migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)
-  /// for details.
-  final String? location;
-
-  UserDetailsBusiness({this.position, this.department, this.location});
-
-  factory UserDetailsBusiness.fromJson(Map<String, Object?> json) {
-    return UserDetailsBusiness(
-      position: json[r'position'] as String?,
-      department: json[r'department'] as String?,
-      location: json[r'location'] as String?,
-    );
-  }
-
-  Map<String, Object?> toJson() {
-    var position = this.position;
-    var department = this.department;
-    var location = this.location;
-
-    final json = <String, Object?>{};
-    if (position != null) {
-      json[r'position'] = position;
-    }
-    if (department != null) {
-      json[r'department'] = department;
-    }
-    if (location != null) {
-      json[r'location'] = location;
-    }
-    return json;
-  }
-
-  UserDetailsBusiness copyWith(
-      {String? position, String? department, String? location}) {
-    return UserDetailsBusiness(
-      position: position ?? this.position,
-      department: department ?? this.department,
-      location: location ?? this.location,
-    );
-  }
-}
-
-class UserDetailsPersonal {
-  /// This property has been deprecated due to privacy changes. There is no
-  /// replacement. See the
-  /// [migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)
-  /// for details.
-  final String? phone;
-
-  /// This property has been deprecated due to privacy changes. There is no
-  /// replacement. See the
-  /// [migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)
-  /// for details.
-  final String? im;
-
-  /// This property has been deprecated due to privacy changes. There is no
-  /// replacement. See the
-  /// [migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)
-  /// for details.
-  final String? website;
-
-  /// This property has been deprecated due to privacy changes. Use the
-  /// `User.email` property instead. See the
-  /// [migration guide](https://developer.atlassian.com/cloud/confluence/deprecation-notice-user-privacy-api-migration-guide/)
-  /// for details.
-  final String? email;
-
-  UserDetailsPersonal({this.phone, this.im, this.website, this.email});
-
-  factory UserDetailsPersonal.fromJson(Map<String, Object?> json) {
-    return UserDetailsPersonal(
-      phone: json[r'phone'] as String?,
-      im: json[r'im'] as String?,
-      website: json[r'website'] as String?,
-      email: json[r'email'] as String?,
-    );
-  }
-
-  Map<String, Object?> toJson() {
-    var phone = this.phone;
-    var im = this.im;
-    var website = this.website;
-    var email = this.email;
-
-    final json = <String, Object?>{};
-    if (phone != null) {
-      json[r'phone'] = phone;
-    }
-    if (im != null) {
-      json[r'im'] = im;
-    }
-    if (website != null) {
-      json[r'website'] = website;
-    }
-    if (email != null) {
-      json[r'email'] = email;
-    }
-    return json;
-  }
-
-  UserDetailsPersonal copyWith(
-      {String? phone, String? im, String? website, String? email}) {
-    return UserDetailsPersonal(
-      phone: phone ?? this.phone,
-      im: im ?? this.im,
-      website: website ?? this.website,
-      email: email ?? this.email,
-    );
-  }
-}
-
-class UserExpandable {
-  final String? operations;
-  final String? details;
-  final String? personalSpace;
-
-  UserExpandable({this.operations, this.details, this.personalSpace});
-
-  factory UserExpandable.fromJson(Map<String, Object?> json) {
-    return UserExpandable(
-      operations: json[r'operations'] as String?,
-      details: json[r'details'] as String?,
-      personalSpace: json[r'personalSpace'] as String?,
-    );
-  }
-
-  Map<String, Object?> toJson() {
-    var operations = this.operations;
-    var details = this.details;
-    var personalSpace = this.personalSpace;
-
-    final json = <String, Object?>{};
-    if (operations != null) {
-      json[r'operations'] = operations;
-    }
-    if (details != null) {
-      json[r'details'] = details;
-    }
-    if (personalSpace != null) {
-      json[r'personalSpace'] = personalSpace;
-    }
-    return json;
-  }
-
-  UserExpandable copyWith(
-      {String? operations, String? details, String? personalSpace}) {
-    return UserExpandable(
-      operations: operations ?? this.operations,
-      details: details ?? this.details,
-      personalSpace: personalSpace ?? this.personalSpace,
     );
   }
 }
@@ -20827,19 +21046,20 @@ class UserWatch {
 }
 
 class UsersUserKeys {
-  final List<User> users;
+  final List<ConfluenceUser> users;
   final List<String> userKeys;
   final GenericLinks? links;
 
-  UsersUserKeys({List<User>? users, List<String>? userKeys, this.links})
+  UsersUserKeys(
+      {List<ConfluenceUser>? users, List<String>? userKeys, this.links})
       : users = users ?? [],
         userKeys = userKeys ?? [];
 
   factory UsersUserKeys.fromJson(Map<String, Object?> json) {
     return UsersUserKeys(
       users: (json[r'users'] as List<Object?>?)
-              ?.map(
-                  (i) => User.fromJson(i as Map<String, Object?>? ?? const {}))
+              ?.map((i) => ConfluenceUser.fromJson(
+                  i as Map<String, Object?>? ?? const {}))
               .toList() ??
           [],
       userKeys: (json[r'userKeys'] as List<Object?>?)
@@ -20867,7 +21087,9 @@ class UsersUserKeys {
   }
 
   UsersUserKeys copyWith(
-      {List<User>? users, List<String>? userKeys, GenericLinks? links}) {
+      {List<ConfluenceUser>? users,
+      List<String>? userKeys,
+      GenericLinks? links}) {
     return UsersUserKeys(
       users: users ?? this.users,
       userKeys: userKeys ?? this.userKeys,
@@ -20876,174 +21098,8 @@ class UsersUserKeys {
   }
 }
 
-class Version {
-  final User? by;
-  final DateTime when;
-  final String? friendlyWhen;
-  final String? message;
-
-  /// Set this to the current version number incremented by one
-  final int number;
-
-  /// If `minorEdit` is set to 'true', no notification email or activity
-  /// stream will be generated for the change.
-  final bool minorEdit;
-  final Content? content;
-  final UsersUserKeys? collaborators;
-  final VersionExpandable? expandable;
-  final GenericLinks? links;
-
-  /// True if content type is modifed in this version (e.g. page to blog)
-  final bool contentTypeModified;
-
-  /// The revision id provided by confluence to be used as a revision in
-  /// Synchrony
-  final String? confRev;
-
-  /// The revision id provided by Synchrony
-  final String? syncRev;
-
-  /// Source of the synchrony revision
-  final String? syncRevSource;
-
-  Version(
-      {this.by,
-      required this.when,
-      this.friendlyWhen,
-      this.message,
-      required this.number,
-      required this.minorEdit,
-      this.content,
-      this.collaborators,
-      this.expandable,
-      this.links,
-      bool? contentTypeModified,
-      this.confRev,
-      this.syncRev,
-      this.syncRevSource})
-      : contentTypeModified = contentTypeModified ?? false;
-
-  factory Version.fromJson(Map<String, Object?> json) {
-    return Version(
-      by: json[r'by'] != null
-          ? User.fromJson(json[r'by']! as Map<String, Object?>)
-          : null,
-      when: DateTime.tryParse(json[r'when'] as String? ?? '') ?? DateTime(0),
-      friendlyWhen: json[r'friendlyWhen'] as String?,
-      message: json[r'message'] as String?,
-      number: (json[r'number'] as num?)?.toInt() ?? 0,
-      minorEdit: json[r'minorEdit'] as bool? ?? false,
-      content: json[r'content'] != null
-          ? Content.fromJson(json[r'content']! as Map<String, Object?>)
-          : null,
-      collaborators: json[r'collaborators'] != null
-          ? UsersUserKeys.fromJson(
-              json[r'collaborators']! as Map<String, Object?>)
-          : null,
-      expandable: json[r'_expandable'] != null
-          ? VersionExpandable.fromJson(
-              json[r'_expandable']! as Map<String, Object?>)
-          : null,
-      links: json[r'_links'] != null
-          ? GenericLinks.fromJson(json[r'_links']! as Map<String, Object?>)
-          : null,
-      contentTypeModified: json[r'contentTypeModified'] as bool? ?? false,
-      confRev: json[r'confRev'] as String?,
-      syncRev: json[r'syncRev'] as String?,
-      syncRevSource: json[r'syncRevSource'] as String?,
-    );
-  }
-
-  Map<String, Object?> toJson() {
-    var by = this.by;
-    var when = this.when;
-    var friendlyWhen = this.friendlyWhen;
-    var message = this.message;
-    var number = this.number;
-    var minorEdit = this.minorEdit;
-    var content = this.content;
-    var collaborators = this.collaborators;
-    var expandable = this.expandable;
-    var links = this.links;
-    var contentTypeModified = this.contentTypeModified;
-    var confRev = this.confRev;
-    var syncRev = this.syncRev;
-    var syncRevSource = this.syncRevSource;
-
-    final json = <String, Object?>{};
-    if (by != null) {
-      json[r'by'] = by.toJson();
-    }
-    json[r'when'] = when.toIsoWithNumericOffset();
-    if (friendlyWhen != null) {
-      json[r'friendlyWhen'] = friendlyWhen;
-    }
-    if (message != null) {
-      json[r'message'] = message;
-    }
-    json[r'number'] = number;
-    json[r'minorEdit'] = minorEdit;
-    if (content != null) {
-      json[r'content'] = content.toJson();
-    }
-    if (collaborators != null) {
-      json[r'collaborators'] = collaborators.toJson();
-    }
-    if (expandable != null) {
-      json[r'_expandable'] = expandable.toJson();
-    }
-    if (links != null) {
-      json[r'_links'] = links.toJson();
-    }
-    json[r'contentTypeModified'] = contentTypeModified;
-    if (confRev != null) {
-      json[r'confRev'] = confRev;
-    }
-    if (syncRev != null) {
-      json[r'syncRev'] = syncRev;
-    }
-    if (syncRevSource != null) {
-      json[r'syncRevSource'] = syncRevSource;
-    }
-    return json;
-  }
-
-  Version copyWith(
-      {User? by,
-      DateTime? when,
-      String? friendlyWhen,
-      String? message,
-      int? number,
-      bool? minorEdit,
-      Content? content,
-      UsersUserKeys? collaborators,
-      VersionExpandable? expandable,
-      GenericLinks? links,
-      bool? contentTypeModified,
-      String? confRev,
-      String? syncRev,
-      String? syncRevSource}) {
-    return Version(
-      by: by ?? this.by,
-      when: when ?? this.when,
-      friendlyWhen: friendlyWhen ?? this.friendlyWhen,
-      message: message ?? this.message,
-      number: number ?? this.number,
-      minorEdit: minorEdit ?? this.minorEdit,
-      content: content ?? this.content,
-      collaborators: collaborators ?? this.collaborators,
-      expandable: expandable ?? this.expandable,
-      links: links ?? this.links,
-      contentTypeModified: contentTypeModified ?? this.contentTypeModified,
-      confRev: confRev ?? this.confRev,
-      syncRev: syncRev ?? this.syncRev,
-      syncRevSource: syncRevSource ?? this.syncRevSource,
-    );
-  }
-}
-
 class VersionArray {
-  final List<Version> results;
+  final List<ConfluenceVersion> results;
   final int start;
   final int limit;
   final int size;
@@ -21059,8 +21115,8 @@ class VersionArray {
   factory VersionArray.fromJson(Map<String, Object?> json) {
     return VersionArray(
       results: (json[r'results'] as List<Object?>?)
-              ?.map((i) =>
-                  Version.fromJson(i as Map<String, Object?>? ?? const {}))
+              ?.map((i) => ConfluenceVersion.fromJson(
+                  i as Map<String, Object?>? ?? const {}))
               .toList() ??
           [],
       start: (json[r'start'] as num?)?.toInt() ?? 0,
@@ -21088,7 +21144,7 @@ class VersionArray {
   }
 
   VersionArray copyWith(
-      {List<Version>? results,
+      {List<ConfluenceVersion>? results,
       int? start,
       int? limit,
       int? size,
@@ -21099,41 +21155,6 @@ class VersionArray {
       limit: limit ?? this.limit,
       size: size ?? this.size,
       links: links ?? this.links,
-    );
-  }
-}
-
-class VersionExpandable {
-  final String? content;
-  final String? collaborators;
-
-  VersionExpandable({this.content, this.collaborators});
-
-  factory VersionExpandable.fromJson(Map<String, Object?> json) {
-    return VersionExpandable(
-      content: json[r'content'] as String?,
-      collaborators: json[r'collaborators'] as String?,
-    );
-  }
-
-  Map<String, Object?> toJson() {
-    var content = this.content;
-    var collaborators = this.collaborators;
-
-    final json = <String, Object?>{};
-    if (content != null) {
-      json[r'content'] = content;
-    }
-    if (collaborators != null) {
-      json[r'collaborators'] = collaborators;
-    }
-    return json;
-  }
-
-  VersionExpandable copyWith({String? content, String? collaborators}) {
-    return VersionExpandable(
-      content: content ?? this.content,
-      collaborators: collaborators ?? this.collaborators,
     );
   }
 }
@@ -21350,7 +21371,7 @@ class WatchUser {
   final String? timeZone;
   final List<OperationCheckResult> operations;
   final bool isExternalCollaborator;
-  final UserDetails? details;
+  final ConfluenceUserDetails? details;
   final String accountType;
   final String email;
   final String publicName;
@@ -21391,7 +21412,8 @@ class WatchUser {
           [],
       isExternalCollaborator: json[r'isExternalCollaborator'] as bool? ?? false,
       details: json[r'details'] != null
-          ? UserDetails.fromJson(json[r'details']! as Map<String, Object?>)
+          ? ConfluenceUserDetails.fromJson(
+              json[r'details']! as Map<String, Object?>)
           : null,
       accountType: json[r'accountType'] as String? ?? '',
       email: json[r'email'] as String? ?? '',
@@ -21455,7 +21477,7 @@ class WatchUser {
       String? timeZone,
       List<OperationCheckResult>? operations,
       bool? isExternalCollaborator,
-      UserDetails? details,
+      ConfluenceUserDetails? details,
       String? accountType,
       String? email,
       String? publicName,

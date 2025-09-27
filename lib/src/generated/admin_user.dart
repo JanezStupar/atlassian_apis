@@ -296,6 +296,81 @@ class AccountCharacteristics {
   }
 }
 
+class AdminUserUser {
+  final String accountId;
+  final String accountType;
+  final String accountStatus;
+  final String name;
+  final String picture;
+  final String email;
+  final AccountCharacteristics? characteristics;
+
+  AdminUserUser(
+      {required this.accountId,
+      required this.accountType,
+      required this.accountStatus,
+      required this.name,
+      required this.picture,
+      required this.email,
+      this.characteristics});
+
+  factory AdminUserUser.fromJson(Map<String, Object?> json) {
+    return AdminUserUser(
+      accountId: json[r'account_id'] as String? ?? '',
+      accountType: json[r'account_type'] as String? ?? '',
+      accountStatus: json[r'account_status'] as String? ?? '',
+      name: json[r'name'] as String? ?? '',
+      picture: json[r'picture'] as String? ?? '',
+      email: json[r'email'] as String? ?? '',
+      characteristics: json[r'characteristics'] != null
+          ? AccountCharacteristics.fromJson(
+              json[r'characteristics']! as Map<String, Object?>)
+          : null,
+    );
+  }
+
+  Map<String, Object?> toJson() {
+    var accountId = this.accountId;
+    var accountType = this.accountType;
+    var accountStatus = this.accountStatus;
+    var name = this.name;
+    var picture = this.picture;
+    var email = this.email;
+    var characteristics = this.characteristics;
+
+    final json = <String, Object?>{};
+    json[r'account_id'] = accountId;
+    json[r'account_type'] = accountType;
+    json[r'account_status'] = accountStatus;
+    json[r'name'] = name;
+    json[r'picture'] = picture;
+    json[r'email'] = email;
+    if (characteristics != null) {
+      json[r'characteristics'] = characteristics.toJson();
+    }
+    return json;
+  }
+
+  AdminUserUser copyWith(
+      {String? accountId,
+      String? accountType,
+      String? accountStatus,
+      String? name,
+      String? picture,
+      String? email,
+      AccountCharacteristics? characteristics}) {
+    return AdminUserUser(
+      accountId: accountId ?? this.accountId,
+      accountType: accountType ?? this.accountType,
+      accountStatus: accountStatus ?? this.accountStatus,
+      name: name ?? this.name,
+      picture: picture ?? this.picture,
+      email: email ?? this.email,
+      characteristics: characteristics ?? this.characteristics,
+    );
+  }
+}
+
 /// API Token information
 class ApiTokenModel {
   /// Human readable description for the token.
@@ -1129,81 +1204,6 @@ class ResponseForbiddenUnclaimedDomainContext {
   ResponseForbiddenUnclaimedDomainContext copyWith({String? domain}) {
     return ResponseForbiddenUnclaimedDomainContext(
       domain: domain ?? this.domain,
-    );
-  }
-}
-
-class User {
-  final String accountId;
-  final String accountType;
-  final String accountStatus;
-  final String name;
-  final String picture;
-  final String email;
-  final AccountCharacteristics? characteristics;
-
-  User(
-      {required this.accountId,
-      required this.accountType,
-      required this.accountStatus,
-      required this.name,
-      required this.picture,
-      required this.email,
-      this.characteristics});
-
-  factory User.fromJson(Map<String, Object?> json) {
-    return User(
-      accountId: json[r'account_id'] as String? ?? '',
-      accountType: json[r'account_type'] as String? ?? '',
-      accountStatus: json[r'account_status'] as String? ?? '',
-      name: json[r'name'] as String? ?? '',
-      picture: json[r'picture'] as String? ?? '',
-      email: json[r'email'] as String? ?? '',
-      characteristics: json[r'characteristics'] != null
-          ? AccountCharacteristics.fromJson(
-              json[r'characteristics']! as Map<String, Object?>)
-          : null,
-    );
-  }
-
-  Map<String, Object?> toJson() {
-    var accountId = this.accountId;
-    var accountType = this.accountType;
-    var accountStatus = this.accountStatus;
-    var name = this.name;
-    var picture = this.picture;
-    var email = this.email;
-    var characteristics = this.characteristics;
-
-    final json = <String, Object?>{};
-    json[r'account_id'] = accountId;
-    json[r'account_type'] = accountType;
-    json[r'account_status'] = accountStatus;
-    json[r'name'] = name;
-    json[r'picture'] = picture;
-    json[r'email'] = email;
-    if (characteristics != null) {
-      json[r'characteristics'] = characteristics.toJson();
-    }
-    return json;
-  }
-
-  User copyWith(
-      {String? accountId,
-      String? accountType,
-      String? accountStatus,
-      String? name,
-      String? picture,
-      String? email,
-      AccountCharacteristics? characteristics}) {
-    return User(
-      accountId: accountId ?? this.accountId,
-      accountType: accountType ?? this.accountType,
-      accountStatus: accountStatus ?? this.accountStatus,
-      name: name ?? this.name,
-      picture: picture ?? this.picture,
-      email: email ?? this.email,
-      characteristics: characteristics ?? this.characteristics,
     );
   }
 }

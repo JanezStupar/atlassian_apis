@@ -3664,7 +3664,7 @@ class Attachment {
 
   /// Download link of the attachment.
   final String? downloadLink;
-  final Version? version;
+  final ConfluenceV2Version? version;
   final AttachmentLinks? links;
 
   Attachment(
@@ -3702,7 +3702,8 @@ class Attachment {
       webuiLink: json[r'webuiLink'] as String?,
       downloadLink: json[r'downloadLink'] as String?,
       version: json[r'version'] != null
-          ? Version.fromJson(json[r'version']! as Map<String, Object?>)
+          ? ConfluenceV2Version.fromJson(
+              json[r'version']! as Map<String, Object?>)
           : null,
       links: json[r'_links'] != null
           ? AttachmentLinks.fromJson(json[r'_links']! as Map<String, Object?>)
@@ -3795,7 +3796,7 @@ class Attachment {
       int? fileSize,
       String? webuiLink,
       String? downloadLink,
-      Version? version,
+      ConfluenceV2Version? version,
       AttachmentLinks? links}) {
     return Attachment(
       id: id ?? this.id,
@@ -4029,7 +4030,7 @@ class BlogPostBulk {
   /// Date and time when the blog post was created. In format
   /// "YYYY-MM-DDTHH:mm:ss.sssZ".
   final DateTime? createdAt;
-  final Version? version;
+  final ConfluenceV2Version? version;
   final BodyBulk? body;
   final AbstractPageLinks? links;
 
@@ -4053,7 +4054,8 @@ class BlogPostBulk {
       authorId: json[r'authorId'] as String?,
       createdAt: DateTime.tryParse(json[r'createdAt'] as String? ?? ''),
       version: json[r'version'] != null
-          ? Version.fromJson(json[r'version']! as Map<String, Object?>)
+          ? ConfluenceV2Version.fromJson(
+              json[r'version']! as Map<String, Object?>)
           : null,
       body: json[r'body'] != null
           ? BodyBulk.fromJson(json[r'body']! as Map<String, Object?>)
@@ -4113,7 +4115,7 @@ class BlogPostBulk {
       String? spaceId,
       String? authorId,
       DateTime? createdAt,
-      Version? version,
+      ConfluenceV2Version? version,
       BodyBulk? body,
       AbstractPageLinks? links}) {
     return BlogPostBulk(
@@ -4140,7 +4142,7 @@ class BlogPostCommentModel {
 
   /// ID of the blog post the comment is in.
   final String? blogPostId;
-  final Version? version;
+  final ConfluenceV2Version? version;
   final BodyBulk? body;
   final CommentLinks? links;
 
@@ -4160,7 +4162,8 @@ class BlogPostCommentModel {
       title: json[r'title'] as String?,
       blogPostId: json[r'blogPostId'] as String?,
       version: json[r'version'] != null
-          ? Version.fromJson(json[r'version']! as Map<String, Object?>)
+          ? ConfluenceV2Version.fromJson(
+              json[r'version']! as Map<String, Object?>)
           : null,
       body: json[r'body'] != null
           ? BodyBulk.fromJson(json[r'body']! as Map<String, Object?>)
@@ -4210,7 +4213,7 @@ class BlogPostCommentModel {
       String? status,
       String? title,
       String? blogPostId,
-      Version? version,
+      ConfluenceV2Version? version,
       BodyBulk? body,
       CommentLinks? links}) {
     return BlogPostCommentModel(
@@ -4318,7 +4321,7 @@ class BlogPostInlineCommentModel {
 
   /// ID of the blog post the comment is in.
   final String? blogPostId;
-  final Version? version;
+  final ConfluenceV2Version? version;
   final BodyBulk? body;
   final String? resolutionStatus;
   final InlineCommentProperties? properties;
@@ -4342,7 +4345,8 @@ class BlogPostInlineCommentModel {
       title: json[r'title'] as String?,
       blogPostId: json[r'blogPostId'] as String?,
       version: json[r'version'] != null
-          ? Version.fromJson(json[r'version']! as Map<String, Object?>)
+          ? ConfluenceV2Version.fromJson(
+              json[r'version']! as Map<String, Object?>)
           : null,
       body: json[r'body'] != null
           ? BodyBulk.fromJson(json[r'body']! as Map<String, Object?>)
@@ -4405,7 +4409,7 @@ class BlogPostInlineCommentModel {
       String? status,
       String? title,
       String? blogPostId,
-      Version? version,
+      ConfluenceV2Version? version,
       BodyBulk? body,
       String? resolutionStatus,
       InlineCommentProperties? properties,
@@ -4497,7 +4501,7 @@ class BlogPostSingle {
   /// Date and time when the blog post was created. In format
   /// "YYYY-MM-DDTHH:mm:ss.sssZ".
   final DateTime? createdAt;
-  final Version? version;
+  final ConfluenceV2Version? version;
   final BodySingle? body;
   final AbstractPageLinks? links;
 
@@ -4521,7 +4525,8 @@ class BlogPostSingle {
       authorId: json[r'authorId'] as String?,
       createdAt: DateTime.tryParse(json[r'createdAt'] as String? ?? ''),
       version: json[r'version'] != null
-          ? Version.fromJson(json[r'version']! as Map<String, Object?>)
+          ? ConfluenceV2Version.fromJson(
+              json[r'version']! as Map<String, Object?>)
           : null,
       body: json[r'body'] != null
           ? BodySingle.fromJson(json[r'body']! as Map<String, Object?>)
@@ -4581,7 +4586,7 @@ class BlogPostSingle {
       String? spaceId,
       String? authorId,
       DateTime? createdAt,
-      Version? version,
+      ConfluenceV2Version? version,
       BodySingle? body,
       AbstractPageLinks? links}) {
     return BlogPostSingle(
@@ -5134,7 +5139,7 @@ class ChildrenCommentModel {
 
   /// ID of the parent comment the child comment is in.
   final String? parentCommentId;
-  final Version? version;
+  final ConfluenceV2Version? version;
   final BodyBulk? body;
   final CommentLinks? links;
 
@@ -5154,7 +5159,8 @@ class ChildrenCommentModel {
       title: json[r'title'] as String?,
       parentCommentId: json[r'parentCommentId'] as String?,
       version: json[r'version'] != null
-          ? Version.fromJson(json[r'version']! as Map<String, Object?>)
+          ? ConfluenceV2Version.fromJson(
+              json[r'version']! as Map<String, Object?>)
           : null,
       body: json[r'body'] != null
           ? BodyBulk.fromJson(json[r'body']! as Map<String, Object?>)
@@ -5204,7 +5210,7 @@ class ChildrenCommentModel {
       String? status,
       String? title,
       String? parentCommentId,
-      Version? version,
+      ConfluenceV2Version? version,
       BodyBulk? body,
       CommentLinks? links}) {
     return ChildrenCommentModel(
@@ -5458,6 +5464,82 @@ class CommentVersion {
   }
 }
 
+class ConfluenceV2Version {
+  /// Date and time when the version was created. In format
+  /// "YYYY-MM-DDTHH:mm:ss.sssZ".
+  final DateTime? createdAt;
+
+  /// Message associated with the current version.
+  final String? message;
+
+  /// The version number.
+  final int? number;
+
+  /// Describes if this version is a minor version. Email notifications and
+  /// activity stream updates are not created for minor versions.
+  final bool minorEdit;
+
+  /// The account ID of the user who created this version.
+  final String? authorId;
+
+  ConfluenceV2Version(
+      {this.createdAt,
+      this.message,
+      this.number,
+      bool? minorEdit,
+      this.authorId})
+      : minorEdit = minorEdit ?? false;
+
+  factory ConfluenceV2Version.fromJson(Map<String, Object?> json) {
+    return ConfluenceV2Version(
+      createdAt: DateTime.tryParse(json[r'createdAt'] as String? ?? ''),
+      message: json[r'message'] as String?,
+      number: (json[r'number'] as num?)?.toInt(),
+      minorEdit: json[r'minorEdit'] as bool? ?? false,
+      authorId: json[r'authorId'] as String?,
+    );
+  }
+
+  Map<String, Object?> toJson() {
+    var createdAt = this.createdAt;
+    var message = this.message;
+    var number = this.number;
+    var minorEdit = this.minorEdit;
+    var authorId = this.authorId;
+
+    final json = <String, Object?>{};
+    if (createdAt != null) {
+      json[r'createdAt'] = createdAt.toIsoWithNumericOffset();
+    }
+    if (message != null) {
+      json[r'message'] = message;
+    }
+    if (number != null) {
+      json[r'number'] = number;
+    }
+    json[r'minorEdit'] = minorEdit;
+    if (authorId != null) {
+      json[r'authorId'] = authorId;
+    }
+    return json;
+  }
+
+  ConfluenceV2Version copyWith(
+      {DateTime? createdAt,
+      String? message,
+      int? number,
+      bool? minorEdit,
+      String? authorId}) {
+    return ConfluenceV2Version(
+      createdAt: createdAt ?? this.createdAt,
+      message: message ?? this.message,
+      number: number ?? this.number,
+      minorEdit: minorEdit ?? this.minorEdit,
+      authorId: authorId ?? this.authorId,
+    );
+  }
+}
+
 class ContentIdToContentTypeRequest {
   /// The content ids to convert. They may be provided as strings or numbers.
   final List<dynamic> contentIds;
@@ -5529,7 +5611,7 @@ class ContentProperty {
 
   /// Value of the property. Must be a valid JSON value.
   final dynamic value;
-  final Version? version;
+  final ConfluenceV2Version? version;
 
   ContentProperty({this.id, this.key, this.value, this.version});
 
@@ -5539,7 +5621,8 @@ class ContentProperty {
       key: json[r'key'] as String?,
       value: json[r'value'],
       version: json[r'version'] != null
-          ? Version.fromJson(json[r'version']! as Map<String, Object?>)
+          ? ConfluenceV2Version.fromJson(
+              json[r'version']! as Map<String, Object?>)
           : null,
     );
   }
@@ -5567,7 +5650,7 @@ class ContentProperty {
   }
 
   ContentProperty copyWith(
-      {String? id, String? key, dynamic value, Version? version}) {
+      {String? id, String? key, dynamic value, ConfluenceV2Version? version}) {
     return ContentProperty(
       id: id ?? this.id,
       key: key ?? this.key,
@@ -6145,7 +6228,7 @@ class CustomContentBulk {
   /// Date and time when the custom content was created. In format
   /// "YYYY-MM-DDTHH:mm:ss.sssZ".
   final DateTime? createdAt;
-  final Version? version;
+  final ConfluenceV2Version? version;
   final CustomContentBodyBulk? body;
   final CustomContentLinks? links;
 
@@ -6177,7 +6260,8 @@ class CustomContentBulk {
       authorId: json[r'authorId'] as String?,
       createdAt: DateTime.tryParse(json[r'createdAt'] as String? ?? ''),
       version: json[r'version'] != null
-          ? Version.fromJson(json[r'version']! as Map<String, Object?>)
+          ? ConfluenceV2Version.fromJson(
+              json[r'version']! as Map<String, Object?>)
           : null,
       body: json[r'body'] != null
           ? CustomContentBodyBulk.fromJson(
@@ -6259,7 +6343,7 @@ class CustomContentBulk {
       String? customContentId,
       String? authorId,
       DateTime? createdAt,
-      Version? version,
+      ConfluenceV2Version? version,
       CustomContentBodyBulk? body,
       CustomContentLinks? links}) {
     return CustomContentBulk(
@@ -6531,7 +6615,7 @@ class CustomContentSingle {
   /// Date and time when the custom content was created. In format
   /// "YYYY-MM-DDTHH:mm:ss.sssZ".
   final DateTime? createdAt;
-  final Version? version;
+  final ConfluenceV2Version? version;
   final CustomContentBodySingle? body;
   final CustomContentLinks? links;
 
@@ -6563,7 +6647,8 @@ class CustomContentSingle {
       authorId: json[r'authorId'] as String?,
       createdAt: DateTime.tryParse(json[r'createdAt'] as String? ?? ''),
       version: json[r'version'] != null
-          ? Version.fromJson(json[r'version']! as Map<String, Object?>)
+          ? ConfluenceV2Version.fromJson(
+              json[r'version']! as Map<String, Object?>)
           : null,
       body: json[r'body'] != null
           ? CustomContentBodySingle.fromJson(
@@ -6645,7 +6730,7 @@ class CustomContentSingle {
       String? customContentId,
       String? authorId,
       DateTime? createdAt,
-      Version? version,
+      ConfluenceV2Version? version,
       CustomContentBodySingle? body,
       CustomContentLinks? links}) {
     return CustomContentSingle(
@@ -7068,7 +7153,7 @@ class FooterCommentModel {
 
   /// ID of the parent comment if the comment is a reply.
   final String? parentCommentId;
-  final Version? version;
+  final ConfluenceV2Version? version;
   final BodySingle? body;
   final CommentLinks? links;
 
@@ -7092,7 +7177,8 @@ class FooterCommentModel {
       pageId: json[r'pageId'] as String?,
       parentCommentId: json[r'parentCommentId'] as String?,
       version: json[r'version'] != null
-          ? Version.fromJson(json[r'version']! as Map<String, Object?>)
+          ? ConfluenceV2Version.fromJson(
+              json[r'version']! as Map<String, Object?>)
           : null,
       body: json[r'body'] != null
           ? BodySingle.fromJson(json[r'body']! as Map<String, Object?>)
@@ -7152,7 +7238,7 @@ class FooterCommentModel {
       String? blogPostId,
       String? pageId,
       String? parentCommentId,
-      Version? version,
+      ConfluenceV2Version? version,
       BodySingle? body,
       CommentLinks? links}) {
     return FooterCommentModel(
@@ -7179,7 +7265,7 @@ class InlineCommentChildrenModel {
 
   /// ID of the parent comment the child comment is in.
   final String? parentCommentId;
-  final Version? version;
+  final ConfluenceV2Version? version;
   final BodyBulk? body;
   final String? resolutionStatus;
   final InlineCommentProperties? properties;
@@ -7203,7 +7289,8 @@ class InlineCommentChildrenModel {
       title: json[r'title'] as String?,
       parentCommentId: json[r'parentCommentId'] as String?,
       version: json[r'version'] != null
-          ? Version.fromJson(json[r'version']! as Map<String, Object?>)
+          ? ConfluenceV2Version.fromJson(
+              json[r'version']! as Map<String, Object?>)
           : null,
       body: json[r'body'] != null
           ? BodyBulk.fromJson(json[r'body']! as Map<String, Object?>)
@@ -7266,7 +7353,7 @@ class InlineCommentChildrenModel {
       String? status,
       String? title,
       String? parentCommentId,
-      Version? version,
+      ConfluenceV2Version? version,
       BodyBulk? body,
       String? resolutionStatus,
       InlineCommentProperties? properties,
@@ -7302,7 +7389,7 @@ class InlineCommentModel {
 
   /// ID of the parent comment if the comment is a reply.
   final String? parentCommentId;
-  final Version? version;
+  final ConfluenceV2Version? version;
   final BodySingle? body;
 
   /// Atlassian Account ID of last person who modified the resolve state of the
@@ -7340,7 +7427,8 @@ class InlineCommentModel {
       pageId: json[r'pageId'] as String?,
       parentCommentId: json[r'parentCommentId'] as String?,
       version: json[r'version'] != null
-          ? Version.fromJson(json[r'version']! as Map<String, Object?>)
+          ? ConfluenceV2Version.fromJson(
+              json[r'version']! as Map<String, Object?>)
           : null,
       body: json[r'body'] != null
           ? BodySingle.fromJson(json[r'body']! as Map<String, Object?>)
@@ -7425,7 +7513,7 @@ class InlineCommentModel {
       String? blogPostId,
       String? pageId,
       String? parentCommentId,
-      Version? version,
+      ConfluenceV2Version? version,
       BodySingle? body,
       String? resolutionLastModifierId,
       DateTime? resolutionLastModifiedAt,
@@ -7660,7 +7748,7 @@ class PageBulk {
   /// Date and time when the page was created. In format
   /// "YYYY-MM-DDTHH:mm:ss.sssZ".
   final DateTime? createdAt;
-  final Version? version;
+  final ConfluenceV2Version? version;
   final BodyBulk? body;
   final AbstractPageLinks? links;
 
@@ -7690,7 +7778,8 @@ class PageBulk {
       authorId: json[r'authorId'] as String?,
       createdAt: DateTime.tryParse(json[r'createdAt'] as String? ?? ''),
       version: json[r'version'] != null
-          ? Version.fromJson(json[r'version']! as Map<String, Object?>)
+          ? ConfluenceV2Version.fromJson(
+              json[r'version']! as Map<String, Object?>)
           : null,
       body: json[r'body'] != null
           ? BodyBulk.fromJson(json[r'body']! as Map<String, Object?>)
@@ -7765,7 +7854,7 @@ class PageBulk {
       int? position,
       String? authorId,
       DateTime? createdAt,
-      Version? version,
+      ConfluenceV2Version? version,
       BodyBulk? body,
       AbstractPageLinks? links}) {
     return PageBulk(
@@ -7795,7 +7884,7 @@ class PageCommentModel {
 
   /// ID of the page the comment is in.
   final String? pageId;
-  final Version? version;
+  final ConfluenceV2Version? version;
   final BodyBulk? body;
   final CommentLinks? links;
 
@@ -7815,7 +7904,8 @@ class PageCommentModel {
       title: json[r'title'] as String?,
       pageId: json[r'pageId'] as String?,
       version: json[r'version'] != null
-          ? Version.fromJson(json[r'version']! as Map<String, Object?>)
+          ? ConfluenceV2Version.fromJson(
+              json[r'version']! as Map<String, Object?>)
           : null,
       body: json[r'body'] != null
           ? BodyBulk.fromJson(json[r'body']! as Map<String, Object?>)
@@ -7865,7 +7955,7 @@ class PageCommentModel {
       String? status,
       String? title,
       String? pageId,
-      Version? version,
+      ConfluenceV2Version? version,
       BodyBulk? body,
       CommentLinks? links}) {
     return PageCommentModel(
@@ -7986,7 +8076,7 @@ class PageInlineCommentModel {
 
   /// ID of the page the comment is in.
   final String? pageId;
-  final Version? version;
+  final ConfluenceV2Version? version;
   final BodyBulk? body;
   final String? resolutionStatus;
   final InlineCommentProperties? properties;
@@ -8010,7 +8100,8 @@ class PageInlineCommentModel {
       title: json[r'title'] as String?,
       pageId: json[r'pageId'] as String?,
       version: json[r'version'] != null
-          ? Version.fromJson(json[r'version']! as Map<String, Object?>)
+          ? ConfluenceV2Version.fromJson(
+              json[r'version']! as Map<String, Object?>)
           : null,
       body: json[r'body'] != null
           ? BodyBulk.fromJson(json[r'body']! as Map<String, Object?>)
@@ -8073,7 +8164,7 @@ class PageInlineCommentModel {
       String? status,
       String? title,
       String? pageId,
-      Version? version,
+      ConfluenceV2Version? version,
       BodyBulk? body,
       String? resolutionStatus,
       InlineCommentProperties? properties,
@@ -8170,7 +8261,7 @@ class PageSingle {
   /// Date and time when the page was created. In format
   /// "YYYY-MM-DDTHH:mm:ss.sssZ".
   final DateTime? createdAt;
-  final Version? version;
+  final ConfluenceV2Version? version;
   final BodySingle? body;
   final AbstractPageLinks? links;
 
@@ -8200,7 +8291,8 @@ class PageSingle {
       authorId: json[r'authorId'] as String?,
       createdAt: DateTime.tryParse(json[r'createdAt'] as String? ?? ''),
       version: json[r'version'] != null
-          ? Version.fromJson(json[r'version']! as Map<String, Object?>)
+          ? ConfluenceV2Version.fromJson(
+              json[r'version']! as Map<String, Object?>)
           : null,
       body: json[r'body'] != null
           ? BodySingle.fromJson(json[r'body']! as Map<String, Object?>)
@@ -8275,7 +8367,7 @@ class PageSingle {
       int? position,
       String? authorId,
       DateTime? createdAt,
-      Version? version,
+      ConfluenceV2Version? version,
       BodySingle? body,
       AbstractPageLinks? links}) {
     return PageSingle(
@@ -9902,82 +9994,6 @@ class UpdateInlineCommentModelVersion {
     return UpdateInlineCommentModelVersion(
       number: number ?? this.number,
       message: message ?? this.message,
-    );
-  }
-}
-
-class Version {
-  /// Date and time when the version was created. In format
-  /// "YYYY-MM-DDTHH:mm:ss.sssZ".
-  final DateTime? createdAt;
-
-  /// Message associated with the current version.
-  final String? message;
-
-  /// The version number.
-  final int? number;
-
-  /// Describes if this version is a minor version. Email notifications and
-  /// activity stream updates are not created for minor versions.
-  final bool minorEdit;
-
-  /// The account ID of the user who created this version.
-  final String? authorId;
-
-  Version(
-      {this.createdAt,
-      this.message,
-      this.number,
-      bool? minorEdit,
-      this.authorId})
-      : minorEdit = minorEdit ?? false;
-
-  factory Version.fromJson(Map<String, Object?> json) {
-    return Version(
-      createdAt: DateTime.tryParse(json[r'createdAt'] as String? ?? ''),
-      message: json[r'message'] as String?,
-      number: (json[r'number'] as num?)?.toInt(),
-      minorEdit: json[r'minorEdit'] as bool? ?? false,
-      authorId: json[r'authorId'] as String?,
-    );
-  }
-
-  Map<String, Object?> toJson() {
-    var createdAt = this.createdAt;
-    var message = this.message;
-    var number = this.number;
-    var minorEdit = this.minorEdit;
-    var authorId = this.authorId;
-
-    final json = <String, Object?>{};
-    if (createdAt != null) {
-      json[r'createdAt'] = createdAt.toIsoWithNumericOffset();
-    }
-    if (message != null) {
-      json[r'message'] = message;
-    }
-    if (number != null) {
-      json[r'number'] = number;
-    }
-    json[r'minorEdit'] = minorEdit;
-    if (authorId != null) {
-      json[r'authorId'] = authorId;
-    }
-    return json;
-  }
-
-  Version copyWith(
-      {DateTime? createdAt,
-      String? message,
-      int? number,
-      bool? minorEdit,
-      String? authorId}) {
-    return Version(
-      createdAt: createdAt ?? this.createdAt,
-      message: message ?? this.message,
-      number: number ?? this.number,
-      minorEdit: minorEdit ?? this.minorEdit,
-      authorId: authorId ?? this.authorId,
     );
   }
 }
